@@ -1,0 +1,56 @@
+######### 启动
+npm install
+npm start
+
+
+######### 流程解读
+# app.js
+	var index = require('./routes/index');
+	app.use('/', index);
+  V
+  V
+# routes/index.js
+	  router.get('/', function(req, res){
+	    Article.get(null, function(err, articles){
+	      if(err){
+	        articles = [];
+	      }
+	      res.render('index', {
+	        title    : '主页',
+	        articles : articles
+	      });
+	    });
+	  });
+  V
+  V
+# views/index.ejs
+	<script type="text/javascript" src="/javascripts/myapp/myapp.js"> </script>
+  V
+  V
+# public/javascripts/myapp/myapp.js
+	Ext.application({
+	  name: "Demo",
+	  appFolder: "/javascripts/myapp",
+	  autoCreateViewport: true, //自动加载Viewport.js文件
+	  controllers: ['Main'],
+	  //launch: function() {
+	    //Ext.tip.QuickTipManager.init();
+	  //}
+	});
+  V
+  V
+# public/javascripts/myapp/view/Viewport.js
+        items: [
+          Ext.create('Demo.view.layout.header'),
+          Ext.create('Demo.view.layout.menu'),
+          Ext.create('Demo.view.layout.tabPanel'),
+          Ext.create('Demo.view.layout.footer')
+        ]
+  V
+  V
+# public/javascripts/myapp/view/layout/footer.js, header.js, menu.js, tabPanel.js
+
+
+
+
+

@@ -1,13 +1,13 @@
 var Article = require('../models/article.js');
 
 var express = require('express');
-var app = express.Router();
+var router = express.Router();
 
 
 
-module.exports = app;
+module.exports = router;
 
-  app.get('/', function(req, res){
+  router.get('/', function(req, res){
     Article.get(null, function(err, articles){
       if(err){
         articles = [];
@@ -20,7 +20,7 @@ module.exports = app;
   });
 
   // 文章清单
-  app.get('/articles', function(req, res) {
+  router.get('/articles', function(req, res) {
     var totalCount = 0;
     query= "limit " + req.query.start + "," + req.query.limit
     Article.getQuantity(function(err, total){
@@ -37,7 +37,7 @@ module.exports = app;
   });
 
   // 新建文章
-  app.post('/articles', function(req, res) {
+  router.post('/articles', function(req, res) {
     article = new Article(req.body.user, req.body.title, req.body.content, req.body.happened_at);
     article.save(function(err, result){
       if(err){
@@ -52,7 +52,7 @@ module.exports = app;
   });
 
   // 编辑文章
-  app.put('/articles/:id', function(req, res) {
+  router.put('/articles/:id', function(req, res) {
     article = new Article(req.body.user, req.body.title, req.body.content, req.body.happened_at, req.body.id);
     article.update(function(err, result){
       if(err){
@@ -66,7 +66,7 @@ module.exports = app;
   });
 
   // 删除文章
-  app.delete('/articles/:id', function(req, res) {
+  router.delete('/articles/:id', function(req, res) {
     var query = 'id = ' + req.body.id;
     Article.remove(query, function(err) {
       if(err){
