@@ -2,10 +2,16 @@
 <html>
   <head>
     <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" type="text/css" href="/javascripts/ext-4.2.1.883/resources/css/ext-all-neptune.css" />
+    <script type="text/javascript" src="/javascripts/ext-4.2.1.883/ext-all.js"></script>
+    <script type="text/javascript" src="/javascripts/ext-4.2.1.883/locale/ext-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="/javascripts/myapp/myapp.js"> </script>
   </head>
   <body>
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
+    <% articles.forEach(function(article){ %>
+      <%= article.title %>
+    <% }) %>
   </body>
 </html>
