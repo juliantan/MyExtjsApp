@@ -11,6 +11,9 @@ RF: <Nodejs开发框架Express3.0开发手记–从零开始> http://blog.fens.m
     routes，路由文件(MVC中的C,controller)
     Views，页面文件(Ejs模板)
 
+######### API
+http://docs.sencha.com/extjs/4.2.1/#!/api
+
 
 ######### 流程解读
 # app.js
@@ -41,7 +44,7 @@ RF: <Nodejs开发框架Express3.0开发手记–从零开始> http://blog.fens.m
 	  name: "Demo", // 【指定app的名字，引用appFolder】
 	  appFolder: "/javascripts/myapp",
 	  autoCreateViewport: true, //自动加载Viewport.js文件
-	  controllers: ['Main'],
+	  controllers: ['Main'], // 【加载Main.js】
 	  //launch: function() {
 	    //Ext.tip.QuickTipManager.init();
 	  //}
@@ -62,4 +65,58 @@ RF: <Nodejs开发框架Express3.0开发手记–从零开始> http://blog.fens.m
 
 
 
+### Main.js
+# control关联
+	  init:function(){
+	    this.control({
+	      'menu': {
+	         itemmousedown: this.loadMenu
+	      }
+	    })
+	  }
+	- 'menu'对应menu.js里, 必须以widget开头:
+	  	alias: 'widget.menu',
+# 在itemmousedown: this.loadMenu中
+选择article-list节点时，将加载Articles的controller, 并创建panel加入
+          case "article-list":
+            Ext.require('Demo.controller.Articles', function() {
+              //此处会异步执行，先执行ext.require之外的代码
+              var article = new Demo.controller.Articles();
+              article.init(Demo);
+              panel = { xtype: 'article-list' };
+              my.openTab(panel,record.get('id'));
+            });
+
+# Ext.data.Store, extraParams
+传递其它参数
+    var bookStore = new Ext.data.Store({
+        proxy: {
+            type: 'jsonp',
+            startParam: 'startIndex',
+            url: 'https://www.googleapis.com/books/v1/volumes',
+            // tanjl
+            extraParams: {
+                q : 427
+            },
+            reader: {
+                type: 'json',
+                totalProperty: 'totalItems',
+                root: 'items'
+            }
+        },
+
+        
+# Store
+Ext.data.Store的autoLoad: true, 可以在创建的时候就自动加载
+
+# queryMode
+Ext.form.field.ComboBox的queryMode
+'remote': 根据用户输入来与远端交互, 用户输入的参数名由queryParam指定, 值即为ComboBox的值(tanjl经测试最少要输入4个字符才触发HTTP请求)
+'local': 加载local的数据 (tanjl: 这里local数据也可以是从远端查询而来的)
+
+# Extjs获取控件
+Ext.ComponentMgr.get('tfp_fromDateId').setValue(Ext.Date.clearTime(new Date(new Date() - 3600 * 24 * 1000)));
+Ext.getCmp(xxx)
+Ext.getCmp(xxx).getComponent()
+Ext.widget(xxx)
 
