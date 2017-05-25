@@ -15,7 +15,7 @@ Ext.define('Demo.view.layout.tabPanel',{
       items: [{
         id: 'HomePage',
         title: '首页',
-        //iconCls:'home', //图标
+        //iconCls:'home',
         layout: 'fit'
       }]
     });

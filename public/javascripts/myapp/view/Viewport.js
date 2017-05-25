@@ -6,6 +6,7 @@ Ext.define('Demo.view.Viewport',{
     'Demo.view.layout.header',
     'Demo.view.layout.menu',
     'Demo.view.layout.tabPanel',
+    'Demo.view.layout.filter',
     'Demo.view.layout.footer'
   ],
   initComponent : function(){
@@ -17,6 +18,7 @@ Ext.define('Demo.view.Viewport',{
           Ext.create('Demo.view.layout.header'),
           Ext.create('Demo.view.layout.menu'),
           Ext.create('Demo.view.layout.tabPanel'),
+          Ext.create('Demo.view.layout.filter'),
           Ext.create('Demo.view.layout.footer')
         ]
       }]

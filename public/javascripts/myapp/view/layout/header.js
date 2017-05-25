@@ -5,8 +5,8 @@ Ext.define('Demo.view.layout.header', {
       xtype: 'box',
       cls: 'header',
       region: 'north',
-      html: '<br><center><font size = 6>系统</font></center>',
-      height: 70
+      html: '<br><center><font size = 5>Mirror Report Analysis</font></center>',
+      height: 50
     });
     this.callParent(arguments);
   }
