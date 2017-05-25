@@ -1,4 +1,4 @@
-Ext.define('Demo.view.article.list', {
+Ext.define('Mirror.view.article.list', {
   extend: 'Ext.grid.Panel',
   id: "article-list",
   alias: 'widget.article-list',

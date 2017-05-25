@@ -1,4 +1,4 @@
-Ext.define('Demo.view.layout.footer',{
+Ext.define('Mirror.view.layout.footer',{
   extend: 'Ext.Toolbar',
   initComponent : function(){
     Ext.apply(this,{

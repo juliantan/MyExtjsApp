@@ -1,4 +1,4 @@
-Ext.define("Demo.controller.Articles", {
+Ext.define("Mirror.controller.Articles", {
   extend: 'Ext.app.Controller',
   id: 'article-controller',
   config: {
@@ -55,7 +55,7 @@ Ext.define("Demo.controller.Articles", {
     var store = this.getArticlesStore();
     var values = form.getValues();
 
-    var article = Ext.create('Demo.model.Articles', values);
+    var article = Ext.create('Mirror.model.Articles', values);
     var errors = article.validate();
 
     if (errors.isValid()) {

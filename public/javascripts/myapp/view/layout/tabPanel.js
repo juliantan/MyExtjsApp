@@ -1,4 +1,4 @@
-Ext.define('Demo.view.layout.tabPanel',{
+Ext.define('Mirror.view.layout.tabPanel',{
   extend: 'Ext.tab.Panel',
   alias: 'widget.tabPanel',
   initComponent : function(){

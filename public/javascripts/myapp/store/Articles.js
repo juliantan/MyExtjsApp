@@ -1,7 +1,7 @@
-Ext.define('Demo.store.Articles', {
+Ext.define('Mirror.store.Articles', {
   extend: 'Ext.data.Store',
 
-  model: 'Demo.model.Articles',
+  model: 'Mirror.model.Articles',
   pageSize: 10,
   //baseParams: {limit: 10},
   autoLoad: {params: {start:0, limit:10}},
@@ -23,7 +23,7 @@ Ext.define('Demo.store.Articles', {
   proxy: {
     type: 'rest',
     url: '/articles',
-    model: 'Demo.model.Articles',
+    model: 'Mirror.model.Articles',
     noCache: false,
     reader: {
       type: 'json',

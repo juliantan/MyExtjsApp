@@ -2,10 +2,10 @@
 Ext.Loader.setConfig({enabled: true});
 
 Ext.application({
-  name: "Demo",
+  name: "Mirror",
   appFolder: "/javascripts/myapp",
   autoCreateViewport: true, //自动加载Viewport.js文件
-  controllers: ['Main'],
+  controllers: ['MainCtrl'],
   //launch: function() {
     //Ext.tip.QuickTipManager.init();
   //}

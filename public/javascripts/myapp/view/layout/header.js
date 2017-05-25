@@ -1,4 +1,4 @@
-Ext.define('Demo.view.layout.header', {
+Ext.define('Mirror.view.layout.header', {
   extend: 'Ext.Component',
   initComponent: function() {
     Ext.applyIf(this, {

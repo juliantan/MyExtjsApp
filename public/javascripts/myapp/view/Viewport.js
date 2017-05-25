@@ -1,13 +1,13 @@
-Ext.define('Demo.view.Viewport',{
+Ext.define('Mirror.view.Viewport',{
   extend: 'Ext.Viewport',
   layout: 'fit',
   hideBorders: true,
   requires : [
-    'Demo.view.layout.header',
-    'Demo.view.layout.menu',
-    'Demo.view.layout.tabPanel',
-    'Demo.view.layout.filter',
-    'Demo.view.layout.footer'
+    'Mirror.view.layout.header',
+    'Mirror.view.layout.menu',
+    'Mirror.view.layout.tabPanel',
+    'Mirror.view.layout.filter',
+    'Mirror.view.layout.footer'
   ],
   initComponent : function(){
     Ext.apply(this, {
@@ -15,11 +15,11 @@ Ext.define('Demo.view.Viewport',{
         id:'desk',
         layout: 'border',
         items: [
-          Ext.create('Demo.view.layout.header'),
-          Ext.create('Demo.view.layout.menu'),
-          Ext.create('Demo.view.layout.tabPanel'),
-          Ext.create('Demo.view.layout.filter'),
-          Ext.create('Demo.view.layout.footer')
+          Ext.create('Mirror.view.layout.header'),
+          Ext.create('Mirror.view.layout.menu'),
+          Ext.create('Mirror.view.layout.tabPanel'),
+          Ext.create('Mirror.view.layout.filter'),
+          Ext.create('Mirror.view.layout.footer')
         ]
       }]
     });

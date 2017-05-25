@@ -1,4 +1,4 @@
-Ext.define('Demo.view.article.form', {
+Ext.define('Mirror.view.article.form', {
   extend: 'Ext.window.Window',
   id: 'article-form',
   alias : 'widget.article-form',

@@ -66,7 +66,7 @@ advancedFieldsPanel = new Ext.form.FieldSet({
     }
 });
 
-Ext.define('Demo.view.layout.filter',{
+Ext.define('Mirror.view.layout.filter',{
   extend: 'Ext.form.Panel',
   alias: 'widget.filter',
   initComponent : function(){

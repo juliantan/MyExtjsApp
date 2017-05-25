@@ -1,4 +1,4 @@
-Ext.define('Demo.view.layout.menu',{
+Ext.define('Mirror.view.layout.menu',{
   extend: 'Ext.tree.TreePanel',
   alias: 'widget.menu',
   initComponent : function(){
