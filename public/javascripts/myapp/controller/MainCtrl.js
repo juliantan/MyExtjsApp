@@ -16,7 +16,7 @@ Ext.define("Mirror.controller.MainCtrl",{
     })
   },
   
-  views: ['chart.TrendColumn', 'chart.TopDimension'],
+  views: ['chart.TrendColumn', 'chart.TopDimension', 'chart.PieChart'],
 
   loadMenu: function(selModel, record){
     console.log("record.get('id'):" + record.get('id'));
@@ -27,7 +27,6 @@ Ext.define("Mirror.controller.MainCtrl",{
         switch (record.get('id')) {
           case "article-list-leaf-id":
             Ext.require('Mirror.controller.ArticleCtrl', function() {
-              //此处会异步执行，先执行ext.require之外的代码
               var article = new Mirror.controller.ArticleCtrl();
               article.init(Mirror);
               panel = { xtype: 'article-list-widget' };
@@ -42,10 +41,44 @@ Ext.define("Mirror.controller.MainCtrl",{
 				layout: 'anchor',
 				margin: '0 0 0 0',
 				items: [
-					{xtype: 'trend-column-widget', anchor: '100% 50%', margin: '0 0 0 0',},
+					{
+						xtype: 'trend-column-widget',
+						anchor: '100% 50%',
+						id: "node-switch-1"
+					},
 					{
 						xtype: 'top-dimension-widget',
 						anchor: '100% 50%',
+						id: "node-switch-2",
+					},
+				],
+				closable: true,
+              };
+              my.openTab(panel, record.get('id'));
+            break;
+          case "user-count-leaf-id":
+              panel = {
+				title: record.get('text'),
+				//xtype: 'trend-column-widget',
+				xtype: 'panel',
+				layout: 'anchor',
+				margin: '0 0 0 0',
+				items: [
+					{
+						xtype: 'trend-column-widget',
+						anchor: '100% 50%',
+						id: "user-count-leaf-id-1"
+					},
+					{
+						xtype: 'panel',
+						anchor: '100% 50%',
+						id: "user-count-leaf-id-2",
+						layout: 'anchor',
+						border: true,
+						items: [
+							{ xtype: 'top-dimension-widget', id: 'top-dimension-widget-123', anchor: '50% 100%',},
+							{ xtype: 'pie-chart-widget', id: 'pie-chart-widget-124', anchor: '50% 100%',}
+						],
 					},
 				],
 				closable: true,

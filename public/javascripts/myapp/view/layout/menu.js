@@ -19,6 +19,16 @@ Ext.define('Mirror.view.layout.menu',{
       collapsible : true,
       autoScroll: false,
       rootVisible: true,
+      
+		tbar: [{
+		    text: 'Expand All',
+		    scope: this,
+		    handler: this.onExpandAllClick
+		}, {
+		    text: 'Collapse All',
+		    scope: this,
+		    handler: this.onCollapseAllClick
+		}],
 
       root:{
         text:'所有报表',
@@ -31,7 +41,8 @@ Ext.define('Mirror.view.layout.menu',{
             leaf:false,
             expanded:true,
             children:[
-              {id:'article-list-leaf-id',text:'用户量', leaf:true},
+              {id:'article-list-leaf-id',text:'Articles', leaf:true},
+              {id:'user-count-leaf-id',text:'用户量', leaf:true},
               {id:'node-2', text:'QTP访问成功失败率', leaf:true}
             ] 
           },
@@ -40,6 +51,27 @@ Ext.define('Mirror.view.layout.menu',{
       }
     });
     this.callParent(arguments);
-  }
+  },
+  
+   onExpandAllClick: function(){
+        var me = this,
+        toolbar = me.down('toolbar');
+            
+        me.getEl().mask('Expanding tree...');
+        toolbar.disable();
+                    
+        this.expandAll(function() {
+            me.getEl().unmask();
+            toolbar.enable();
+        });
+    },
+    
+    onCollapseAllClick: function(){
+        var toolbar = this.down('toolbar');
+        toolbar.disable();
+        this.collapseAll(function() {
+            toolbar.enable();
+        });
+    },
 })
 
