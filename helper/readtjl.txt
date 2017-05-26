@@ -41,7 +41,7 @@ http://docs.sencha.com/extjs/4.2.1/#!/api
   V
 # public/javascripts/myapp/myapp.js
 	Ext.application({
-	  name: "Demo", // 【指定app的名字，引用appFolder】
+	  name: "Mirror", // 【指定app的名字，引用appFolder】
 	  appFolder: "/javascripts/myapp",
 	  autoCreateViewport: true, //自动加载Viewport.js文件
 	  controllers: ['Main'], // 【加载Main.js】
@@ -53,10 +53,10 @@ http://docs.sencha.com/extjs/4.2.1/#!/api
   V
 # public/javascripts/myapp/view/Viewport.js
         items: [
-          Ext.create('Demo.view.layout.header'), // 【根据Demo对应appFoler, appFolder/view/layout/header.js】
-          Ext.create('Demo.view.layout.menu'),
-          Ext.create('Demo.view.layout.tabPanel'),
-          Ext.create('Demo.view.layout.footer')
+          Ext.create('Mirror.view.layout.header'), // 【根据Mirror对应appFoler, appFolder/view/layout/header.js】
+          Ext.create('Mirror.view.layout.menu'),
+          Ext.create('Mirror.view.layout.tabPanel'),
+          Ext.create('Mirror.view.layout.footer')
         ]
   V
   V
@@ -76,16 +76,17 @@ http://docs.sencha.com/extjs/4.2.1/#!/api
 	  }
 	- 'menu'对应menu.js里, 必须以widget开头:
 	  	alias: 'widget.menu',
-# 在itemmousedown: this.loadMenu中
+# 在itemmousedown: this.loadMenu中, 加载其它页面并加载相应的controller
 选择article-list节点时，将加载Articles的controller, 并创建panel加入
           case "article-list":
-            Ext.require('Demo.controller.Articles', function() {
+            Ext.require('Mirror.controller.Articles', function() {
               //此处会异步执行，先执行ext.require之外的代码
-              var article = new Demo.controller.Articles();
-              article.init(Demo);
+              var article = new Mirror.controller.Articles();
+              article.init(Mirror);
               panel = { xtype: 'article-list' };
               my.openTab(panel,record.get('id'));
             });
+
 
 # Ext.data.Store, extraParams
 传递其它参数
@@ -120,3 +121,25 @@ Ext.getCmp(xxx)
 Ext.getCmp(xxx).getComponent()
 Ext.widget(xxx)
 
+
+
+
+
+
+
+# refs
+相当于创建了一个属性'listref'，这个属性引用article-list-widget, 之后，在本类中，可以使用getListref()来获取这个对象了。
+  refs: [{
+    ref: 'listref',
+    selector: 'article-list-widget'
+  }],
+
+# alias给xtype, selector等使用
+Ext.define('Mirror.view.article.list', {
+  extend: 'Ext.grid.Panel',
+  id: "article-list-id",
+  alias: 'widget.article-list-widget',
+使用：
+panel = { xtype: 'article-list-widget' };
+selector: 'article-list-widget'
+而id, 好像有alias后就不会用到了

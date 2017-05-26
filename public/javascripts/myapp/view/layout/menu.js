@@ -31,7 +31,7 @@ Ext.define('Mirror.view.layout.menu',{
             leaf:false,
             expanded:true,
             children:[
-              {id:'article-list',text:'用户量', leaf:true},
+              {id:'article-list-leaf-id',text:'用户量', leaf:true},
               {id:'node-2', text:'QTP访问成功失败率', leaf:true}
             ] 
           },

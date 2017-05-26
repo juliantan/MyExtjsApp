@@ -23,12 +23,12 @@ Ext.define("Mirror.controller.MainCtrl",{
       var panel = Ext.getCmp(record.get('id'));
       if (!panel) {
         switch (record.get('id')) {
-          case "article-list":
+          case "article-list-leaf-id":
             Ext.require('Mirror.controller.ArticleCtrl', function() {
               //此处会异步执行，先执行ext.require之外的代码
               var article = new Mirror.controller.ArticleCtrl();
               article.init(Mirror);
-              panel = { xtype: 'article-list' };
+              panel = { xtype: 'article-list-widget' };
               my.openTab(panel, record.get('id'));
             });
             break;

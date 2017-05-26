@@ -10,26 +10,26 @@ Ext.define("Mirror.controller.ArticleCtrl", {
   views: ['article.list', 'article.form'],
 
   refs: [{
-    ref: 'list',
-    selector: 'article-list'
+    ref: 'listref',
+    selector: 'article-list-widget'
   }],
 
   init: function () {
     this.control({
-      'article-list': {
+      'article-list-widget': {
         itemdblclick: this.editArticle,
         selectionchange: this.selectionChange
       },
       'article-form button[action=save]': {
         click: this.createOrUpdateArticle
       },
-      '#article-list button[action=addArticle]': {
+      '#article-list-leaf-id button[action=addArticle]': {
         click: this.addArticle
       },
-      '#article-list button[action=editArticle]': {
+      '#article-list-leaf-id button[action=editArticle]': {
         click: this.editArticle
       },
-      '#article-list button[action=deleteArticle]': {
+      '#article-list-leaf-id button[action=deleteArticle]': {
         click: this.deleteArticle
       }
     });
@@ -42,7 +42,7 @@ Ext.define("Mirror.controller.ArticleCtrl", {
   },
 
   editArticle: function(record) {
-    var record = this.getList().getSelectedArticle();
+    var record = this.getListref().getSelectedArticle();
     var view = Ext.widget('article-form');
     view.down('form').loadRecord(record);
   },
@@ -91,7 +91,7 @@ Ext.define("Mirror.controller.ArticleCtrl", {
   },
 
   deleteArticle: function() {
-    var record = this.getList().getSelectedArticle();
+    var record = this.getListref().getSelectedArticle();
 
     if (record) {
       var store = this.getArticleStoreStore();
@@ -101,7 +101,7 @@ Ext.define("Mirror.controller.ArticleCtrl", {
   },
 
   selectionChange: function(selectionModel, selections) {
-    var grid = this.getList();
+    var grid = this.getListref();
 
     if (selections.length > 0) {
       grid.enableRecordButtons();

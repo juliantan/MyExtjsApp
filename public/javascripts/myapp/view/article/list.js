@@ -1,7 +1,7 @@
 Ext.define('Mirror.view.article.list', {
   extend: 'Ext.grid.Panel',
-  id: "article-list",
-  alias: 'widget.article-list',
+  id: "article-list-id",
+  alias: 'widget.article-list-widget',
   title: 'All articles',
   store: 'ArticleStore',
   closable:true,
