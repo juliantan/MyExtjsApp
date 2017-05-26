@@ -24,9 +24,9 @@ Ext.define("Mirror.controller.MainCtrl",{
       if (!panel) {
         switch (record.get('id')) {
           case "article-list":
-            Ext.require('Mirror.controller.Articles', function() {
+            Ext.require('Mirror.controller.ArticleCtrl', function() {
               //此处会异步执行，先执行ext.require之外的代码
-              var article = new Mirror.controller.Articles();
+              var article = new Mirror.controller.ArticleCtrl();
               article.init(Mirror);
               panel = { xtype: 'article-list' };
               my.openTab(panel, record.get('id'));

@@ -1,4 +1,4 @@
-Ext.define("Mirror.controller.Articles", {
+Ext.define("Mirror.controller.ArticleCtrl", {
   extend: 'Ext.app.Controller',
   id: 'article-controller',
   config: {
