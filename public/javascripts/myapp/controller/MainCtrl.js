@@ -15,6 +15,8 @@ Ext.define("Mirror.controller.MainCtrl",{
       }
     })
   },
+  
+  views: ['chart.TrendColumn'],
 
   loadMenu: function(selModel, record){
     console.log("record.get('id'):" + record.get('id'));
@@ -31,6 +33,10 @@ Ext.define("Mirror.controller.MainCtrl",{
               panel = { xtype: 'article-list-widget' };
               my.openTab(panel, record.get('id'));
             });
+            break;
+          case "node-switch":
+              panel = { xtype: 'trend-column-widget' };
+              my.openTab(panel, record.get('id'));
             break;
           default:
             panel = {

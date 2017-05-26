@@ -12,12 +12,14 @@ Ext.define('Mirror.view.layout.tabPanel',{
       activeTab: 0,
       border: false,
       //plain: true,
-      items: [{
-        id: 'HomePage',
-        title: '首页',
-        //iconCls:'home',
-        layout: 'fit'
-      }]
+      items: [
+		{
+	        id: 'HomePage',
+	        title: '首页',
+	        //iconCls:'home',
+	        layout: 'fit'
+		}
+      ]
     });
     this.callParent(arguments);
   }

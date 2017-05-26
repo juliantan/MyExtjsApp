@@ -143,3 +143,16 @@ Ext.define('Mirror.view.article.list', {
 panel = { xtype: 'article-list-widget' };
 selector: 'article-list-widget'
 而id, 好像有alias后就不会用到了
+
+
+### controller
+controller里加载models, stores, views, 将搜索默认目录model/, store/, view/下的文件，文件里Ext.define的名字要与路径及文件名一致
+  models: ['ArticleModel'],
+  stores: ['ArticleStore'],
+  views: ['article.list', 'article.form', 'chart.TrendColumn'],
+ 如chart.TrendColumn对应view/chart/TrendColumn.js, 定义为:
+ Ext.define('Mirror.view.chart.TrendColumn', {...}
+ 注: Controller里加上这些后，会加载对应的js文件
+ 
+ 
+ 
