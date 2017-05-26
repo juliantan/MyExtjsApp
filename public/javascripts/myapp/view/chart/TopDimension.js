@@ -1,52 +1,49 @@
-var store = Ext.create('Ext.data.JsonStore', {
-    fields: ['name', 'data'],
-    data: [
-        { 'name': 'metric one',   'data': 10 },
-        { 'name': 'metric two',   'data':  7 },
-        { 'name': 'metric three', 'data':  5 },
-        { 'name': 'metric four',  'data':  2 },
-        { 'name': 'metric five',  'data': 27 }
-    ]
-});
-
 Ext.define('Mirror.view.chart.TopDimension', {
 	extend: 'Ext.chart.Chart',
 	id: 'topDimensionId',
 	alias : 'widget.top-dimension-widget',
 	border: true,
-
-    width: 500,
-    height: 350,
+	
     animate: true,
-    store: store,
-    theme: 'Base:gradients',
-    series: [{
-        type: 'pie',
-        angleField: 'data',
-        showInLegend: true,
-        tips: {
-            trackMouse: true,
-            width: 140,
-            height: 28,
-            renderer: function(storeItem, item) {
-                // calculate and display percentage on hover
-                var total = 0;
-                store.each(function(rec) {
-                    total += rec.get('data');
-                });
-                this.setTitle(storeItem.get('name') + ': ' + Math.round(storeItem.get('data') / total * 100) + '%');
-            }
+    shadow: true,
+    store: store1,
+    axes: [{
+        type: 'Numeric',
+        position: 'bottom',
+        fields: ['data1'],
+        label: {
+            renderer: Ext.util.Format.numberRenderer('0,0')
         },
-        highlight: {
-            segment: {
-                margin: 20
-            }
+        title: 'Number of Hits',
+        grid: true,
+        minimum: 0
+    }, {
+        type: 'Category',
+        position: 'left',
+        fields: ['name'],
+        title: 'Month of the Year'
+    }],
+    series: [{
+        type: 'bar',
+        axis: 'bottom',
+        highlight: true,
+        tips: {
+          trackMouse: true,
+          width: 140,
+          height: 28,
+          renderer: function(storeItem, item) {
+            this.setTitle(storeItem.get('name') + ': ' + storeItem.get('data1') + ' views');
+          }
         },
         label: {
-            field: 'name',
-            display: 'rotate',
-            contrast: true,
-            font: '18px Arial'
-        }
+          display: 'insideEnd',
+            field: 'data1',
+            renderer: Ext.util.Format.numberRenderer('0'),
+            orientation: 'horizontal',
+            color: '#333',
+          'text-anchor': 'middle'
+        },
+        xField: 'name',
+        yField: ['data1']
     }]
 });
