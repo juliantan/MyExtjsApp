@@ -1,4 +1,4 @@
-Ext.define('Mirror.model.Articles', {
+Ext.define('Mirror.model.ArticleModel', {
   extend: 'Ext.data.Model',
   idProperty: 'id',
   fields: [
