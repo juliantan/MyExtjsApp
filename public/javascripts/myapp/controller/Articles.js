@@ -52,10 +52,10 @@ Ext.define("Mirror.controller.Articles", {
     var win = button.up('window');
     var form = win.down('form');
 
-    var store = this.getArticlesStore();
+    var store = this.getArticleStoreStore();
     var values = form.getValues();
 
-    var article = Ext.create('Mirror.model.ArticleStore', values);
+    var article = Ext.create('Mirror.model.Articles', values);
     var errors = article.validate();
 
     if (errors.isValid()) {
@@ -94,7 +94,7 @@ Ext.define("Mirror.controller.Articles", {
     var record = this.getList().getSelectedArticle();
 
     if (record) {
-      var store = this.getArticlesStore();
+      var store = this.getArticleStoreStore();
       store.remove(record);
       store.sync();
     }
