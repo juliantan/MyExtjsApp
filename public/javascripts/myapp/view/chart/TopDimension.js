@@ -1,106 +1,52 @@
-Ext.require('Ext.chart.*');
-Ext.require(['Ext.Window', 'Ext.layout.container.Fit', 'Ext.fx.target.Sprite', 'Ext.window.MessageBox']);
-Ext.require(['Ext.data.*']);
+var store = Ext.create('Ext.data.JsonStore', {
+    fields: ['name', 'data'],
+    data: [
+        { 'name': 'metric one',   'data': 10 },
+        { 'name': 'metric two',   'data':  7 },
+        { 'name': 'metric three', 'data':  5 },
+        { 'name': 'metric four',  'data':  2 },
+        { 'name': 'metric five',  'data': 27 }
+    ]
+});
 
-    window.generateData = function(n, floor){
-        var data = [],
-            p = (Math.random() *  11) + 1,
-            i;
-            
-        floor = (!floor && floor !== 0)? 20 : floor;
-        
-        for (i = 0; i < (n || 12); i++) {
-            data.push({
-                name: Ext.Date.monthNames[i % 12],
-                data1: Math.floor(Math.max((Math.random() * 100), floor)),
-                data2: Math.floor(Math.max((Math.random() * 100), floor)),
-                data3: Math.floor(Math.max((Math.random() * 100), floor)),
-                data4: Math.floor(Math.max((Math.random() * 100), floor)),
-                data5: Math.floor(Math.max((Math.random() * 100), floor)),
-                data6: Math.floor(Math.max((Math.random() * 100), floor)),
-                data7: Math.floor(Math.max((Math.random() * 100), floor)),
-                data8: Math.floor(Math.max((Math.random() * 100), floor)),
-                data9: Math.floor(Math.max((Math.random() * 100), floor))
-            });
-        }
-        return data;
-    };
-    
-    window.generateDataNegative = function(n, floor){
-        var data = [],
-            p = (Math.random() *  11) + 1,
-            i;
-            
-        floor = (!floor && floor !== 0)? 20 : floor;
-            
-        for (i = 0; i < (n || 12); i++) {
-            data.push({
-                name: Ext.Date.monthNames[i % 12],
-                data1: Math.floor(((Math.random() - 0.5) * 100), floor),
-                data2: Math.floor(((Math.random() - 0.5) * 100), floor),
-                data3: Math.floor(((Math.random() - 0.5) * 100), floor),
-                data4: Math.floor(((Math.random() - 0.5) * 100), floor),
-                data5: Math.floor(((Math.random() - 0.5) * 100), floor),
-                data6: Math.floor(((Math.random() - 0.5) * 100), floor),
-                data7: Math.floor(((Math.random() - 0.5) * 100), floor),
-                data8: Math.floor(((Math.random() - 0.5) * 100), floor),
-                data9: Math.floor(((Math.random() - 0.5) * 100), floor)
-            });
-        }
-        return data;
-    };
-
-    window.store1 = Ext.create('Ext.data.JsonStore', {
-        fields: ['name', 'data1', 'data2', 'data3', 'data4', 'data5', 'data6', 'data7', 'data9', 'data9'],
-        data: generateData()
-    });
-    
 Ext.define('Mirror.view.chart.TopDimension', {
 	extend: 'Ext.chart.Chart',
 	id: 'topDimensionId',
 	alias : 'widget.top-dimension-widget',
+	border: true,
 
-	style: 'background:#fff',
-	animate: true,
-	shadow: true,
-	store: store1,
-	axes: [{
-	    type: 'Numeric',
-	    position: 'left',
-	    fields: ['data1'],
-	    label: {
-	        renderer: Ext.util.Format.numberRenderer('0,0')
-	    },
-	    title: 'Number of Hits',
-	    grid: true,
-	    minimum: 0
-	}, {
-	    type: 'Category',
-	    position: 'bottom',
-	    fields: ['name'],
-	    title: 'Month of the Year'
-	}],
-	series: [{
-	    type: 'column',
-	    axis: 'left',
-	    highlight: true,
-	    tips: {
-	      trackMouse: true,
-	      width: 140,
-	      height: 28,
-	      renderer: function(storeItem, item) {
-	        this.setTitle(storeItem.get('name') + ': ' + storeItem.get('data1') + ' Yuan');
-	      }
-	    },
-	    label: {
-	      display: 'insideEnd',
-	      'text-anchor': 'middle',
-	        field: 'data1',
-	        renderer: Ext.util.Format.numberRenderer('0'),
-	        orientation: 'vertical',
-	        color: '#333'
-	    },
-	    xField: 'name',
-	    yField: 'data1'
-	}],
+    width: 500,
+    height: 350,
+    animate: true,
+    store: store,
+    theme: 'Base:gradients',
+    series: [{
+        type: 'pie',
+        angleField: 'data',
+        showInLegend: true,
+        tips: {
+            trackMouse: true,
+            width: 140,
+            height: 28,
+            renderer: function(storeItem, item) {
+                // calculate and display percentage on hover
+                var total = 0;
+                store.each(function(rec) {
+                    total += rec.get('data');
+                });
+                this.setTitle(storeItem.get('name') + ': ' + Math.round(storeItem.get('data') / total * 100) + '%');
+            }
+        },
+        highlight: {
+            segment: {
+                margin: 20
+            }
+        },
+        label: {
+            field: 'name',
+            display: 'rotate',
+            contrast: true,
+            font: '18px Arial'
+        }
+    }]
 });
