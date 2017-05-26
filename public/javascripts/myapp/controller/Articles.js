@@ -6,7 +6,7 @@ Ext.define("Mirror.controller.Articles", {
   },
 
   models: ['Articles'],
-  stores: ['Articles'],
+  stores: ['ArticleStore'],
   views: ['article.list', 'article.form'],
 
   refs: [{
@@ -55,7 +55,7 @@ Ext.define("Mirror.controller.Articles", {
     var store = this.getArticlesStore();
     var values = form.getValues();
 
-    var article = Ext.create('Mirror.model.Articles', values);
+    var article = Ext.create('Mirror.model.ArticleStore', values);
     var errors = article.validate();
 
     if (errors.isValid()) {

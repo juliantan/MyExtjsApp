@@ -3,7 +3,7 @@ Ext.define('Mirror.view.article.list', {
   id: "article-list",
   alias: 'widget.article-list',
   title: 'All articles',
-  store: 'Articles',
+  store: 'ArticleStore',
   closable:true,
   colseAction:'destory',
 
@@ -56,7 +56,7 @@ Ext.define('Mirror.view.article.list', {
 
     this.paging = new Ext.PagingToolbar({
       //pageSize: 10,
-      store: 'Articles',
+      store: 'ArticleStore',
       displayInfo: true
     });
 
