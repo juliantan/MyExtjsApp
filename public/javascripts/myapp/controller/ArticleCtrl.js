@@ -20,7 +20,7 @@ Ext.define("Mirror.controller.ArticleCtrl", {
         itemdblclick: this.editArticle,
         selectionchange: this.selectionChange
       },
-      'article-form button[action=save]': {
+      'article-form-widget button[action=save]': {
         click: this.createOrUpdateArticle
       },
       '#article-list-leaf-id button[action=addArticle]': {
@@ -37,13 +37,13 @@ Ext.define("Mirror.controller.ArticleCtrl", {
   },
 
   addArticle: function () {
-    var view = Ext.widget('article-form');
+    var view = Ext.widget('article-form-widget');
     view.show();
   },
 
   editArticle: function(record) {
     var record = this.getListref().getSelectedArticle();
-    var view = Ext.widget('article-form');
+    var view = Ext.widget('article-form-widget');
     view.down('form').loadRecord(record);
   },
 

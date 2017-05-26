@@ -1,7 +1,7 @@
 Ext.define('Mirror.view.article.form', {
   extend: 'Ext.window.Window',
-  id: 'article-form',
-  alias : 'widget.article-form',
+  id: 'article-form-id',
+  alias : 'widget.article-form-widget',
   title : 'Add / Edit Article',
   layout: 'fit',
   autoShow: true,
