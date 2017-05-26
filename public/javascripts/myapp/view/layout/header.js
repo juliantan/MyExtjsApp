@@ -5,8 +5,8 @@ Ext.define('Mirror.view.layout.header', {
       xtype: 'box',
       cls: 'header',
       region: 'north',
-      html: '<br><center><font size = 5>Mirror Report Analysis</font></center>',
-      height: 50
+      //html: '<br><center><font size = 5>Mirror Report Analysis</font></center>',
+      height: 0
     });
     this.callParent(arguments);
   }

@@ -16,7 +16,7 @@ Ext.define("Mirror.controller.MainCtrl",{
     })
   },
   
-  views: ['chart.TrendColumn'],
+  views: ['chart.TrendColumn', 'chart.TopDimension'],
 
   loadMenu: function(selModel, record){
     console.log("record.get('id'):" + record.get('id'));
@@ -35,7 +35,21 @@ Ext.define("Mirror.controller.MainCtrl",{
             });
             break;
           case "node-switch":
-              panel = { xtype: 'trend-column-widget' };
+              panel = {
+				title: record.get('text'),
+				//xtype: 'trend-column-widget',
+				xtype: 'panel',
+				layout: 'anchor',
+				margin: '0 0 0 0',
+				items: [
+					{xtype: 'trend-column-widget', anchor: '100% 50%', margin: '0 0 0 0',},
+					{
+						xtype: 'top-dimension-widget',
+						anchor: '100% 50%',
+					},
+				],
+				closable: true,
+              };
               my.openTab(panel, record.get('id'));
             break;
           default:
