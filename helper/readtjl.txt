@@ -155,4 +155,6 @@ controller里加载models, stores, views, 将搜索默认目录model/, store/, v
  注: Controller里加上这些后，会加载对应的js文件
  
  
- 
+### Ext.data.TreeStore里proxy的reader可以指定取HTTP响应的哪个元素作为输入
+注意是proxy的reader:
+见examples/form/combos.js
