@@ -1,4 +1,5 @@
 var Article = require('../models/article.js');
+var Report = require('../models/report_model.js');
 
 var express = require('express');
 var router = express.Router();
@@ -75,5 +76,23 @@ module.exports = router;
       }
       console.log('删除成功!');
       res.json({success: true});
+    });
+  });
+
+  
+  router.get('/getReportList.do', function(req, res) {
+    var totalCount = 0;
+    query = "limit " + req.query.start + "," + req.query.limit
+    Report.getQuantity(function(err, total){
+      totalCount = total;
+    });
+    Report.get(query, function(err, reports){
+      if(err){
+        reports = [];
+      }
+      res.contentType('json');
+      //testdata = [{"text": "ModelManager.js", "id": "ModelManager.js", "leaf": true, "cls": "file"}, {"text": "ModelManager.js2", "id": "ModelManager.js2", "leaf": true, "cls": "file"}]
+      //res.send(reports);
+      res.json({success: true, data: reports, totalCount: totalCount});
     });
   });

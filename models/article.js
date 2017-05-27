@@ -35,8 +35,9 @@ Article.get = function get(query, callback){
   mysql.query(sql, function(err, rows, fields) {
     if(err){
       callback(err);
+    } else {
+      callback(err, rows);
     }
-    callback(err, rows);
   });
 };
 

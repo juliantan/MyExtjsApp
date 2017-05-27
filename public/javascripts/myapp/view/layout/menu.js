@@ -1,3 +1,52 @@
+
+treeListStore = Ext.create('Ext.data.TreeStore', {
+        proxy: {
+            type: 'ajax',
+            url: 'getReportList.do',
+	        reader: {
+	            type: 'json',
+	            root: 'data'
+	        },
+        },
+        fields: [
+        	{
+	            name: 'text',
+	            mapping: function(raw) {
+	                var result = raw.Title;
+	                return result;
+		        }
+	        },
+	        {
+	            name: 'id',
+	            mapping: function(raw) {
+	                var ids = raw.MirrorId;
+	                return "mirrorid_" + ids;
+	            }
+			},
+	        {
+	            name: 'leaf',
+	            mapping: function(raw) {
+	                return true;
+	            }
+			},
+        ],
+        root: {
+            text: '所有报表',
+            id: '',
+            expanded: true,
+        },
+        folderSort: true,
+        sorters: [{
+            property: 'text',
+            direction: 'ASC'
+        }],
+	    listeners: {
+	    	load: function(){
+	    		console.log('loaded');
+	    	}
+	    },
+    });
+
 Ext.define('Mirror.view.layout.menu',{
   extend: 'Ext.tree.TreePanel',
   alias: 'widget.menu',
@@ -14,6 +63,8 @@ Ext.define('Mirror.view.layout.menu',{
       width : 212,
       minSize : 130,
       maxSize : 300,
+      
+      store: treeListStore,
 
       containerScroll : true,
       collapsible : true,
@@ -30,7 +81,7 @@ Ext.define('Mirror.view.layout.menu',{
 		    handler: this.onCollapseAllClick
 		}],
 
-      root:{
+      /*root:{
         text:'所有报表',
         expanded:true,
         leaf:false,
@@ -48,7 +99,7 @@ Ext.define('Mirror.view.layout.menu',{
           },
           {id:'node-switch', text:'HCDN播放切换率', leaf:true},
         ]
-      }
+      }*/
     });
     this.callParent(arguments);
   },

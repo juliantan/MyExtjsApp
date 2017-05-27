@@ -56,7 +56,7 @@ Ext.define("Mirror.controller.MainCtrl",{
               };
               my.openTab(panel, record.get('id'));
             break;
-          case "user-count-leaf-id":
+          case "mirrorid_1":
               panel = {
 				title: record.get('text'),
 				//xtype: 'trend-column-widget',
