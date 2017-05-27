@@ -15,7 +15,7 @@ Ext.define('Mirror.view.layout.tabPanel',{
       items: [
 		{
 	        id: 'HomePage',
-	        title: '首页',
+	        title: '使用帮助',
 	        //iconCls:'home',
 	        layout: 'fit'
 		}

@@ -65,9 +65,20 @@ Ext.define("Mirror.controller.MainCtrl",{
 				margin: '0 0 0 0',
 				items: [
 					{
-						xtype: 'trend-column-widget',
+						xtype: 'panel',
 						anchor: '100% 50%',
-						id: "user-count-leaf-id-1"
+						id: "user-count-leaf-id-1",
+						layout: 'anchor',
+						border: true,
+						title: '趋势图',
+						collapsible: true,
+						items: [
+							{
+								xtype: 'trend-column-widget',
+								id: 'user-count-leaf-id-1-1',
+								anchor: '100% 100%',
+							},
+						],
 					},
 					{
 						xtype: 'panel',
@@ -75,6 +86,8 @@ Ext.define("Mirror.controller.MainCtrl",{
 						id: "user-count-leaf-id-2",
 						layout: 'anchor',
 						border: true,
+						title: '维度图',
+						collapsible: true,
 						items: [
 							{ xtype: 'top-dimension-widget', id: 'top-dimension-widget-123', anchor: '50% 100%',},
 							{ xtype: 'pie-chart-widget', id: 'pie-chart-widget-124', anchor: '50% 100%',}

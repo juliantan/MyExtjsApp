@@ -4,7 +4,7 @@ Ext.define('Mirror.view.layout.menu',{
   initComponent : function(){
     Ext.apply(this,{
       id: 'menu-panel',
-      title: 'Report List',
+      title: '报表列表',
       //iconCls:'icon-menu',
       margins : '0 0 -1 1',
       region:'west',
