@@ -5,8 +5,8 @@ function Report(id) {
 }
 
 Report.get = function get(query, callback){
-  //var sql = 'SELECT * FROM `tbl_report`' + (query ? query : '')
-  var sql = 'SELECT * FROM `tbl_report`'
+  var sql = 'SELECT * FROM `tbl_report` ' + (query != null ? query : '');
+  //var sql = 'SELECT * FROM `tbl_report`';
   mysql.query(sql, function(err, rows, fields) {
     if(err){
       callback(err);

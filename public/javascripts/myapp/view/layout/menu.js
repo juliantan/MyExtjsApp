@@ -12,21 +12,21 @@ treeListStore = Ext.create('Ext.data.TreeStore', {
         	{
 	            name: 'text',
 	            mapping: function(raw) {
-	                var result = raw.Title;
+	                var result = (raw.MirrorId != null ? (raw.MirrorId + '_') : '') + raw.Title;
 	                return result;
 		        }
 	        },
 	        {
 	            name: 'id',
 	            mapping: function(raw) {
-	                var ids = raw.MirrorId;
-	                return "mirrorid_" + ids;
+	                var ids = raw.ID;
+	                return '' + ids;
 	            }
 			},
 	        {
 	            name: 'leaf',
 	            mapping: function(raw) {
-	                return true;
+	            	return raw.TableName != null;
 	            }
 			},
         ],

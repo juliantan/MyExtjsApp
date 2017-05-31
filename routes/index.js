@@ -82,7 +82,12 @@ module.exports = router;
   
   router.get('/getReportList.do', function(req, res) {
     var totalCount = 0;
-    query = "limit " + req.query.start + "," + req.query.limit
+    var query = null;
+    if (req.query.node != null && req.query.node != '') {
+    	query = "WHERE ParentId = '" + req.query.node + "'";
+    } else {
+    	query = "WHERE ParentId IS NULL";
+    }
     Report.getQuantity(function(err, total){
       totalCount = total;
     });
@@ -91,8 +96,6 @@ module.exports = router;
         reports = [];
       }
       res.contentType('json');
-      //testdata = [{"text": "ModelManager.js", "id": "ModelManager.js", "leaf": true, "cls": "file"}, {"text": "ModelManager.js2", "id": "ModelManager.js2", "leaf": true, "cls": "file"}]
-      //res.send(reports);
       res.json({success: true, data: reports, totalCount: totalCount});
     });
   });

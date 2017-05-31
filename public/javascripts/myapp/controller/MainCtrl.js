@@ -25,12 +25,12 @@ Ext.define("Mirror.controller.MainCtrl",{
       var panel = Ext.getCmp(record.get('id'));
       if (!panel) {
         switch (record.get('id')) {
-          case "article-list-leaf-id":
+          case "10":
             Ext.require('Mirror.controller.ArticleCtrl', function() {
               var article = new Mirror.controller.ArticleCtrl();
               article.init(Mirror);
               panel = { xtype: 'article-list-widget' };
-              my.openTab(panel, record.get('id'));
+              my.openTab(panel, 'article-list-leaf-id');
             });
             break;
           case "node-switch":
@@ -56,7 +56,7 @@ Ext.define("Mirror.controller.MainCtrl",{
               };
               my.openTab(panel, record.get('id'));
             break;
-          case "mirrorid_1":
+          case "1":
               panel = {
 				title: record.get('text'),
 				//xtype: 'trend-column-widget',
