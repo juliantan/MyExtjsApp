@@ -11,7 +11,9 @@ Ext.define("Mirror.controller.MainCtrl",{
   init: function(){
     this.control({
       'menu': {
-         itemmousedown: this.loadMenu
+         //itemmousedown: this.loadMenu,
+         itemclick: this.loadMenu,
+         itemdblclick: this.loadMenuWithGrid,
       }
     })
   },
@@ -33,33 +35,9 @@ Ext.define("Mirror.controller.MainCtrl",{
               my.openTab(panel, 'article-list-leaf-id');
             });
             break;
-          case "node-switch":
+          default:
               panel = {
 				title: record.get('text'),
-				//xtype: 'trend-column-widget',
-				xtype: 'panel',
-				layout: 'anchor',
-				margin: '0 0 0 0',
-				items: [
-					{
-						xtype: 'trend-column-widget',
-						anchor: '100% 50%',
-						id: "node-switch-1"
-					},
-					{
-						xtype: 'top-dimension-widget',
-						anchor: '100% 50%',
-						id: "node-switch-2",
-					},
-				],
-				closable: true,
-              };
-              my.openTab(panel, record.get('id'));
-            break;
-          case "1":
-              panel = {
-				title: record.get('text'),
-				//xtype: 'trend-column-widget',
 				xtype: 'panel',
 				layout: 'anchor',
 				margin: '0 0 0 0',
@@ -67,7 +45,7 @@ Ext.define("Mirror.controller.MainCtrl",{
 					{
 						xtype: 'panel',
 						anchor: '100% 50%',
-						id: "user-count-leaf-id-1",
+						id: 'panel_trend_' + record.get('id'),
 						layout: 'anchor',
 						border: true,
 						title: '趋势图',
@@ -75,7 +53,7 @@ Ext.define("Mirror.controller.MainCtrl",{
 						items: [
 							{
 								xtype: 'trend-column-widget',
-								id: 'user-count-leaf-id-1-1',
+								id: 'trend_' + record.get('id'),
 								anchor: '100% 100%',
 							},
 						],
@@ -83,14 +61,14 @@ Ext.define("Mirror.controller.MainCtrl",{
 					{
 						xtype: 'panel',
 						anchor: '100% 50%',
-						id: "user-count-leaf-id-2",
+						id: 'panel_dimension_' + record.get('id'),
 						layout: 'anchor',
 						border: true,
 						title: '维度图',
 						collapsible: true,
 						items: [
-							{ xtype: 'top-dimension-widget', id: 'top-dimension-widget-123', anchor: '50% 100%',},
-							{ xtype: 'pie-chart-widget', id: 'pie-chart-widget-124', anchor: '50% 100%',}
+							{ xtype: 'top-dimension-widget', id: 'top_' + record.get('id'), anchor: '50% 100%',},
+							{ xtype: 'pie-chart-widget', id: 'pie_' + record.get('id'), anchor: '50% 100%',}
 						],
 					},
 				],
@@ -98,16 +76,7 @@ Ext.define("Mirror.controller.MainCtrl",{
               };
               my.openTab(panel, record.get('id'));
             break;
-          default:
-            panel = {
-              title: 'New Tab ' + record.get('id'),
-              //iconCls: 'tabs',
-              html: 'Tab Body ' + record.get('id') + '<br/><br/>',
-              closable: true
-            };
-            my.openTab(panel, record.get('id'));
         };
-        //this.openTab(panel,record.get('id'));
       } else {
         var main = Ext.getCmp("content-panel");
         main.setActiveTab(panel);
