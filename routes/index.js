@@ -102,16 +102,16 @@ module.exports = router;
   
   router.get('/getTrendData.do', function(req, res) {
     var totalCount = 0;
-    var query = null;
+    var query = 'GROUP BY date';
     if (req.query.node != null && req.query.node != '') {
-    	query = "WHERE ParentId = '" + req.query.node + "'";
+    	//query = "WHERE ParentId = '" + req.query.node + "'";
     } else {
-    	query = "WHERE ParentId IS NULL";
+    	//query = "WHERE ParentId IS NULL";
     }
     Report.getQuantity(function(err, total){
       totalCount = total;
     });
-    Report.getTrend(req.query.tbl_name, query, function(err, reports){
+    Report.getTrendData(req.query.tbl_name, query, function(err, reports){
       if(err){
         reports = [];
       }

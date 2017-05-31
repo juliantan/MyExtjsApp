@@ -61,7 +61,8 @@ Ext.require(['Ext.data.*']);
             type: 'ajax',
             url: 'getTrendData.do',
             extraParams: {
-                tbl_name : 'tbl_report',
+                tbl_name: 'tbl_hcdn_switch',
+                measure_col: 'TotalTaskCnt',
             },
 	        reader: {
 	            type: 'json',
@@ -72,14 +73,15 @@ Ext.require(['Ext.data.*']);
         	{
 	            name: 'date',
 	            mapping: function(raw) {
-	                var result = (raw.MirrorId != null ? (raw.MirrorId + '_') : '') + raw.Title;
+	                var result = raw.date + '';
+	                result = result.split('T')[0];
 	                return result;
 		        }
 	        },
 	        {
 	            name: 'data1',
 	            mapping: function(raw) {
-	                var ids = raw.ID;
+	                var ids = raw.m1;
 	                return ids;
 	            }
 			},
@@ -126,7 +128,9 @@ Ext.define('Mirror.view.chart.TrendColumn', {
 	      width: 140,
 	      height: 28,
 	      renderer: function(storeItem, item) {
-	        this.setTitle(storeItem.get('date') + ': ' + storeItem.get('data1') + ' $');
+	        var tipTitle = storeItem.get('date') + ': ' + storeItem.get('data1');
+	        this.width = tipTitle.length * 7;
+	        this.setTitle(tipTitle);
 	      }
 	    },
 	    label: {
