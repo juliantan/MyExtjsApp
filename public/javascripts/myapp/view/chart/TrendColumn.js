@@ -54,6 +54,43 @@ Ext.require(['Ext.data.*']);
         fields: ['name', 'data1', 'data2', 'data3', 'data4', 'data5', 'data6', 'data7', 'data9', 'data9'],
         data: generateData()
     });
+
+    window.store2 = Ext.create('Ext.data.JsonStore', {
+        fields: ['date', 'data1'],
+        proxy: {
+            type: 'ajax',
+            url: 'getTrendData.do',
+            extraParams: {
+                tbl_name : 'tbl_report',
+            },
+	        reader: {
+	            type: 'json',
+	            root: 'data'
+	        },
+        },
+        fields: [
+        	{
+	            name: 'date',
+	            mapping: function(raw) {
+	                var result = (raw.MirrorId != null ? (raw.MirrorId + '_') : '') + raw.Title;
+	                return result;
+		        }
+	        },
+	        {
+	            name: 'data1',
+	            mapping: function(raw) {
+	                var ids = raw.ID;
+	                return ids;
+	            }
+			},
+        ],
+        autoLoad: true,
+	    listeners: {
+	    	load: function(){
+	    		console.log('window.store2 loaded');
+	    	}
+	    },
+    });
     
 Ext.define('Mirror.view.chart.TrendColumn', {
 	extend: 'Ext.chart.Chart',
@@ -63,7 +100,7 @@ Ext.define('Mirror.view.chart.TrendColumn', {
 	style: 'background:#fff',
 	animate: true,
 	shadow: true,
-	store: store1,
+	store: store2,
 	axes: [{
 	    type: 'Numeric',
 	    position: 'left',
@@ -71,14 +108,14 @@ Ext.define('Mirror.view.chart.TrendColumn', {
 	    label: {
 	        renderer: Ext.util.Format.numberRenderer('0,0')
 	    },
-	    title: 'Number of Hits',
+	    //title: 'Number of Hits',
 	    grid: true,
 	    minimum: 0
 	}, {
 	    type: 'Category',
 	    position: 'bottom',
-	    fields: ['name'],
-	    title: 'Month of the Year'
+	    fields: ['date'],
+	    //title: 'Date'
 	}],
 	series: [{
 	    type: 'column',
@@ -89,7 +126,7 @@ Ext.define('Mirror.view.chart.TrendColumn', {
 	      width: 140,
 	      height: 28,
 	      renderer: function(storeItem, item) {
-	        this.setTitle(storeItem.get('name') + ': ' + storeItem.get('data1') + ' $');
+	        this.setTitle(storeItem.get('date') + ': ' + storeItem.get('data1') + ' $');
 	      }
 	    },
 	    label: {
@@ -100,7 +137,7 @@ Ext.define('Mirror.view.chart.TrendColumn', {
 	        orientation: 'vertical',
 	        color: '#333'
 	    },
-	    xField: 'name',
+	    xField: 'date',
 	    yField: 'data1'
 	}],
 });

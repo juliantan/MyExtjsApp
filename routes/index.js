@@ -99,3 +99,23 @@ module.exports = router;
       res.json({success: true, data: reports, totalCount: totalCount});
     });
   });
+  
+  router.get('/getTrendData.do', function(req, res) {
+    var totalCount = 0;
+    var query = null;
+    if (req.query.node != null && req.query.node != '') {
+    	query = "WHERE ParentId = '" + req.query.node + "'";
+    } else {
+    	query = "WHERE ParentId IS NULL";
+    }
+    Report.getQuantity(function(err, total){
+      totalCount = total;
+    });
+    Report.getTrend(req.query.tbl_name, query, function(err, reports){
+      if(err){
+        reports = [];
+      }
+      res.contentType('json');
+      res.json({success: true, data: reports, totalCount: totalCount});
+    });
+  });
