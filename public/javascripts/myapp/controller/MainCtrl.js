@@ -96,7 +96,7 @@ Ext.define("Mirror.controller.MainCtrl",{
       panel.id = o;
       var p = main.add(panel);
       main.setActiveTab(p);
+      p.down('trend-column-widget').loadStore();
     }
   }
-
 });
