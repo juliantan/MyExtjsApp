@@ -27,9 +27,9 @@ Report.getQuantity = function get(callback){
   });
 };
 
-Report.getTrendData = function getTrendData(tbl_name, query, callback){
-  //var sql = 'SELECT * FROM ' + tbl_name + ' ' + (query != null ? query : '');
-  var sql = 'SELECT SUM(TotalTaskCnt) as m1, date FROM ' + tbl_name + ' ' + (query != null ? query : '');
+Report.getTrendData = function getTrendData(tbl_name, measures, wheresql, dmsql, callback){
+  var sql = 'SELECT ' + measures + ', date FROM ' + tbl_name + (wheresql != null ? wheresql : '') + (dmsql != null ? dmsql : '');
+  console.log("getTrendData SQL:" + sql);
   mysql.query(sql, function(err, rows, fields) {
     if(err){
       callback(err);

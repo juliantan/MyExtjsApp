@@ -102,16 +102,13 @@ module.exports = router;
   
   router.get('/getTrendData.do', function(req, res) {
     var totalCount = 0;
-    var query = 'GROUP BY date';
-    if (req.query.node != null && req.query.node != '') {
-    	//query = "WHERE ParentId = '" + req.query.node + "'";
-    } else {
-    	//query = "WHERE ParentId IS NULL";
-    }
+    var dmsql = ' GROUP BY date';
+    var wheresql = " WHERE HcdnVersion in ('10.0.10.434')";
     Report.getQuantity(function(err, total){
       totalCount = total;
     });
-    Report.getTrendData(req.query.tbl_name, query, function(err, reports){
+    measures = req.query.kpi + ' as m1';
+    Report.getTrendData(req.query.tbl_name, measures, wheresql, dmsql, function(err, reports){
       if(err){
         reports = [];
       }

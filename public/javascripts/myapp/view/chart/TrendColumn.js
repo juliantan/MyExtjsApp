@@ -9,7 +9,7 @@ window.trendStore = Ext.create('Ext.data.JsonStore', {
         url: 'getTrendData.do',
         extraParams: {
             tbl_name: 'tbl_hcdn_switch',
-            measure_col: 'TotalTaskCnt',
+            kpi: 'AVG(SwitchRatio)*10000',
         },
         reader: {
             type: 'json',
@@ -55,9 +55,9 @@ Ext.define('Mirror.view.chart.TrendColumn', {
 	    position: 'left',
 	    fields: ['data1'],
 	    label: {
-	        renderer: Ext.util.Format.numberRenderer('0,0')
+	        renderer: Ext.util.Format.numberRenderer('0.0')
 	    },
-	    title: trendStore.proxy.extraParams.measure_col,
+	    title: trendStore.proxy.extraParams.kpi,
 	    grid: true,
 	    minimum: 0
 	}, {
