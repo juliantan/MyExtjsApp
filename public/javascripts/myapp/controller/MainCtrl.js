@@ -83,10 +83,9 @@ Ext.define("Mirror.controller.MainCtrl",{
         main.setActiveTab(panel);
       }
 
-		//Ext.ComponentMgr.get('filter-panel-id').resetAll();
-		//Ext.ComponentMgr.get('filter-panel-id').loadData(tbl_name);
+		Ext.ComponentMgr.get('filter-panel-id').resetAll();
+		Ext.ComponentMgr.get('filter-panel-id').loadData(tbl_name);
 		Ext.getCmp("content-panel-id").getActiveTab().down('trend-column-widget').loadStore(tbl_name);
-		console.log(tbl_name + '.........................:' + Ext.getCmp("content-panel-id").getActiveTab().down('trend-column-widget').id);
     } else {
       console.log("not leaf");
     }
