@@ -3,7 +3,7 @@ Ext.define('Mirror.view.layout.tabPanel',{
   alias: 'widget.tabPanel',
   initComponent : function(){
     Ext.apply(this,{
-      id: 'content-panel',
+      //id: 'content-panel-id',
       region: 'center',
       defaults: {
         autoScroll:true,

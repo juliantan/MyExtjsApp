@@ -79,7 +79,7 @@ Ext.define('Mirror.view.chart.TrendColumn', {
 	      'text-anchor': 'middle',
 	        field: 'data1',
 	        renderer: Ext.util.Format.numberRenderer('0'),
-	        //orientation: 'vertical',
+	        orientation: 'vertical',
 	        color: '#333'
 	    },
 	    xField: 'date',

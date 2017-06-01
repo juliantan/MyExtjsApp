@@ -12,14 +12,14 @@ Ext.define('Mirror.view.Viewport',{
   initComponent : function(){
     Ext.apply(this, {
       items: [{
-        id:'desk',
+        id: 'desk',
         layout: 'border',
         items: [
-          Ext.create('Mirror.view.layout.header'),
-          Ext.create('Mirror.view.layout.menu'),
-          Ext.create('Mirror.view.layout.tabPanel'),
-          Ext.create('Mirror.view.layout.filter'),
-          Ext.create('Mirror.view.layout.footer')
+          Ext.create('Mirror.view.layout.header', {id: 'header-panel-id'}),
+          Ext.create('Mirror.view.layout.menu', {id: 'menu-panel-id'}),
+          Ext.create('Mirror.view.layout.tabPanel', {id: 'content-panel-id'}),
+          Ext.create('Mirror.view.layout.filter', {id: 'filter-panel-id'}),
+          Ext.create('Mirror.view.layout.footer', {id: 'footer-panel-id'})
         ]
       }]
     });

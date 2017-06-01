@@ -116,8 +116,8 @@ advancedFieldsPanel = new Ext.form.FieldSet({
 			displayField: 'name',
 			valueField: 'value',
 			value: '',
-			loadData: function() {
-				this.store.getProxy().setExtraParam("tbl_name", "tbl_hcdn_switch");
+			loadData: function(tbl_name) {
+				this.store.getProxy().setExtraParam("tbl_name", tbl_name);
 				this.store.load();
 			}
 		},
@@ -130,8 +130,8 @@ advancedFieldsPanel = new Ext.form.FieldSet({
 			displayField: 'data1',
 			valueField: 'data1',
 			value: 'All',
-			loadData: function() {
-				this.store.getProxy().setExtraParam("tbl_name", "tbl_hcdn_switch");
+			loadData: function(tbl_name) {
+				this.store.getProxy().setExtraParam("tbl_name", tbl_name);
 				this.store.getProxy().setExtraParam("dim_name", "HcdnVersion");
 				this.store.load();
 			}
@@ -145,17 +145,17 @@ advancedFieldsPanel = new Ext.form.FieldSet({
 			displayField: 'data1',
 			valueField: 'data1',
 			value: 'All',
-			loadData: function() {
-				this.store.getProxy().setExtraParam("tbl_name", "tbl_hcdn_switch");
+			loadData: function(tbl_name) {
+				this.store.getProxy().setExtraParam("tbl_name", tbl_name);
 				this.store.getProxy().setExtraParam("dim_name", "UA");
 				this.store.load();
 			}
 		},
 	],
-	loadData: function() {
-		Ext.ComponentMgr.get('afp_kpiId').loadData();
-		Ext.ComponentMgr.get('afp_hcdnVersionId').loadData();
-		Ext.ComponentMgr.get('afp_uaId').loadData();
+	loadData: function(tbl_name) {
+		Ext.ComponentMgr.get('afp_kpiId').loadData(tbl_name);
+		Ext.ComponentMgr.get('afp_hcdnVersionId').loadData(tbl_name);
+		Ext.ComponentMgr.get('afp_uaId').loadData(tbl_name);
 	}
 });
 
@@ -220,14 +220,14 @@ dimensionPanel = Ext.create('Ext.form.FieldSet', {
 			displayField: 'name',
 			valueField: 'value',
 			value: 'None',
-			loadData: function() {
-				this.store.getProxy().setExtraParam('tbl_name', 'tbl_hcdn_switch');
+			loadData: function(tbl_name) {
+				this.store.getProxy().setExtraParam('tbl_name', tbl_name);
 				this.store.load();
 			}
 		},
 	],
-	loadData: function() {
-		Ext.ComponentMgr.get('dp_dimensionId').loadData();
+	loadData: function(tbl_name) {
+		Ext.ComponentMgr.get('dp_dimensionId').loadData(tbl_name);
 	}
 });
 
@@ -236,7 +236,7 @@ Ext.define('Mirror.view.layout.filter',{
   alias: 'widget.filter',
   initComponent : function(){
     Ext.apply(this,{
-	    id: 'filter-panel',
+	    //id: 'filter-panel-id',
 	    title: '图表参数',
 	    region:'east',
 	    collapsible : true,
@@ -288,7 +288,7 @@ Ext.define('Mirror.view.layout.filter',{
 							],
 	    				},
 	    			);
-	    			Ext.ComponentMgr.get('afp_dimComboId' + dynamicFilterCnt).store.getProxy().setExtraParam('tbl_name', 'tbl_hcdn_switch');
+	    			Ext.ComponentMgr.get('afp_dimComboId' + dynamicFilterCnt).store.getProxy().setExtraParam('tbl_name', this.up('panel').tbl_name);
 	    			Ext.ComponentMgr.get('afp_dimComboId' + dynamicFilterCnt).store.load();
 	    		},
 	    	},
@@ -303,12 +303,21 @@ Ext.define('Mirror.view.layout.filter',{
 		        disabled : false
 		    }
     	],
-    	loadData: function() {
-    		Ext.ComponentMgr.get('advancedFieldsPanelId').loadData();
-    		Ext.ComponentMgr.get('dimensionPanelId').loadData();
+    	tbl_name: '',
+    	loadData: function(tbl_name) {
+    		this.tbl_name = tbl_name;
+    		console.log('filter-panel-id.tbl_name: ' + this.tbl_name);
+    		Ext.ComponentMgr.get('advancedFieldsPanelId').loadData(tbl_name);
+    		Ext.ComponentMgr.get('dimensionPanelId').loadData(tbl_name);
+    	},
+    	resetAll: function() {
+    		console.log('FilterPanel::resetAll()');
+    		//this.tbl_name = '';
+    		//this.loadData('');
+    		//TODO ... reset all the fields
     	}
     });
     this.callParent(arguments);
-    this.loadData();
+    //this.loadData('');
   }
 });

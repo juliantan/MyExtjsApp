@@ -25,6 +25,7 @@ Ext.define("Mirror.controller.MainCtrl",{
     if (record.get('leaf')) {
       var my = this;
       var panel = Ext.getCmp(record.get('id'));
+      tbl_name = record.get('tbl_name');
       if (!panel) {
         switch (record.get('id')) {
           case "10":
@@ -78,26 +79,29 @@ Ext.define("Mirror.controller.MainCtrl",{
             break;
         };
       } else {
-        var main = Ext.getCmp("content-panel");
+        var main = Ext.getCmp("content-panel-id");
         main.setActiveTab(panel);
       }
+
+		Ext.ComponentMgr.get('filter-panel-id').resetAll();
+		Ext.ComponentMgr.get('filter-panel-id').loadData(tbl_name);
+		Ext.getCmp("content-panel-id").getActiveTab().down('trend-column-widget').loadStore(tbl_name);
     } else {
       console.log("not leaf");
     }
   },
 
-  openTab: function(panel, id, tbl_name){
+openTab: function(panel, id, tbl_name){
     var o = (typeof panel == "string" ? panel : id || panel.id);
-    var main = Ext.getCmp("content-panel");
+    var main = Ext.getCmp("content-panel-id");
     var tab = main.getComponent(o);
     if (tab) {
-      main.setActiveTab(tab);
+		main.setActiveTab(tab);
     } else if(typeof panel!="string"){
-      panel.id = o;
-      console.log("openTab panel.id:" + panel.id + ', tbl_name: ' + tbl_name);
-      var p = main.add(panel);
-      main.setActiveTab(p);
-      p.down('trend-column-widget').loadStore(tbl_name);
+		panel.id = o;
+		console.log("openTab panel.id:" + panel.id + ', tbl_name: ' + tbl_name);
+		var p = main.add(panel);
+		main.setActiveTab(p);
     }
   }
 });
