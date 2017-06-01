@@ -122,3 +122,13 @@ module.exports = router;
       res.json({success: true, data: datas});
     });
   });
+
+  router.get('/getDims.do', function(req, res) {
+    Report.getDims(req.query.tbl_name, function(err, datas){
+      if(err){
+        datas = [];
+      }
+      res.contentType('json');
+      res.json({success: true, data: datas});
+    });
+  });

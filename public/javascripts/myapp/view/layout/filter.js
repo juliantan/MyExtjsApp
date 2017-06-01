@@ -27,7 +27,7 @@ timeFieldsPanel = new Ext.form.FieldSet({
     ]
 });
 
-Ext.define('Mirror.view.layout.filter.DimStore', {
+Ext.define('Mirror.view.layout.filter.FixedDimStore', {
 	extends: 'Ext.data.Store',
     proxy: {
         type: 'ajax',
@@ -94,7 +94,7 @@ advancedFieldsPanel = new Ext.form.FieldSet({
 			xtype: 'combo',
 			id: 'afp_hcdnVersionId',
 			fieldLabel: 'HCDN Version:',
-			store: Ext.create('Mirror.view.layout.filter.DimStore', {}),
+			store: Ext.create('Mirror.view.layout.filter.FixedDimStore', {}),
 			queryMode: 'local',
 			displayField: 'data1',
 			valueField: 'data1',
@@ -109,7 +109,7 @@ advancedFieldsPanel = new Ext.form.FieldSet({
 			xtype: 'combo',
 			id: 'afp_uaId',
 			fieldLabel: 'User Agent:',
-			store: Ext.create('Mirror.view.layout.filter.DimStore', {}),
+			store: Ext.create('Mirror.view.layout.filter.FixedDimStore', {}),
 			queryMode: 'local',
 			displayField: 'data1',
 			valueField: 'data1',
@@ -127,13 +127,47 @@ advancedFieldsPanel = new Ext.form.FieldSet({
 	}
 });
 
-var dimensionStore = Ext.create('Ext.data.Store', {
-    fields: ['name', 'value'],
+var dimStore = Ext.create('Ext.data.Store', {
+    /* fields: ['name', 'value'],
     data : [
-    	{name: "None",  value: 'None'},
         {name: "HCDN版本号", value: 'HcdnVersion'},
         {name: "User Agent", value: 'UA'},
-    ]
+    ], */
+	extends: 'Ext.data.Store',
+    proxy: {
+        type: 'ajax',
+        url: 'getDims.do',
+        /*extraParams: {
+            tbl_name: '',
+        },*/
+        reader: {
+            type: 'json',
+            root: 'data',
+            successProperty: 'success'
+        },
+    },
+    fields: [
+        {
+            name: 'name',
+            mapping: function(raw) {
+                var ids = raw.dim;
+                return ids;
+            }
+		},
+        {
+            name: 'value',
+            mapping: function(raw) {
+                var ids = raw.dim;
+                return ids;
+            }
+		},
+    ],
+    autoLoad: false,
+    listeners: {
+    	load: function(){
+    		console.log('window.dims loaded');
+    	}
+    },
 });
 
 dimensionPanel = Ext.create('Ext.form.FieldSet', {
@@ -150,21 +184,20 @@ dimensionPanel = Ext.create('Ext.form.FieldSet', {
 			xtype: 'combo',
 			id: 'dp_dimensionId',
 			fieldLabel: 'Dimension:',
-			store: dimensionStore,
+			store: dimStore,
 			queryMode: 'local',
 			displayField: 'name',
 			valueField: 'value',
 			value: 'None',
+			loadData: function() {
+				this.store.getProxy().setExtraParam('tbl_name', 'tbl_hcdn_switch');
+				this.store.load();
+			}
 		},
 	],
-});
-
-var keyStore = Ext.create('Ext.data.Store', {
-    fields: ['name', 'value'],
-    data : [
-        {name: "HCDN版本号", value: 'HcdnVersion'},
-        {name: "User Agent", value: 'UA'},
-    ]
+	loadData: function() {
+		Ext.ComponentMgr.get('dp_dimensionId').loadData();
+	}
 });
 
 Ext.define('Mirror.view.layout.filter',{
@@ -192,7 +225,10 @@ Ext.define('Mirror.view.layout.filter',{
 	    buttons: [
 	    	{
 	    		text: 'Add Filter',
+	    		dynamicFilterCnt: 0,
 	    		handler: function() {
+	    			this.dynamicFilterCnt++;
+	    			dynamicFilterCnt = this.dynamicFilterCnt;
 	    			Ext.ComponentMgr.get('advancedFieldsPanelId').add(
 	    				{
 	    					xtype: 'panel',
@@ -201,11 +237,12 @@ Ext.define('Mirror.view.layout.filter',{
 	    					items: [
 								{
 									xtype: 'combo',
-									store: keyStore,
+									id: 'afp_dimComboId' + dynamicFilterCnt,
+									store: dimStore,
 									queryMode: 'local',
 									displayField: 'name',
 									valueField: 'value',
-									value: 'None',
+									//value: 'None',
 									flex: 1,
 								},
 								{xtype: 'textfield', flex: 1},
@@ -220,6 +257,8 @@ Ext.define('Mirror.view.layout.filter',{
 							],
 	    				},
 	    			);
+	    			Ext.ComponentMgr.get('afp_dimComboId' + dynamicFilterCnt).store.getProxy().setExtraParam('tbl_name', 'tbl_hcdn_switch');
+	    			Ext.ComponentMgr.get('afp_dimComboId' + dynamicFilterCnt).store.load();
 	    		},
 	    	},
 		    {
@@ -235,6 +274,7 @@ Ext.define('Mirror.view.layout.filter',{
     	],
     	loadData: function() {
     		Ext.ComponentMgr.get('advancedFieldsPanelId').loadData();
+    		Ext.ComponentMgr.get('dimensionPanelId').loadData();
     	}
     });
     this.callParent(arguments);
