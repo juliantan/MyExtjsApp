@@ -29,6 +29,16 @@ treeListStore = Ext.create('Ext.data.TreeStore', {
 	            	return raw.TableName != null;
 	            }
 			},
+			{
+	            name: 'tbl_name',
+	            mapping: function(raw) {
+	            	if (raw.TableName != null) {
+	            		return raw.TableName;
+	            	} else {
+	            		return '';
+	            	}
+	            }
+			},
         ],
         root: {
             text: '所有报表',

@@ -33,6 +33,7 @@ Report.getTrendData = function getTrendData(tbl_name, measures, wheresql, dmsql,
   console.log("getTrendData SQL:" + sql);
   mysql.query(sql, function(err, rows, fields) {
     if(err){
+      console.error("getTrendData error:" + err);
       callback(err);
     } else {
       callback(err, rows);
@@ -45,6 +46,7 @@ Report.getDimValues = function getDimValues(tbl_name, dim_name, callback){
   console.log("getDimValues SQL:" + sql);
   mysql.query(sql, function(err, rows, fields) {
     if(err){
+      console.error("getDimValues error:" + err);
       callback(err);
     } else {
       callback(err, rows);
@@ -57,6 +59,7 @@ Report.getDimensions = function getDimensions(tbl_name, callback){
   console.log("getDimensions SQL:" + sql);
   mysql.query(sql, function(err, rows, fields) {
     if(err){
+      console.error("getDimensions error:" + err);
       callback(err);
     } else {
       callback(err, rows);
@@ -69,6 +72,7 @@ Report.getMeasures = function getMeasures(tbl_name, callback){
   console.log("getMeasures SQL:" + sql);
   mysql.query(sql, function(err, rows, fields) {
     if(err){
+      console.error("getMeasures error:" + err);
       callback(err);
     } else {
       callback(err, rows);
@@ -81,6 +85,7 @@ Report.getKpis = function getKpis(tbl_name, callback){
   console.log("getKpis SQL:" + sql);
   mysql.query(sql, function(err, rows, fields) {
     if(err){
+      console.error("getKpis error:" + err);
       callback(err);
     } else {
       callback(err, rows);

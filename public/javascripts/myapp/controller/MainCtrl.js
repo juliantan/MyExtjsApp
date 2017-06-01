@@ -32,7 +32,7 @@ Ext.define("Mirror.controller.MainCtrl",{
               var article = new Mirror.controller.ArticleCtrl();
               article.init(Mirror);
               panel = { xtype: 'article-list-widget' };
-              my.openTab(panel, 'article-list-leaf-id');
+              my.openTab(panel, 'article-list-leaf-id', '');
             });
             break;
           default:
@@ -74,7 +74,7 @@ Ext.define("Mirror.controller.MainCtrl",{
 				],
 				closable: true,
               };
-              my.openTab(panel, record.get('id'));
+              my.openTab(panel, record.get('id'), record.get('tbl_name'));
             break;
         };
       } else {
@@ -86,7 +86,7 @@ Ext.define("Mirror.controller.MainCtrl",{
     }
   },
 
-  openTab: function(panel, id){
+  openTab: function(panel, id, tbl_name){
     var o = (typeof panel == "string" ? panel : id || panel.id);
     var main = Ext.getCmp("content-panel");
     var tab = main.getComponent(o);
@@ -94,9 +94,10 @@ Ext.define("Mirror.controller.MainCtrl",{
       main.setActiveTab(tab);
     } else if(typeof panel!="string"){
       panel.id = o;
+      console.log("openTab panel.id:" + panel.id + ', tbl_name: ' + tbl_name);
       var p = main.add(panel);
       main.setActiveTab(p);
-      p.down('trend-column-widget').loadStore();
+      p.down('trend-column-widget').loadStore(tbl_name);
     }
   }
 });

@@ -1,15 +1,11 @@
-Ext.require('Ext.chart.*');
-Ext.require(['Ext.Window', 'Ext.layout.container.Fit', 'Ext.fx.target.Sprite', 'Ext.window.MessageBox']);
-Ext.require(['Ext.data.*']);
-
 window.trendStore = Ext.create('Ext.data.JsonStore', {
     proxy: {
         type: 'ajax',
         url: 'getTrendData.do',
-        extraParams: {
-            tbl_name: 'tbl_hcdn_switch',
-            kpi: 'AVG(SwitchRatio)*10000',
-        },
+        /*extraParams: {
+            tbl_name: '',
+            kpi: '',
+        },*/
         reader: {
             type: 'json',
             root: 'data'
@@ -19,9 +15,8 @@ window.trendStore = Ext.create('Ext.data.JsonStore', {
     	{
             name: 'date',
             mapping: function(raw) {
-                var result = raw.date + '';
-                result = result.split('T')[0];
-                return result;
+                var result = new Date(raw.date + '');
+                return result.toLocaleDateString();
 	        }
         },
         {
@@ -56,7 +51,7 @@ Ext.define('Mirror.view.chart.TrendColumn', {
 	    label: {
 	        renderer: Ext.util.Format.numberRenderer('0.0')
 	    },
-	    title: trendStore.proxy.extraParams.kpi,
+	    title: '',
 	    grid: true,
 	    minimum: 0
 	}, {
@@ -84,13 +79,21 @@ Ext.define('Mirror.view.chart.TrendColumn', {
 	      'text-anchor': 'middle',
 	        field: 'data1',
 	        renderer: Ext.util.Format.numberRenderer('0'),
-	        orientation: 'vertical',
+	        //orientation: 'vertical',
 	        color: '#333'
 	    },
 	    xField: 'date',
 	    yField: 'data1'
 	}],
-	loadStore: function() {
+	loadStore: function(tbl_name) {
+		this.store.getProxy().setExtraParam('tbl_name', tbl_name);
+		//this.store.getProxy().setExtraParam('kpi', 'AVG(SwitchRatio)*10000'); //TODO ...
+		if (tbl_name == 'tbl_hcdn_switch') {
+			this.store.getProxy().setExtraParam('kpi', 'AVG(SwitchRatio)*10000');
+		} else {
+			this.store.getProxy().setExtraParam('kpi', 'SUM(UserCount)');
+		}
+		this.axes.items[0].title = trendStore.proxy.extraParams.kpi;
 		this.store.load();
 	}
 });
