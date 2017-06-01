@@ -5,8 +5,8 @@ function Report(id) {
 }
 
 Report.get = function get(query, callback){
-  var sql = 'SELECT * FROM `tbl_report` ' + (query != null ? query : '');
-  //var sql = 'SELECT * FROM `tbl_report`';
+  var sql = 'SELECT * FROM `tbl_conf_report` ' + (query != null ? query : '');
+  //var sql = 'SELECT * FROM `tbl_conf_report`';
   mysql.query(sql, function(err, rows, fields) {
     if(err){
       callback(err);
@@ -17,13 +17,14 @@ Report.get = function get(query, callback){
 };
 
 Report.getQuantity = function get(callback){
-  var sql = 'SELECT COUNT(*) AS total FROM `tbl_report`'
+  var sql = 'SELECT COUNT(*) AS total FROM `tbl_conf_report`'
 
   mysql.query(sql, function(err, rows) {
     if(err){
       callback(err);
+    } else {
+    	callback(err, rows[0].total);
     }
-    callback(err, rows[0].total);
   });
 };
 

@@ -101,18 +101,14 @@ module.exports = router;
   });
   
   router.get('/getTrendData.do', function(req, res) {
-    var totalCount = 0;
     var dmsql = ' GROUP BY date';
     var wheresql = " WHERE HcdnVersion in ('10.0.10.434')";
-    Report.getQuantity(function(err, total){
-      totalCount = total;
-    });
     measures = req.query.kpi + ' as m1';
     Report.getTrendData(req.query.tbl_name, measures, wheresql, dmsql, function(err, reports){
       if(err){
         reports = [];
       }
       res.contentType('json');
-      res.json({success: true, data: reports, totalCount: totalCount});
+      res.json({success: true, data: reports});
     });
   });
