@@ -54,19 +54,46 @@ Ext.define('Mirror.view.layout.filter.FixedDimStore', {
     autoLoad: false,
     listeners: {
     	load: function(){
-    		console.log('window.dims loaded');
+    		console.log('FixedDimStore loaded');
     	}
     },
 });
 
-var measureStore = Ext.create('Ext.data.Store', {
-    fields: ['name', 'value'],
-    data : [
-    	{name: "None",  value: 'None'},
-        {name: "总任务数", value: 'TotalTaskCnt'},
-        {name: "切换任务数", value: 'SwitchedTaskCnt'},
-        {name: "切换率", value: 'SwitchRatio'},
-    ]
+var kpiStore = Ext.create('Ext.data.Store', {
+    proxy: {
+        type: 'ajax',
+        url: 'getKpis.do',
+        /*extraParams: {
+            tbl_name: '',
+        },*/
+        reader: {
+            type: 'json',
+            root: 'data',
+            successProperty: 'success'
+        },
+    },
+    fields: [
+        {
+            name: 'name',
+            mapping: function(raw) {
+                var ids = raw.KpiName;
+                return ids;
+            }
+		},
+        {
+            name: 'value',
+            mapping: function(raw) {
+                var values = raw.KpiName;
+                return values;
+            }
+		},
+    ],
+    autoLoad: false,
+    listeners: {
+    	load: function(){
+    		console.log('kpiStore loaded');
+    	}
+    },
 });
 
 advancedFieldsPanel = new Ext.form.FieldSet({
@@ -84,11 +111,15 @@ advancedFieldsPanel = new Ext.form.FieldSet({
 			xtype: 'combo',
 			id: 'afp_kpiId',
 			fieldLabel: 'KPI:',
-			store: measureStore,
+			store: kpiStore,
 			queryMode: 'local',
 			displayField: 'name',
 			valueField: 'value',
-			value: 'None',
+			value: '',
+			loadData: function() {
+				this.store.getProxy().setExtraParam("tbl_name", "tbl_hcdn_switch");
+				this.store.load();
+			}
 		},
 		{
 			xtype: 'combo',
@@ -122,6 +153,7 @@ advancedFieldsPanel = new Ext.form.FieldSet({
 		},
 	],
 	loadData: function() {
+		Ext.ComponentMgr.get('afp_kpiId').loadData();
 		Ext.ComponentMgr.get('afp_hcdnVersionId').loadData();
 		Ext.ComponentMgr.get('afp_uaId').loadData();
 	}
@@ -133,10 +165,9 @@ var dimStore = Ext.create('Ext.data.Store', {
         {name: "HCDN版本号", value: 'HcdnVersion'},
         {name: "User Agent", value: 'UA'},
     ], */
-	extends: 'Ext.data.Store',
     proxy: {
         type: 'ajax',
-        url: 'getDims.do',
+        url: 'getDimensions.do',
         /*extraParams: {
             tbl_name: '',
         },*/
@@ -165,7 +196,7 @@ var dimStore = Ext.create('Ext.data.Store', {
     autoLoad: false,
     listeners: {
     	load: function(){
-    		console.log('window.dims loaded');
+    		console.log('dimStore loaded');
     	}
     },
 });

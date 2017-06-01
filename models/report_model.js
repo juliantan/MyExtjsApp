@@ -52,9 +52,33 @@ Report.getDimValues = function getDimValues(tbl_name, dim_name, callback){
   });
 };
 
-Report.getDims = function getDims(tbl_name, callback){
+Report.getDimensions = function getDimensions(tbl_name, callback){
   var sql = 'SELECT \'None\' AS dim from DUAL UNION (SELECT ColName as dim FROM tbl_conf_col WHERE RefTable = \'' + tbl_name + '\' AND ColType = \'0\' ORDER BY dim ASC)';
-  console.log("getDims SQL:" + sql);
+  console.log("getDimensions SQL:" + sql);
+  mysql.query(sql, function(err, rows, fields) {
+    if(err){
+      callback(err);
+    } else {
+      callback(err, rows);
+    }
+  });
+};
+
+Report.getMeasures = function getMeasures(tbl_name, callback){
+  var sql = 'SELECT ColName as mes FROM tbl_conf_col WHERE RefTable = \'' + tbl_name + '\' AND ColType = \'1\' ORDER BY mes ASC';
+  console.log("getMeasures SQL:" + sql);
+  mysql.query(sql, function(err, rows, fields) {
+    if(err){
+      callback(err);
+    } else {
+      callback(err, rows);
+    }
+  });
+};
+
+Report.getKpis = function getKpis(tbl_name, callback){
+  var sql = 'SELECT * FROM tbl_conf_kpi WHERE RefTable = \'' + tbl_name + '\' ORDER BY KpiName ASC';
+  console.log("getKpis SQL:" + sql);
   mysql.query(sql, function(err, rows, fields) {
     if(err){
       callback(err);

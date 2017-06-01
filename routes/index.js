@@ -80,7 +80,7 @@ module.exports = router;
   });
 
   
-  router.get('/getReportList.do', function(req, res) {
+router.get('/getReportList.do', function(req, res) {
     var totalCount = 0;
     var query = null;
     if (req.query.node != null && req.query.node != '') {
@@ -98,9 +98,9 @@ module.exports = router;
       res.contentType('json');
       res.json({success: true, data: reports, totalCount: totalCount});
     });
-  });
+});
   
-  router.get('/getTrendData.do', function(req, res) {
+router.get('/getTrendData.do', function(req, res) {
     var dmsql = ' GROUP BY date';
     var wheresql = " WHERE HcdnVersion in ('10.0.10.434')";
     measures = req.query.kpi + ' as m1';
@@ -111,9 +111,9 @@ module.exports = router;
       res.contentType('json');
       res.json({success: true, data: reports});
     });
-  });
+});
 
-  router.get('/getDimValues.do', function(req, res) {
+router.get('/getDimValues.do', function(req, res) {
     Report.getDimValues(req.query.tbl_name, req.query.dim_name, function(err, datas){
       if(err){
         datas = [];
@@ -121,14 +121,34 @@ module.exports = router;
       res.contentType('json');
       res.json({success: true, data: datas});
     });
-  });
+});
 
-  router.get('/getDims.do', function(req, res) {
-    Report.getDims(req.query.tbl_name, function(err, datas){
+router.get('/getDimensions.do', function(req, res) {
+    Report.getDimensions(req.query.tbl_name, function(err, datas){
       if(err){
         datas = [];
       }
       res.contentType('json');
       res.json({success: true, data: datas});
     });
-  });
+});
+
+router.get('/getMeasures.do', function(req, res) {
+    Report.getMeasures(req.query.tbl_name, function(err, datas){
+      if(err){
+        datas = [];
+      }
+      res.contentType('json');
+      res.json({success: true, data: datas});
+    });
+});
+  
+router.get('/getKpis.do', function(req, res) {
+    Report.getKpis(req.query.tbl_name, function(err, datas){
+      if(err){
+        datas = [];
+      }
+      res.contentType('json');
+      res.json({success: true, data: datas});
+    });
+});
