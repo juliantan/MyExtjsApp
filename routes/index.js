@@ -112,3 +112,13 @@ module.exports = router;
       res.json({success: true, data: reports});
     });
   });
+
+  router.get('/getDimValues.do', function(req, res) {
+    Report.getDimValues(req.query.tbl_name, req.query.dim_name, function(err, datas){
+      if(err){
+        datas = [];
+      }
+      res.contentType('json');
+      res.json({success: true, data: datas});
+    });
+  });

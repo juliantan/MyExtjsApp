@@ -3,7 +3,6 @@ Ext.require(['Ext.Window', 'Ext.layout.container.Fit', 'Ext.fx.target.Sprite', '
 Ext.require(['Ext.data.*']);
 
 window.trendStore = Ext.create('Ext.data.JsonStore', {
-    fields: ['date', 'data1'],
     proxy: {
         type: 'ajax',
         url: 'getTrendData.do',

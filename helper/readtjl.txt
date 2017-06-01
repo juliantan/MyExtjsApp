@@ -110,6 +110,8 @@ http://docs.sencha.com/extjs/4.2.1/#!/api
 # Store
 Ext.data.Store的autoLoad: true, 可以在创建的时候就自动加载
 否则,可以显示加载: mystore.load();
+配置参数:
+mystore.getProxy().setExtraParam('myparam', 'myvalue');
 
 
 

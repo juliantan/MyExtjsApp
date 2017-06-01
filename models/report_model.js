@@ -40,4 +40,16 @@ Report.getTrendData = function getTrendData(tbl_name, measures, wheresql, dmsql,
   });
 };
 
+Report.getDimValues = function getDimValues(tbl_name, dim_name, callback){
+  var sql = 'SELECT DISTINCT(' + dim_name + ') as dim FROM ' + tbl_name + ' ORDER BY dim ASC';
+  console.log("getDimValues SQL:" + sql);
+  mysql.query(sql, function(err, rows, fields) {
+    if(err){
+      callback(err);
+    } else {
+      callback(err, rows);
+    }
+  });
+};
+
 module.exports = Report;
