@@ -62,7 +62,7 @@ Ext.define('Mirror.view.layout.menu',{
   alias: 'widget.menu',
   initComponent : function(){
     Ext.apply(this,{
-      //id: 'menu-panel-id',
+      id: 'menu-panel-id',
       title: '报表列表',
       //iconCls:'icon-menu',
       margins : '0 0 -1 1',

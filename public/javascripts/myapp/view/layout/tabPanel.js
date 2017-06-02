@@ -22,8 +22,8 @@ Ext.define('Mirror.view.layout.tabPanel',{
 			],
 			listeners: {
 				'tabchange': function() {
-					var tbl_name = Ext.getCmp("content-panel-id").getActiveTab().tbl_name;
-					Ext.ComponentMgr.get('filter-panel-id').loadData(tbl_name);
+					Ext.ComponentMgr.get('filter-panel-id').reloadFilters();
+					//Ext.ComponentMgr.get('filter-panel-id').commitForm();
 				}
 			}
 		});

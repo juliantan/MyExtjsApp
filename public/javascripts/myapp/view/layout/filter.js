@@ -131,9 +131,9 @@ Ext.define('Mirror.view.layout.filter.AdvancedFilterFieldSet', {
 			displayField: 'name',
 			valueField: 'value',
 			value: '',
-			loadData: function(tbl_name) {
+			loadData: function() {
 				this.store.ownerCmp = this;
-				this.store.getProxy().setExtraParam("tbl_name", tbl_name);
+				this.store.getProxy().setExtraParam("tbl_name", getActiveTblName());
 				this.store.load();
 			}
 		},
@@ -147,8 +147,8 @@ Ext.define('Mirror.view.layout.filter.AdvancedFilterFieldSet', {
 			displayField: 'data1',
 			valueField: 'data1',
 			value: 'All',
-			loadData: function(tbl_name) {
-				this.store.getProxy().setExtraParam("tbl_name", tbl_name);
+			loadData: function() {
+				this.store.getProxy().setExtraParam("tbl_name", getActiveTblName());
 				this.store.getProxy().setExtraParam("dim_name", "HcdnVersion");
 				this.store.load();
 			}
@@ -163,17 +163,17 @@ Ext.define('Mirror.view.layout.filter.AdvancedFilterFieldSet', {
 			displayField: 'data1',
 			valueField: 'data1',
 			value: 'All',
-			loadData: function(tbl_name) {
-				this.store.getProxy().setExtraParam("tbl_name", tbl_name);
+			loadData: function() {
+				this.store.getProxy().setExtraParam("tbl_name", getActiveTblName());
 				this.store.getProxy().setExtraParam("dim_name", "UA");
 				this.store.load();
 			}
 		},
 	],
-	loadData: function(tbl_name) {
-		Ext.ComponentQuery.query('combo[cls=afp_kpi_combo]')[0].loadData(tbl_name);
-		Ext.ComponentQuery.query('combo[cls=afp_hcdnv_combo]')[0].loadData(tbl_name);
-		Ext.ComponentQuery.query('combo[cls=afp_uaid_combo]')[0].loadData(tbl_name);
+	loadData: function() {
+		Ext.ComponentQuery.query('combo[cls=afp_kpi_combo]')[0].loadData();
+		Ext.ComponentQuery.query('combo[cls=afp_hcdnv_combo]')[0].loadData();
+		Ext.ComponentQuery.query('combo[cls=afp_uaid_combo]')[0].loadData();
 	}
 });
 
@@ -240,14 +240,14 @@ Ext.define('Mirror.view.layout.filter.DimensionFieldSet', {
 			displayField: 'name',
 			valueField: 'value',
 			value: 'None',
-			loadData: function(tbl_name) {
-				this.store.getProxy().setExtraParam('tbl_name', tbl_name);
+			loadData: function() {
+				this.store.getProxy().setExtraParam('tbl_name', getActiveTblName());
 				this.store.load();
 			}
 		},
 	],
-	loadData: function(tbl_name) {
-		this.down('combo').loadData(tbl_name);
+	loadData: function() {
+		this.down('combo').loadData();
 	}
 });
 
@@ -308,7 +308,7 @@ Ext.define('Mirror.view.layout.filter',{
 							],
 	    				},
 	    			);
-	    			Ext.ComponentMgr.get('afp_dimComboId' + dynamicFilterCnt).store.getProxy().setExtraParam('tbl_name', this.up('panel').tbl_name);
+	    			Ext.ComponentMgr.get('afp_dimComboId' + dynamicFilterCnt).store.getProxy().setExtraParam('tbl_name', getActiveTblName());
 	    			Ext.ComponentMgr.get('afp_dimComboId' + dynamicFilterCnt).store.load();
 	    		},
 	    	},
@@ -329,55 +329,38 @@ Ext.define('Mirror.view.layout.filter',{
 		        	me.reloadFilters();
 		        }
 		    },
-		    {
-		        text: 'Test',
-		        id: 'fp_testId',
-		        disabled : false,
-		        handler: function() {
-		        	var me = this.up().up();
-		        	me.removeAll();
-		        	me.doLayout();
-		        }
-		    }
     	],
-    	tbl_name: '',
-    	loadData: function(tbl_name) {
-    		console.log('LLLLLLLLLLLLLLLLLLLL filter::loadData tbl_name: ' + tbl_name);
+    	loadData: function() {
+    		console.log('LLLLLLLLLLLLLLLLLLLL filter::loadData tbl_name: ' + getActiveTblName());
     		this.resetAll();
-    		this.tbl_name = tbl_name;
-    		console.log('filter-panel-id.tbl_name: ' + this.tbl_name);
-    		debugger;
-    		this.down('x_advanced_filter_fs').loadData(tbl_name);
-    		this.down('x_dimension_fs').loadData(tbl_name);
-    		//this.commitForm();
+    		if (getActiveTblName() != null && getActiveTblName() != '') {
+	    		this.down('x_advanced_filter_fs').loadData();
+	    		this.down('x_dimension_fs').loadData();
+	    	}
     	},
     	resetAll: function() {
     		console.log('FilterPanel::resetAll()');
-    		//this.tbl_name = '';
     		//this.loadData('');
     		//TODO ... reset all the fields
     	},
     	commitForm: function() {
     		if (Ext.getCmp("content-panel-id").getActiveTab().down('trend-column-widget') != null) {
-    			Ext.getCmp("content-panel-id").getActiveTab().down('trend-column-widget').loadStore(tbl_name);
+    			Ext.getCmp("content-panel-id").getActiveTab().down('trend-column-widget').loadStore(getActiveTblName());
     		} else {
     			Ext.MessageBox.alert('Error', 'No report selected!');
     		}
     	},
     	reloadFilters: function() {
-    		debugger;
     		var me = this;
-    		//me.items.removeAll();
+    		me.removeAll();
         	me.items.add(Ext.create('Mirror.view.layout.filter.TimeFieldSet', {}));
         	me.items.add(Ext.create('Mirror.view.layout.filter.AdvancedFilterFieldSet', {}));
         	me.items.add(Ext.create('Mirror.view.layout.filter.DimensionFieldSet', {}));
         	me.doLayout();
+        	this.loadData();
     	},
-    	
     });
     this.callParent(arguments);
-    debugger;
-    this.reloadFilters();
-    //this.loadData('');
+    this.reloadFilters(getActiveTblName());
   }
 });

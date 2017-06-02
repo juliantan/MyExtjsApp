@@ -83,8 +83,8 @@ Ext.define("Mirror.controller.MainCtrl",{
         main.setActiveTab(panel);
       }
 
-		Ext.ComponentMgr.get('filter-panel-id').loadData(tbl_name);
-		Ext.ComponentMgr.get('filter-panel-id').commitForm();
+		//Ext.ComponentMgr.get('filter-panel-id').reloadFilters();
+		//Ext.ComponentMgr.get('filter-panel-id').commitForm();
     } else {
       console.log("not leaf");
     }
