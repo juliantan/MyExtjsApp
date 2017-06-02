@@ -10,7 +10,7 @@ Ext.define('Mirror.view.layout.filter.TimeFieldSet', {
     items: [
     	{
     		name: 'fromDate',
-			id: 'tfp_fromDateId',
+			//id: 'tfp_fromDateId',
 			fieldLabel: 'From Date:',
 			value: new Date(new Date() - 3600 * 24 * 1000 * 7),
 			maxValue: new Date(),
@@ -18,17 +18,13 @@ Ext.define('Mirror.view.layout.filter.TimeFieldSet', {
 		},
     	{
     		name: 'toDate',
-			id: 'tfp_toDateId',
+			//id: 'tfp_toDateId',
 			fieldLabel: 'To Date:',
 			value: new Date(new Date() - 3600 * 24 * 1000),
 			maxValue: new Date(),
 			format: 'Y-m-d',
 		},
     ]
-});
-
-timeFieldsPanel = new Mirror.view.layout.filter.TimeFieldSet({
-    id: 'timeFieldsPanelId',
 });
 
 Ext.define('Mirror.view.layout.filter.FixedDimStore', {
@@ -118,7 +114,8 @@ Ext.define('Mirror.view.layout.filter.AdvancedFilterFieldSet', {
     items: [
 		{
 			xtype: 'combo',
-			id: 'afp_kpiId',
+			cls: 'afp_kpi_combo',
+			//id: 'afp_kpiId',
 			fieldLabel: 'KPI:',
 			store: kpiStore,
 			queryMode: 'local',
@@ -133,7 +130,8 @@ Ext.define('Mirror.view.layout.filter.AdvancedFilterFieldSet', {
 		},
 		{
 			xtype: 'combo',
-			id: 'afp_hcdnVersionId',
+			cls: 'afp_hcdnv_combo',
+			//id: 'afp_hcdnVersionId',
 			fieldLabel: 'HCDN Version:',
 			store: Ext.create('Mirror.view.layout.filter.FixedDimStore', {}),
 			queryMode: 'local',
@@ -148,7 +146,8 @@ Ext.define('Mirror.view.layout.filter.AdvancedFilterFieldSet', {
 		},
 		{
 			xtype: 'combo',
-			id: 'afp_uaId',
+			cls: 'afp_uaid_combo',
+			//id: 'afp_uaId',
 			fieldLabel: 'User Agent:',
 			store: Ext.create('Mirror.view.layout.filter.FixedDimStore', {}),
 			queryMode: 'local',
@@ -163,14 +162,10 @@ Ext.define('Mirror.view.layout.filter.AdvancedFilterFieldSet', {
 		},
 	],
 	loadData: function(tbl_name) {
-		Ext.ComponentMgr.get('afp_kpiId').loadData(tbl_name);
-		Ext.ComponentMgr.get('afp_hcdnVersionId').loadData(tbl_name);
-		Ext.ComponentMgr.get('afp_uaId').loadData(tbl_name);
+		Ext.ComponentQuery.query('combo[cls=afp_kpi_combo]')[0].loadData(tbl_name);
+		Ext.ComponentQuery.query('combo[cls=afp_hcdnv_combo]')[0].loadData(tbl_name);
+		Ext.ComponentQuery.query('combo[cls=afp_uaid_combo]')[0].loadData(tbl_name);
 	}
-});
-
-advancedFieldsPanel = new Mirror.view.layout.filter.AdvancedFilterFieldSet({
-    id: 'advancedFieldsPanelId',
 });
 
 var dimStore = Ext.create('Ext.data.Store', {
@@ -228,7 +223,6 @@ Ext.define('Mirror.view.layout.filter.DimensionFieldSet', {
     items: [
 		{
 			xtype: 'combo',
-			id: 'dp_dimensionId',
 			fieldLabel: 'Dimension:',
 			store: dimStore,
 			queryMode: 'local',
@@ -242,11 +236,8 @@ Ext.define('Mirror.view.layout.filter.DimensionFieldSet', {
 		},
 	],
 	loadData: function(tbl_name) {
-		Ext.ComponentMgr.get('dp_dimensionId').loadData(tbl_name);
+		this.down('combo').loadData(tbl_name);
 	}
-});
-dimensionPanel = new Mirror.view.layout.filter.DimensionFieldSet({
-    id: 'dimensionPanelId',
 });
 
 Ext.define('Mirror.view.layout.filter',{
@@ -271,7 +262,6 @@ Ext.define('Mirror.view.layout.filter',{
 	    defaults: {
 	        labelWidth: 100
 	    },
-	    items: [timeFieldsPanel, advancedFieldsPanel, dimensionPanel],
 	    buttons: [
 	    	{
 	    		text: 'Add Filter',
@@ -279,7 +269,7 @@ Ext.define('Mirror.view.layout.filter',{
 	    		handler: function() {
 	    			this.dynamicFilterCnt++;
 	    			dynamicFilterCnt = this.dynamicFilterCnt;
-	    			Ext.ComponentMgr.get('advancedFieldsPanelId').add(
+	    			this.up().up().down('x_advanced_filter_fs').add(
 	    				{
 	    					xtype: 'panel',
 	    					layout: 'hbox',
@@ -322,7 +312,21 @@ Ext.define('Mirror.view.layout.filter',{
 		    {
 		        text: 'Reset',
 		        id: 'fp_resetId',
-		        disabled : false
+		        disabled : false,
+		        handler: function() {
+		        	var me = this.up().up();
+		        	me.reloadFilters();
+		        }
+		    },
+		    {
+		        text: 'Test',
+		        id: 'fp_testId',
+		        disabled : false,
+		        handler: function() {
+		        	var me = this.up().up();
+		        	me.removeAll();
+		        	me.doLayout();
+		        }
 		    }
     	],
     	tbl_name: '',
@@ -331,8 +335,9 @@ Ext.define('Mirror.view.layout.filter',{
     		this.resetAll();
     		this.tbl_name = tbl_name;
     		console.log('filter-panel-id.tbl_name: ' + this.tbl_name);
-    		Ext.ComponentMgr.get('advancedFieldsPanelId').loadData(tbl_name);
-    		Ext.ComponentMgr.get('dimensionPanelId').loadData(tbl_name);
+    		debugger;
+    		this.down('x_advanced_filter_fs').loadData(tbl_name);
+    		this.down('x_dimension_fs').loadData(tbl_name);
     		//this.commitForm();
     	},
     	resetAll: function() {
@@ -348,11 +353,20 @@ Ext.define('Mirror.view.layout.filter',{
     			Ext.MessageBox.alert('Error', 'No report selected!');
     		}
     	},
-    	
+    	reloadFilters: function() {
+    		debugger;
+    		var me = this;
+    		//me.items.removeAll();
+        	me.items.add(Ext.create('Mirror.view.layout.filter.TimeFieldSet', {}));
+        	me.items.add(Ext.create('Mirror.view.layout.filter.AdvancedFilterFieldSet', {}));
+        	me.items.add(Ext.create('Mirror.view.layout.filter.DimensionFieldSet', {}));
+        	me.doLayout();
+    	},
     	
     });
     this.callParent(arguments);
     debugger;
+    this.reloadFilters();
     //this.loadData('');
   }
 });
