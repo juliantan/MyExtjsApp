@@ -32,7 +32,6 @@ Ext.define('Mirror.view.chart.TrendColumn.TrendStore', {
     ownerCmp: null,
     listeners: {
     	load: function(){
-    		console.log('Mirror.view.chart.TrendColumn.TrendStore loaded');
     		//tanjl: need to do redraw after this.store = Ext.create('Mirror.view.chart.TrendColumn.TrendStore') dynamically created
     		// otherwise the chart won't be displayed unless resize the browser
     		this.ownerCmp.redraw();
@@ -104,7 +103,6 @@ Ext.define('Mirror.view.chart.TrendColumn', {
 			this.store.getProxy().setExtraParam('kpi', 'SUM(UserCount)');
 		}
 		this.axes.items[0].title = this.store.proxy.extraParams.kpi;
-		console.log('======================TrendColumn::loadStore:' + tbl_name + ',,,,,,,,,,,,,,,,' + this.axes.items[0].title);
 		this.store.load();
 	}
 });

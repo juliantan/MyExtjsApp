@@ -22,6 +22,7 @@ Ext.define('Mirror.view.layout.tabPanel',{
 			],
 			listeners: {
 				'tabchange': function() {
+					Ext.getCmp('menu-panel-id').getSelectionModel().select(Ext.getCmp('menu-panel-id').getStore().getNodeById(Ext.getCmp("content-panel-id").getActiveTab().active_tree_node_id));
 					Ext.ComponentMgr.get('filter-panel-id').reloadFilters();
 					//Ext.ComponentMgr.get('filter-panel-id').commitForm();
 				}

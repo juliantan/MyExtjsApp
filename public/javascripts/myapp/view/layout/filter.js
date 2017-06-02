@@ -62,7 +62,6 @@ Ext.define('Mirror.view.layout.filter.FixedDimStore', {
     autoLoad: false,
     listeners: {
     	load: function(){
-    		console.log('FixedDimStore loaded');
     	}
     },
 });
@@ -102,7 +101,6 @@ Ext.define('Mirror.view.layout.filter.KpiStore', {
     ownerCmp: null,
     listeners: {
     	load: function(){
-    		console.log('kpiStore loaded');
     		if (this.ownerCmp != null && this.ownerCmp.store.getCount() > 0) {
     			this.ownerCmp.setValue(this.ownerCmp.store.getAt(0).data.value);
     		}
@@ -216,7 +214,6 @@ Ext.define('Mirror.view.layout.filter.DimStore', {
     autoLoad: false,
     listeners: {
     	load: function(){
-    		console.log('DimStore loaded');
     	}
     },
 });
@@ -331,15 +328,11 @@ Ext.define('Mirror.view.layout.filter',{
 		    },
     	],
     	loadData: function() {
-    		console.log('LLLLLLLLLLLLLLLLLLLL filter::loadData tbl_name: ' + getActiveTblName());
     		this.resetAll();
-    		if (getActiveTblName() != null && getActiveTblName() != '') {
-	    		this.down('x_advanced_filter_fs').loadData();
-	    		this.down('x_dimension_fs').loadData();
-	    	}
+    		this.down('x_advanced_filter_fs').loadData();
+    		this.down('x_dimension_fs').loadData();
     	},
     	resetAll: function() {
-    		console.log('FilterPanel::resetAll()');
     		//this.loadData('');
     		//TODO ... reset all the fields
     	},

@@ -21,7 +21,6 @@ Ext.define("Mirror.controller.MainCtrl",{
   views: ['chart.TrendColumn', 'chart.TopDimension', 'chart.PieChart'],
 
   loadMenu: function(selModel, record){
-    console.log("record.get('id'):" + record.get('id'));
     if (record.get('leaf')) {
       var my = this;
       var panel = Ext.getCmp(record.get('id'));
@@ -34,6 +33,7 @@ Ext.define("Mirror.controller.MainCtrl",{
               article.init(Mirror);
               panel = { xtype: 'article-list-widget' };
               my.openTab(panel, 'article-list-leaf-id', '');
+              Ext.getCmp("content-panel-id").getActiveTab().active_tree_node_id = record.get('id');
             });
             break;
           default:
@@ -82,11 +82,12 @@ Ext.define("Mirror.controller.MainCtrl",{
         var main = Ext.getCmp("content-panel-id");
         main.setActiveTab(panel);
       }
-
+		Ext.getCmp("content-panel-id").getActiveTab().active_tree_node_id = record.get('id');
+		// tabPanel.js will do following
 		//Ext.ComponentMgr.get('filter-panel-id').reloadFilters();
 		//Ext.ComponentMgr.get('filter-panel-id').commitForm();
     } else {
-      console.log("not leaf");
+    	// not leaf
     }
   },
 
