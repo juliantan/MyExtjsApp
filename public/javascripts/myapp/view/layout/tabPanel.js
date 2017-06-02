@@ -1,26 +1,32 @@
 Ext.define('Mirror.view.layout.tabPanel',{
-  extend: 'Ext.tab.Panel',
-  alias: 'widget.tabPanel',
-  initComponent : function(){
-    Ext.apply(this,{
-      //id: 'content-panel-id',
-      region: 'center',
-      defaults: {
-        autoScroll:true,
-        bodyPadding: 10
-      },
-      activeTab: 0,
-      border: false,
-      //plain: true,
-      items: [
-		{
-	        id: 'HomePage',
-	        title: '使用帮助',
-	        //iconCls:'home',
-	        layout: 'fit'
-		}
-      ]
-    });
-    this.callParent(arguments);
-  }
+	extend: 'Ext.tab.Panel',
+	alias: 'widget.tabPanel',
+	initComponent : function(){
+		Ext.apply(this,{
+			//id: 'content-panel-id',
+			region: 'center',
+			defaults: {
+				autoScroll:true,
+				bodyPadding: 10
+			},
+			activeTab: 0,
+			border: false,
+			//plain: true,
+			items: [
+				{
+					id: 'HomePage',
+					title: '使用帮助',
+					//iconCls:'home',
+					layout: 'fit'
+				}
+			],
+			listeners: {
+				'tabchange': function() {
+					var tbl_name = Ext.getCmp("content-panel-id").getActiveTab().tbl_name;
+					Ext.ComponentMgr.get('filter-panel-id').loadData(tbl_name);
+				}
+			}
+		});
+		this.callParent(arguments);
+	}
 })

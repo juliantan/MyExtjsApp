@@ -29,13 +29,13 @@ Ext.define('Mirror.view.chart.TrendColumn.TrendStore', {
 		},
     ],
     autoLoad: false,
-    mychart: null,
+    ownerCmp: null,
     listeners: {
     	load: function(){
     		console.log('Mirror.view.chart.TrendColumn.TrendStore loaded');
     		//tanjl: need to do redraw after this.store = Ext.create('Mirror.view.chart.TrendColumn.TrendStore') dynamically created
     		// otherwise the chart won't be displayed unless resize the browser
-    		this.mychart.redraw();
+    		this.ownerCmp.redraw();
     	}
     },
 });
@@ -95,7 +95,7 @@ Ext.define('Mirror.view.chart.TrendColumn', {
 	loadStore: function(tbl_name) {
 		//tanjl: as mentioned above, we need to create another store here
 		this.store = Ext.create('Mirror.view.chart.TrendColumn.TrendStore');
-		this.store.mychart = this;
+		this.store.ownerCmp = this;
 		this.store.getProxy().setExtraParam('tbl_name', tbl_name);
 		//TODO ...
 		if (tbl_name == 'tbl_hcdn_switch') {

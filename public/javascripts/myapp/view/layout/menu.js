@@ -1,61 +1,61 @@
 
 treeListStore = Ext.create('Ext.data.TreeStore', {
-        proxy: {
-            type: 'ajax',
-            url: 'getReportList.do',
-	        reader: {
-	            type: 'json',
-	            root: 'data'
-	        },
+    proxy: {
+        type: 'ajax',
+        url: 'getReportList.do',
+        reader: {
+            type: 'json',
+            root: 'data'
         },
-        fields: [
-        	{
-	            name: 'text',
-	            mapping: function(raw) {
-	                var result = (raw.MirrorId != null ? (raw.MirrorId + '_') : '') + raw.Title;
-	                return result;
-		        }
-	        },
-	        {
-	            name: 'id',
-	            mapping: function(raw) {
-	                var ids = raw.ID;
-	                return '' + ids;
-	            }
-			},
-	        {
-	            name: 'leaf',
-	            mapping: function(raw) {
-	            	return raw.TableName != null;
-	            }
-			},
-			{
-	            name: 'tbl_name',
-	            mapping: function(raw) {
-	            	if (raw.TableName != null) {
-	            		return raw.TableName;
-	            	} else {
-	            		return '';
-	            	}
-	            }
-			},
-        ],
-        root: {
-            text: '所有报表',
-            id: '',
-            expanded: true,
+    },
+    fields: [
+    	{
+            name: 'text',
+            mapping: function(raw) {
+                var result = (raw.MirrorId != null ? (raw.MirrorId + '_') : '') + raw.Title;
+                return result;
+	        }
         },
-        folderSort: true,
-        sorters: [{
-            property: 'text',
-            direction: 'ASC'
-        }],
-	    listeners: {
-	    	load: function(){
-	    		console.log('loaded');
-	    	}
-	    },
-    });
+        {
+            name: 'id',
+            mapping: function(raw) {
+                var ids = raw.ID;
+                return '' + ids;
+            }
+		},
+        {
+            name: 'leaf',
+            mapping: function(raw) {
+            	return raw.TableName != null;
+            }
+		},
+		{
+            name: 'tbl_name',
+            mapping: function(raw) {
+            	if (raw.TableName != null) {
+            		return raw.TableName;
+            	} else {
+            		return '';
+            	}
+            }
+		},
+    ],
+    root: {
+        text: '所有报表',
+        id: '',
+        expanded: true,
+    },
+    folderSort: true,
+    sorters: [{
+        property: 'text',
+        direction: 'ASC'
+    }],
+    listeners: {
+    	load: function(){
+    		console.log('loaded');
+    	}
+    },
+});
 
 Ext.define('Mirror.view.layout.menu',{
   extend: 'Ext.tree.TreePanel',
@@ -90,26 +90,6 @@ Ext.define('Mirror.view.layout.menu',{
 		    scope: this,
 		    handler: this.onCollapseAllClick
 		}],
-
-      /*root:{
-        text:'所有报表',
-        expanded:true,
-        leaf:false,
-        children:[
-          {
-            id: 'node-qtp',
-            text:'QTP库相关投递',
-            leaf:false,
-            expanded:true,
-            children:[
-              {id:'article-list-leaf-id',text:'Articles', leaf:true},
-              {id:'user-count-leaf-id',text:'用户量', leaf:true},
-              {id:'node-2', text:'QTP访问成功失败率', leaf:true}
-            ] 
-          },
-          {id:'node-switch', text:'HCDN播放切换率', leaf:true},
-        ]
-      }*/
     });
     this.callParent(arguments);
   },

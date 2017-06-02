@@ -89,9 +89,13 @@ var kpiStore = Ext.create('Ext.data.Store', {
 		},
     ],
     autoLoad: false,
+    ownerCmp: null,
     listeners: {
     	load: function(){
     		console.log('kpiStore loaded');
+    		if (this.ownerCmp != null && this.ownerCmp.store.getCount() > 0) {
+    			this.ownerCmp.setValue(this.ownerCmp.store.getAt(0).data.value);
+    		}
     	}
     },
 });
@@ -117,6 +121,7 @@ advancedFieldsPanel = new Ext.form.FieldSet({
 			valueField: 'value',
 			value: '',
 			loadData: function(tbl_name) {
+				this.store.ownerCmp = this;
 				this.store.getProxy().setExtraParam("tbl_name", tbl_name);
 				this.store.load();
 			}
@@ -295,7 +300,10 @@ Ext.define('Mirror.view.layout.filter',{
 		    {
 		        text: 'Apply',
 		        id: 'fp_applyId',
-		        disabled : false
+		        disabled : false,
+		        handler: function() {
+		        	this.up().up().commitForm();
+		        }
 		    },
 		    {
 		        text: 'Reset',
@@ -305,16 +313,26 @@ Ext.define('Mirror.view.layout.filter',{
     	],
     	tbl_name: '',
     	loadData: function(tbl_name) {
+    		console.log('LLLLLLLLLLLLLLLLLLLL filter::loadData tbl_name: ' + tbl_name);
+    		this.resetAll();
     		this.tbl_name = tbl_name;
     		console.log('filter-panel-id.tbl_name: ' + this.tbl_name);
     		Ext.ComponentMgr.get('advancedFieldsPanelId').loadData(tbl_name);
     		Ext.ComponentMgr.get('dimensionPanelId').loadData(tbl_name);
+    		//this.commitForm();
     	},
     	resetAll: function() {
     		console.log('FilterPanel::resetAll()');
     		//this.tbl_name = '';
     		//this.loadData('');
     		//TODO ... reset all the fields
+    	},
+    	commitForm: function() {
+    		if (Ext.getCmp("content-panel-id").getActiveTab().down('trend-column-widget') != null) {
+    			Ext.getCmp("content-panel-id").getActiveTab().down('trend-column-widget').loadStore(tbl_name);
+    		} else {
+    			Ext.MessageBox.alert('Error', 'No report selected!');
+    		}
     	}
     });
     this.callParent(arguments);
