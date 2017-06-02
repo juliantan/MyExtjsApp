@@ -1,6 +1,6 @@
-timeFieldsPanel = new Ext.form.FieldSet({
-    id: 'timeFieldsPanelId',
-    xtype:'fieldset',
+Ext.define('Mirror.view.layout.filter.TimeFieldSet', {
+	extend: 'Ext.form.FieldSet',
+	xtype: 'x_time_fs',
     title: '日期',
     autoHeight:true,
     defaults: {width: '100%'},
@@ -27,8 +27,13 @@ timeFieldsPanel = new Ext.form.FieldSet({
     ]
 });
 
+timeFieldsPanel = new Mirror.view.layout.filter.TimeFieldSet({
+    id: 'timeFieldsPanelId',
+});
+
 Ext.define('Mirror.view.layout.filter.FixedDimStore', {
 	extends: 'Ext.data.Store',
+	xtype: 'x_fixed_dim_store',
     proxy: {
         type: 'ajax',
         url: 'getDimValues.do',
@@ -100,9 +105,9 @@ var kpiStore = Ext.create('Ext.data.Store', {
     },
 });
 
-advancedFieldsPanel = new Ext.form.FieldSet({
-    id: 'advancedFieldsPanelId',
-    xtype:'fieldset',
+Ext.define('Mirror.view.layout.filter.AdvancedFilterFieldSet', {
+	extend: 'Ext.form.FieldSet',
+    xtype: 'x_advanced_filter_fs',
     title: '过滤',
     collapsible: true,
     collapsed: false,
@@ -164,6 +169,10 @@ advancedFieldsPanel = new Ext.form.FieldSet({
 	}
 });
 
+advancedFieldsPanel = new Mirror.view.layout.filter.AdvancedFilterFieldSet({
+    id: 'advancedFieldsPanelId',
+});
+
 var dimStore = Ext.create('Ext.data.Store', {
     /* fields: ['name', 'value'],
     data : [
@@ -206,8 +215,9 @@ var dimStore = Ext.create('Ext.data.Store', {
     },
 });
 
-dimensionPanel = Ext.create('Ext.form.FieldSet', {
-    id: 'dimensionPanelId',
+Ext.define('Mirror.view.layout.filter.DimensionFieldSet', {
+	extend: 'Ext.form.FieldSet',
+	xtype: 'x_dimension_fs',
     title: '维度',
     collapsible: true,
     collapsed: false,
@@ -235,10 +245,14 @@ dimensionPanel = Ext.create('Ext.form.FieldSet', {
 		Ext.ComponentMgr.get('dp_dimensionId').loadData(tbl_name);
 	}
 });
+dimensionPanel = new Mirror.view.layout.filter.DimensionFieldSet({
+    id: 'dimensionPanelId',
+});
 
 Ext.define('Mirror.view.layout.filter',{
   extend: 'Ext.form.Panel',
   alias: 'widget.filter',
+  xtype: 'x_filter',
   initComponent : function(){
     Ext.apply(this,{
 	    //id: 'filter-panel-id',
@@ -333,9 +347,12 @@ Ext.define('Mirror.view.layout.filter',{
     		} else {
     			Ext.MessageBox.alert('Error', 'No report selected!');
     		}
-    	}
+    	},
+    	
+    	
     });
     this.callParent(arguments);
+    debugger;
     //this.loadData('');
   }
 });
