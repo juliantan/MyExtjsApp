@@ -1,3 +1,10 @@
+function getActiveTblName()
+{
+	if (Ext.getCmp("content-panel-id") != null && Ext.getCmp("content-panel-id").getActiveTab() != null) {
+		return Ext.getCmp("content-panel-id").getActiveTab().tbl_name;
+	}
+}
+
 Ext.define('Mirror.view.layout.filter.TimeFieldSet', {
 	extend: 'Ext.form.FieldSet',
 	xtype: 'x_time_fs',
@@ -60,7 +67,9 @@ Ext.define('Mirror.view.layout.filter.FixedDimStore', {
     },
 });
 
-var kpiStore = Ext.create('Ext.data.Store', {
+Ext.define('Mirror.view.layout.filter.KpiStore', {
+	extend: 'Ext.data.Store',
+	xtype: 'x_kpi_store',
     proxy: {
         type: 'ajax',
         url: 'getKpis.do',
@@ -117,7 +126,7 @@ Ext.define('Mirror.view.layout.filter.AdvancedFilterFieldSet', {
 			cls: 'afp_kpi_combo',
 			//id: 'afp_kpiId',
 			fieldLabel: 'KPI:',
-			store: kpiStore,
+			store: Ext.create('Mirror.view.layout.filter.KpiStore', {}),
 			queryMode: 'local',
 			displayField: 'name',
 			valueField: 'value',
@@ -168,7 +177,9 @@ Ext.define('Mirror.view.layout.filter.AdvancedFilterFieldSet', {
 	}
 });
 
-var dimStore = Ext.create('Ext.data.Store', {
+Ext.define('Mirror.view.layout.filter.DimStore', {
+	extend: 'Ext.data.Store',
+	xtype: 'x_dim_store',
     /* fields: ['name', 'value'],
     data : [
         {name: "HCDN版本号", value: 'HcdnVersion'},
@@ -205,7 +216,7 @@ var dimStore = Ext.create('Ext.data.Store', {
     autoLoad: false,
     listeners: {
     	load: function(){
-    		console.log('dimStore loaded');
+    		console.log('DimStore loaded');
     	}
     },
 });
@@ -224,7 +235,7 @@ Ext.define('Mirror.view.layout.filter.DimensionFieldSet', {
 		{
 			xtype: 'combo',
 			fieldLabel: 'Dimension:',
-			store: dimStore,
+			store: Ext.create('Mirror.view.layout.filter.DimStore', {}),
 			queryMode: 'local',
 			displayField: 'name',
 			valueField: 'value',
@@ -278,7 +289,7 @@ Ext.define('Mirror.view.layout.filter',{
 								{
 									xtype: 'combo',
 									id: 'afp_dimComboId' + dynamicFilterCnt,
-									store: dimStore,
+									store: Ext.create('Mirror.view.layout.filter.DimStore', {}),
 									queryMode: 'local',
 									displayField: 'name',
 									valueField: 'value',
