@@ -35,7 +35,7 @@ Ext.define('Mirror.view.layout.filter.TimeFieldSet', {
 });
 
 Ext.define('Mirror.view.layout.filter.FixedDimStore', {
-	extends: 'Ext.data.Store',
+	extend: 'Ext.data.Store',
 	xtype: 'x_fixed_dim_store',
     proxy: {
         type: 'ajax',
