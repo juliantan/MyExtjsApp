@@ -52,7 +52,6 @@ treeListStore = Ext.create('Ext.data.TreeStore', {
     }],
     listeners: {
     	load: function(){
-    		console.log('loaded');
     	}
     },
 });

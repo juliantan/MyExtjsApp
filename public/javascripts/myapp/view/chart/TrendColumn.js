@@ -91,18 +91,21 @@ Ext.define('Mirror.view.chart.TrendColumn', {
 	    xField: 'date',
 	    yField: 'data1'
 	}],
-	loadStore: function(tbl_name) {
+	loadStore: function(params) {
 		//tanjl: as mentioned above, we need to create another store here
 		this.store = Ext.create('Mirror.view.chart.TrendColumn.TrendStore');
 		this.store.ownerCmp = this;
-		this.store.getProxy().setExtraParam('tbl_name', tbl_name);
-		//TODO ...
-		if (tbl_name == 'tbl_hcdn_switch') {
-			this.store.getProxy().setExtraParam('kpi', 'AVG(SwitchRatio)*10000');
-		} else {
-			this.store.getProxy().setExtraParam('kpi', 'SUM(UserCount)');
+		this.store.getProxy().setExtraParam('tbl_name', params['tbl_name']);
+		this.store.getProxy().setExtraParam('kpi', params['kpi_formula']);
+		this.store.getProxy().setExtraParam('from_date', params['from_date']);
+		this.store.getProxy().setExtraParam('to_date', params['to_date']);
+		if (params['hcdn_version'] != 'All') {
+			this.store.getProxy().setExtraParam('hcdn_version', params['hcdn_version']);
 		}
-		this.axes.items[0].title = this.store.proxy.extraParams.kpi;
+		if (params['ua'] != 'All') {
+			this.store.getProxy().setExtraParam('ua', params['ua']);
+		}
+		this.axes.items[0].title = params['kpi_name'];
 		this.store.load();
 	}
 });

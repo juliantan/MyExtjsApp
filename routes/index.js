@@ -101,8 +101,15 @@ router.get('/getReportList.do', function(req, res) {
 });
   
 router.get('/getTrendData.do', function(req, res) {
+	var params = {from_date: req.query.from_date, to_date: req.query.to_date, hcdn_version: req.query.hcdn_version, ua: req.query.ua, }; 
     var dmsql = ' GROUP BY date';
-    var wheresql = " WHERE HcdnVersion in ('10.0.10.434')";
+    var wheresql = " WHERE Date >= '" + params['from_date'] + "' AND Date <= '" + params['to_date'] + "'";
+    if (params['hcdn_version'] != null) {
+    	wheresql += " AND HcdnVersion in ('" + params['hcdn_version'] + "')";
+    }
+    if (params['ua'] != null) {
+    	wheresql += " AND UA in ('" + params['ua'] + "')";
+    }
     measures = req.query.kpi + ' as m1';
     Report.getTrendData(req.query.tbl_name, measures, wheresql, dmsql, function(err, reports){
       if(err){

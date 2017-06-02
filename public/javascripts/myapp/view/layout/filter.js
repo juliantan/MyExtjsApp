@@ -9,7 +9,7 @@ Ext.define('Mirror.view.layout.filter.TimeFieldSet', {
 	extend: 'Ext.form.FieldSet',
 	xtype: 'x_time_fs',
     title: '日期',
-    autoHeight:true,
+    autoHeight: true,
     defaults: {width: '100%'},
     defaultType: 'datefield',
     collapsible: true,
@@ -92,7 +92,7 @@ Ext.define('Mirror.view.layout.filter.KpiStore', {
         {
             name: 'value',
             mapping: function(raw) {
-                var values = raw.KpiName;
+                var values = raw.Formula;
                 return values;
             }
 		},
@@ -338,7 +338,15 @@ Ext.define('Mirror.view.layout.filter',{
     	},
     	commitForm: function() {
     		if (Ext.getCmp("content-panel-id").getActiveTab().down('trend-column-widget') != null) {
-    			Ext.getCmp("content-panel-id").getActiveTab().down('trend-column-widget').loadStore(getActiveTblName());
+    			Ext.getCmp("content-panel-id").getActiveTab().down('trend-column-widget').loadStore({
+    				tbl_name: getActiveTblName(),
+    				from_date: this.down('x_time_fs').items.items[0].getValue().toLocaleDateString(),
+    				to_date: this.down('x_time_fs').items.items[1].getValue().toLocaleDateString(),
+    				kpi_formula: Ext.ComponentQuery.query('combo[cls=afp_kpi_combo]')[0].getValue(),
+    				kpi_name: Ext.ComponentQuery.query('combo[cls=afp_kpi_combo]')[0].getDisplayValue(),
+    				hcdn_version: Ext.ComponentQuery.query('combo[cls=afp_hcdnv_combo]')[0].getValue(),
+    				ua: Ext.ComponentQuery.query('combo[cls=afp_uaid_combo]')[0].getValue(),
+    			});
     		} else {
     			Ext.MessageBox.alert('Error', 'No report selected!');
     		}

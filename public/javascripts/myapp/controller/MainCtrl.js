@@ -100,7 +100,6 @@ openTab: function(panel, id, tbl_name){
     } else if(typeof panel!="string"){
 		panel.id = o;
 		panel.tbl_name = tbl_name;
-		console.log("openTab panel.id:" + panel.id + ', tbl_name: ' + tbl_name);
 		var p = main.add(panel);
 		main.setActiveTab(p);
     }
