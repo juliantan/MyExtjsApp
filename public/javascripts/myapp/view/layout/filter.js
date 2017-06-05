@@ -280,6 +280,7 @@ Ext.define('Mirror.view.layout.filter',{
 	    			this.up().up().down('x_advanced_filter_fs').add(
 	    				{
 	    					xtype: 'panel',
+	    					cls: "dynamic_filter",
 	    					layout: 'hbox',
 	    					border: false,
 	    					items: [
@@ -338,7 +339,7 @@ Ext.define('Mirror.view.layout.filter',{
     	},
     	commitForm: function() {
     		if (Ext.getCmp("content-panel-id").getActiveTab().down('trend-column-widget') != null) {
-    			Ext.getCmp("content-panel-id").getActiveTab().down('trend-column-widget').loadStore({
+    			var params = {
     				tbl_name: getActiveTblName(),
     				from_date: this.down('x_time_fs').items.items[0].getValue().toLocaleDateString(),
     				to_date: this.down('x_time_fs').items.items[1].getValue().toLocaleDateString(),
@@ -346,7 +347,15 @@ Ext.define('Mirror.view.layout.filter',{
     				kpi_name: Ext.ComponentQuery.query('combo[cls=afp_kpi_combo]')[0].getDisplayValue(),
     				hcdn_version: Ext.ComponentQuery.query('combo[cls=afp_hcdnv_combo]')[0].getValue(),
     				ua: Ext.ComponentQuery.query('combo[cls=afp_uaid_combo]')[0].getValue(),
-    			});
+    			};
+    			var dynamic_filters = Ext.ComponentQuery.query('panel[cls=dynamic_filter]');
+    			params.dynamic_filter_cnt = dynamic_filters.length;
+    			var i = 0;
+    			for (i = 0; i < dynamic_filters.length; i++) {
+    				params['dynamic_filter_name' + i] = dynamic_filters[i].down('combo').getValue();
+    				params['dynamic_filter_value' + i] = dynamic_filters[i].down('combo').next().getValue();
+    			}
+    			Ext.getCmp("content-panel-id").getActiveTab().down('trend-column-widget').loadStore(params);
     		} else {
     			Ext.MessageBox.alert('Error', 'No report selected!');
     		}

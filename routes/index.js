@@ -132,10 +132,20 @@ router.get('/getTrendData.do', function(req, res) {
     var dmsql = ' GROUP BY date';
     var wheresql = " WHERE Date >= '" + params['from_date'] + "' AND Date <= '" + params['to_date'] + "'";
     if (params['hcdn_version'] != null) {
-    	wheresql += " AND HcdnVersion in ('" + params['hcdn_version'] + "')";
+    	wheresql += " AND HcdnVersion IN ('" + params['hcdn_version'] + "')";
     }
     if (params['ua'] != null) {
-    	wheresql += " AND UA in ('" + params['ua'] + "')";
+    	wheresql += " AND UA IN ('" + params['ua'] + "')";
+    }
+    if (req.query['dynamic_filter_cnt'] != 0) {
+    	for (var i = 0; i < req.query['dynamic_filter_cnt']; i++) {
+    		var dynamic_filter_name = req.query['dynamic_filter_name' + i];
+    		if (dynamic_filter_name != null && dynamic_filter_name != '' && dynamic_filter_name != 'None') {
+    			var dynamic_filter_value = req.query['dynamic_filter_value' + i];
+    			dynamic_filter_value = dynamic_filter_value != null ? dynamic_filter_value : '';
+    			wheresql += " AND " + dynamic_filter_name + " IN ('" + dynamic_filter_value + "')";
+    		}
+    	}
     }
     var measures = req.query.kpi + ' as m1';
     getTrendData_from_date = req.query.from_date;

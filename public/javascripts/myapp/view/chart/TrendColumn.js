@@ -105,6 +105,12 @@ Ext.define('Mirror.view.chart.TrendColumn', {
 		if (params['ua'] != 'All') {
 			this.store.getProxy().setExtraParam('ua', params['ua']);
 		}
+		var dynamic_filter_cnt = params['dynamic_filter_cnt'];
+		this.store.getProxy().setExtraParam('dynamic_filter_cnt', dynamic_filter_cnt);
+		for (var i = 0; i < dynamic_filter_cnt; i++) {
+			this.store.getProxy().setExtraParam('dynamic_filter_name' + i, params['dynamic_filter_name' + i]);
+			this.store.getProxy().setExtraParam('dynamic_filter_value' + i, params['dynamic_filter_value' + i]);
+		}
 		this.axes.items[0].title = params['kpi_name'];
 		this.store.load();
 	}
