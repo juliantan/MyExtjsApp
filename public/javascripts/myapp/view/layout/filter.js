@@ -92,7 +92,7 @@ Ext.define('Mirror.view.layout.filter.KpiStore', {
         {
             name: 'value',
             mapping: function(raw) {
-                var values = raw.Formula;
+                var values = raw.Formula + ',' + (raw.KpiUnit != null ? raw.KpiUnit : '');
                 return values;
             }
 		},
@@ -343,8 +343,9 @@ Ext.define('Mirror.view.layout.filter',{
     				tbl_name: getActiveTblName(),
     				from_date: this.down('x_time_fs').items.items[0].getValue().toLocaleDateString(),
     				to_date: this.down('x_time_fs').items.items[1].getValue().toLocaleDateString(),
-    				kpi_formula: Ext.ComponentQuery.query('combo[cls=afp_kpi_combo]')[0].getValue(),
     				kpi_name: Ext.ComponentQuery.query('combo[cls=afp_kpi_combo]')[0].getDisplayValue(),
+    				kpi_formula: Ext.ComponentQuery.query('combo[cls=afp_kpi_combo]')[0].getValue().split(',')[0],
+    				kpi_unit: Ext.ComponentQuery.query('combo[cls=afp_kpi_combo]')[0].getValue().split(',')[1],
     				hcdn_version: Ext.ComponentQuery.query('combo[cls=afp_hcdnv_combo]')[0].getValue(),
     				ua: Ext.ComponentQuery.query('combo[cls=afp_uaid_combo]')[0].getValue(),
     			};

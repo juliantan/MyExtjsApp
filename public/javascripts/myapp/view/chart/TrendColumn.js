@@ -110,7 +110,7 @@ Ext.define('Mirror.view.chart.TrendColumn', {
 		/*if (params['dimension_name'] != 'None') {
 			me.store.getProxy().setExtraParam('dimension_name', params['dimension_name']);
 		}*/
-		me.axes.items[0].title = params['kpi_name'];
+		me.axes.items[0].title = params['kpi_name'] + ((params['kpi_unit'] != null && params['kpi_unit'] != '') ? '(' + params['kpi_unit'] + ')' : '');
 		me.store.load();
 	}
 });
