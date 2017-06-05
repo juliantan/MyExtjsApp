@@ -355,6 +355,7 @@ Ext.define('Mirror.view.layout.filter',{
     				params['dynamic_filter_name' + i] = dynamic_filters[i].down('combo').getValue();
     				params['dynamic_filter_value' + i] = dynamic_filters[i].down('combo').next().getValue();
     			}
+    			params.dimension_name = this.down('x_dimension_fs').down('combo').getDisplayValue();
     			Ext.getCmp("content-panel-id").getActiveTab().down('trend-column-widget').loadStore(params);
     		} else {
     			Ext.MessageBox.alert('Error', 'No report selected!');

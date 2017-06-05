@@ -147,7 +147,12 @@ router.get('/getTrendData.do', function(req, res) {
     		}
     	}
     }
-    var measures = req.query.kpi + ' as m1';
+    var measures = req.query.kpi_formula + ' AS m1';
+    /*var dimension = req.query['dimension_name'];
+    if (dimension != null && dimension != '') {
+    	measures += ', ' + dimension;
+    	dmsql += ' , ' + dimension;
+    }*/
     getTrendData_from_date = req.query.from_date;
     getTrendData_to_date = req.query.to_date;
     Report.getTrendData(req.query.tbl_name, measures, wheresql, dmsql, function(err, reports){

@@ -93,25 +93,24 @@ Ext.define('Mirror.view.chart.TrendColumn', {
 	}],
 	loadStore: function(params) {
 		//tanjl: as mentioned above, we need to create another store here
-		this.store = Ext.create('Mirror.view.chart.TrendColumn.TrendStore');
-		this.store.ownerCmp = this;
-		this.store.getProxy().setExtraParam('tbl_name', params['tbl_name']);
-		this.store.getProxy().setExtraParam('kpi', params['kpi_formula']);
-		this.store.getProxy().setExtraParam('from_date', params['from_date']);
-		this.store.getProxy().setExtraParam('to_date', params['to_date']);
-		if (params['hcdn_version'] != 'All') {
-			this.store.getProxy().setExtraParam('hcdn_version', params['hcdn_version']);
+		var me = this;
+		me.store = Ext.create('Mirror.view.chart.TrendColumn.TrendStore');
+		me.store.ownerCmp = me;
+		me.store.getProxy().extraParams = {};
+		Object.keys(params).forEach(function(key) {
+		     me.store.getProxy().extraParams[key] = params[ key ];
+		});
+		if (params['hcdn_version'] == 'All') {
+			delete me.store.getProxy().extraParams['hcdn_version'];
 		}
-		if (params['ua'] != 'All') {
-			this.store.getProxy().setExtraParam('ua', params['ua']);
+		if (params['ua'] == 'All') {
+			delete me.store.getProxy().extraParams['ua'];
 		}
-		var dynamic_filter_cnt = params['dynamic_filter_cnt'];
-		this.store.getProxy().setExtraParam('dynamic_filter_cnt', dynamic_filter_cnt);
-		for (var i = 0; i < dynamic_filter_cnt; i++) {
-			this.store.getProxy().setExtraParam('dynamic_filter_name' + i, params['dynamic_filter_name' + i]);
-			this.store.getProxy().setExtraParam('dynamic_filter_value' + i, params['dynamic_filter_value' + i]);
-		}
-		this.axes.items[0].title = params['kpi_name'];
-		this.store.load();
+		delete me.store.getProxy().extraParams['dimension_name'];
+		/*if (params['dimension_name'] != 'None') {
+			me.store.getProxy().setExtraParam('dimension_name', params['dimension_name']);
+		}*/
+		me.axes.items[0].title = params['kpi_name'];
+		me.store.load();
 	}
 });
