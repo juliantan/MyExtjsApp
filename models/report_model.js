@@ -30,12 +30,11 @@ Report.getQuantity = function get(callback){
   });
 };
 
-Report.getTrendData = function getTrendData(tbl_name, measures, wheresql, dmsql, callback){
-  var sql = 'SELECT ' + measures + ', date FROM ' + tbl_name + (wheresql != null ? wheresql : '') + (dmsql != null ? dmsql : '');
-  console.log("getTrendData SQL:" + sql);
+Report.getData = function getData(sql, callback){
+  console.log("Report.getData SQL:" + sql);
   mysql.query(sql, function(err, rows, fields) {
     if(err){
-      console.error("getTrendData error:" + err + ', SQL:' + sql);
+      console.error("Report.getData error:" + err + ', SQL:' + sql);
       callback(err);
     } else {
       callback(err, rows);

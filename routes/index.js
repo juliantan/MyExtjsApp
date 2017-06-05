@@ -128,15 +128,17 @@ function patchTrendData(reports, from_date, to_date) {
 }
 
 router.get('/getTrendData.do', function(req, res) {
-	var params = {from_date: req.query.from_date, to_date: req.query.to_date, hcdn_version: req.query.hcdn_version, ua: req.query.ua, }; 
+	var measuresql = req.query.kpi_formula + ' AS m1, date';
+    var wheresql = " WHERE Date >= '" + req.query['from_date'] + "' AND Date <= '" + req.query['to_date'] + "'";
     var dmsql = ' GROUP BY date';
-    var wheresql = " WHERE Date >= '" + params['from_date'] + "' AND Date <= '" + params['to_date'] + "'";
-    if (params['hcdn_version'] != null) {
-    	wheresql += " AND HcdnVersion IN ('" + params['hcdn_version'] + "')";
+    //a). fixed filters
+    if (req.query['hcdn_version'] != null) {
+    	wheresql += " AND HcdnVersion IN ('" + req.query['hcdn_version'] + "')";
     }
-    if (params['ua'] != null) {
-    	wheresql += " AND UA IN ('" + params['ua'] + "')";
+    if (req.query['ua'] != null) {
+    	wheresql += " AND UA IN ('" + req.query['ua'] + "')";
     }
+    //b). dynamic filters
     if (req.query['dynamic_filter_cnt'] != 0) {
     	for (var i = 0; i < req.query['dynamic_filter_cnt']; i++) {
     		var dynamic_filter_name = req.query['dynamic_filter_name' + i];
@@ -147,15 +149,17 @@ router.get('/getTrendData.do', function(req, res) {
     		}
     	}
     }
-    var measures = req.query.kpi_formula + ' AS m1';
+    //c). dimension
     /*var dimension = req.query['dimension_name'];
     if (dimension != null && dimension != '') {
-    	measures += ', ' + dimension;
+    	measuresql += ', ' + dimension;
     	dmsql += ' , ' + dimension;
     }*/
+
     getTrendData_from_date = req.query.from_date;
     getTrendData_to_date = req.query.to_date;
-    Report.getTrendData(req.query.tbl_name, measures, wheresql, dmsql, function(err, reports){
+    var sql = 'SELECT ' + measuresql + ' FROM ' + req.query.tbl_name + (wheresql != null ? wheresql : '') + (dmsql != null ? dmsql : '');
+    Report.getData(sql, function(err, reports){
       if(err){
         reports = [];
       }
