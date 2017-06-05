@@ -99,7 +99,34 @@ router.get('/getReportList.do', function(req, res) {
       res.json({success: true, data: reports, totalCount: totalCount});
     });
 });
-  
+
+function getReportDateIndex(reports, this_date) {
+	for (var i = 0; i < reports.length; i++) {
+		if ((new Date(reports[i]['date'])).getTime() == (new Date(this_date)).getTime()) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+function patchTrendData(reports, from_date, to_date) {
+	var fromdate = new Date(from_date).getTime();
+	var todate = new Date(to_date).getTime();
+	var merge_reports = []
+	var d = fromdate;
+	while (d <= todate) {
+		var idx = getReportDateIndex(reports, d);
+		if (idx >= 0) {
+			merge_reports.push(reports[idx]);
+		} else {
+			merge_reports.push({date: new Date(d), m1: null});
+		}
+		d = d + 3600 * 24 * 1000;
+		idx++;
+	}
+	return merge_reports;
+}
+
 router.get('/getTrendData.do', function(req, res) {
 	var params = {from_date: req.query.from_date, to_date: req.query.to_date, hcdn_version: req.query.hcdn_version, ua: req.query.ua, }; 
     var dmsql = ' GROUP BY date';
@@ -110,11 +137,14 @@ router.get('/getTrendData.do', function(req, res) {
     if (params['ua'] != null) {
     	wheresql += " AND UA in ('" + params['ua'] + "')";
     }
-    measures = req.query.kpi + ' as m1';
+    var measures = req.query.kpi + ' as m1';
+    getTrendData_from_date = req.query.from_date;
+    getTrendData_to_date = req.query.to_date;
     Report.getTrendData(req.query.tbl_name, measures, wheresql, dmsql, function(err, reports){
       if(err){
         reports = [];
       }
+      reports = patchTrendData(reports, getTrendData_from_date, getTrendData_to_date);
       res.contentType('json');
       res.json({success: true, data: reports});
     });
@@ -149,7 +179,7 @@ router.get('/getMeasures.do', function(req, res) {
       res.json({success: true, data: datas});
     });
 });
-  
+
 router.get('/getKpis.do', function(req, res) {
     Report.getKpis(req.query.tbl_name, function(err, datas){
       if(err){
