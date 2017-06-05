@@ -58,6 +58,16 @@ Ext.define("Mirror.controller.MainCtrl",{
 								anchor: '100% 100%',
 							},
 						],
+						listeners: {
+							collapse: function() {
+								this.next().anchor = '100% 93%';
+								this.up().up().doLayout();
+							},
+							expand: function() {
+								this.next().anchor = '100% 50%';
+								this.up().up().doLayout();
+							},
+						},
 					},
 					{
 						xtype: 'panel',
@@ -71,6 +81,16 @@ Ext.define("Mirror.controller.MainCtrl",{
 							{ xtype: 'top-dimension-widget', id: 'top_' + record.get('id'), anchor: '50% 100%',},
 							{ xtype: 'pie-chart-widget', id: 'pie_' + record.get('id'), anchor: '50% 100%',}
 						],
+						listeners: {
+							collapse: function() {
+								this.prev().anchor = '100% 93%';
+								this.up().up().doLayout();
+							},
+							expand: function() {
+								this.prev().anchor = '100% 50%';
+								this.up().up().doLayout();
+							},
+						},
 					},
 				],
 				closable: true,
