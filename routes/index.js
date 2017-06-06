@@ -109,6 +109,28 @@ function getReportDateIndex(reports, this_date) {
 	return -1;
 }
 
+function makeFilterForWhere(req, wheresql) {
+    //a). fixed filters
+    if (req.query['hcdn_version'] != null) {
+    	wheresql += " AND HcdnVersion IN ('" + req.query['hcdn_version'] + "')";
+    }
+    if (req.query['ua'] != null) {
+    	wheresql += " AND UA IN ('" + req.query['ua'] + "')";
+    }
+    //b). dynamic filters
+    if (req.query['dynamic_filter_cnt'] != 0) {
+    	for (var i = 0; i < req.query['dynamic_filter_cnt']; i++) {
+    		var dynamic_filter_name = req.query['dynamic_filter_name' + i];
+    		if (dynamic_filter_name != null && dynamic_filter_name != '' && dynamic_filter_name != 'None') {
+    			var dynamic_filter_value = req.query['dynamic_filter_value' + i];
+    			dynamic_filter_value = dynamic_filter_value != null ? dynamic_filter_value : '';
+    			wheresql += " AND " + dynamic_filter_name + " IN ('" + dynamic_filter_value + "')";
+    		}
+    	}
+    }
+    return wheresql;
+}
+
 function patchTrendData(reports, from_date, to_date) {
 	var fromdate = new Date(from_date).getTime();
 	var todate = new Date(to_date).getTime();
@@ -131,30 +153,8 @@ router.get('/getTrendData.do', function(req, res) {
 	var measuresql = req.query.kpi_formula + ' AS m1, date';
     var wheresql = " WHERE Date >= '" + req.query['from_date'] + "' AND Date <= '" + req.query['to_date'] + "'";
     var dmsql = ' GROUP BY date';
-    //a). fixed filters
-    if (req.query['hcdn_version'] != null) {
-    	wheresql += " AND HcdnVersion IN ('" + req.query['hcdn_version'] + "')";
-    }
-    if (req.query['ua'] != null) {
-    	wheresql += " AND UA IN ('" + req.query['ua'] + "')";
-    }
-    //b). dynamic filters
-    if (req.query['dynamic_filter_cnt'] != 0) {
-    	for (var i = 0; i < req.query['dynamic_filter_cnt']; i++) {
-    		var dynamic_filter_name = req.query['dynamic_filter_name' + i];
-    		if (dynamic_filter_name != null && dynamic_filter_name != '' && dynamic_filter_name != 'None') {
-    			var dynamic_filter_value = req.query['dynamic_filter_value' + i];
-    			dynamic_filter_value = dynamic_filter_value != null ? dynamic_filter_value : '';
-    			wheresql += " AND " + dynamic_filter_name + " IN ('" + dynamic_filter_value + "')";
-    		}
-    	}
-    }
-    //c). dimension
-    /*var dimension = req.query['dimension_name'];
-    if (dimension != null && dimension != '') {
-    	measuresql += ', ' + dimension;
-    	dmsql += ' , ' + dimension;
-    }*/
+    
+    wheresql = makeFilterForWhere(req, wheresql);
 
     getTrendData_from_date = req.query.from_date;
     getTrendData_to_date = req.query.to_date;
@@ -175,25 +175,10 @@ router.get('/getTopNData.do', function(req, res) {
     var dmsql = ' GROUP BY date';
     var ordersql = ' ORDER BY m1 DESC';
     var limitsql = null;
-    //a). fixed filters
-    if (req.query['hcdn_version'] != null) {
-    	wheresql += " AND HcdnVersion IN ('" + req.query['hcdn_version'] + "')";
-    }
-    if (req.query['ua'] != null) {
-    	wheresql += " AND UA IN ('" + req.query['ua'] + "')";
-    }
-    //b). dynamic filters
-    if (req.query['dynamic_filter_cnt'] != 0) {
-    	for (var i = 0; i < req.query['dynamic_filter_cnt']; i++) {
-    		var dynamic_filter_name = req.query['dynamic_filter_name' + i];
-    		if (dynamic_filter_name != null && dynamic_filter_name != '' && dynamic_filter_name != 'None') {
-    			var dynamic_filter_value = req.query['dynamic_filter_value' + i];
-    			dynamic_filter_value = dynamic_filter_value != null ? dynamic_filter_value : '';
-    			wheresql += " AND " + dynamic_filter_name + " IN ('" + dynamic_filter_value + "')";
-    		}
-    	}
-    }
-    //c). dimension
+
+    wheresql = makeFilterForWhere(req, wheresql);
+
+    // dimension
     var dimension = req.query['dimension_name'];
     if (dimension != null && dimension != '') {
     	measuresql += ', ' + dimension + ' AS dm';
