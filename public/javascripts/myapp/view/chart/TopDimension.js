@@ -80,12 +80,12 @@ Ext.define('Mirror.view.chart.TopDimension', {
 			}
         },
         label: {
-          display: 'insideEnd',
+            display: 'insideEnd',
             field: 'data1',
             renderer: Ext.util.Format.numberRenderer('0'),
             orientation: 'horizontal',
             color: '#333',
-          'text-anchor': 'middle'
+            'text-anchor': 'middle'
         },
         xField: 'full_name',
         yField: ['data1']

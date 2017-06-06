@@ -173,7 +173,7 @@ router.get('/getTopNData.do', function(req, res) {
 	var measuresql = req.query.kpi_formula + ' AS m1, date';
     var wheresql = " WHERE Date = '" + req.query['top_date'] + "'";
     var dmsql = ' GROUP BY date';
-    var ordersql = ' ORDER BY m1 DESC';
+    var ordersql = ' ORDER BY m1 ';
     var limitsql = null;
 
     wheresql = makeFilterForWhere(req, wheresql);
@@ -186,6 +186,9 @@ router.get('/getTopNData.do', function(req, res) {
     }
     if (req.query['top_n'] != null && req.query['top_n'] != 0) {
 		limitsql = ' LIMIT ' + req.query['top_n'];
+	}
+    if (req.query['order'] != null && req.query['order'] != 0) {
+		ordersql += req.query['order'];
 	}
 
     getTopNData_from_date = req.query.top_date;

@@ -247,6 +247,28 @@ Ext.define('Mirror.view.layout.filter.DimensionFieldSet', {
 			fieldLabel: 'Top:',
 			value: '5',
 		},
+		{
+			xtype: 'fieldcontainer',
+			fieldLabel: 'Order:',
+			defaultType: 'radiofield',
+			defaults: {
+                flex: 1
+            },
+            layout: 'hbox',
+            items: [
+            	{
+            		boxLabel: 'DESC',
+            		name: 'order',
+            		inputValue: 'DESC',
+            		checked: true,
+            	},
+            	{
+            		boxLabel: 'ASC',
+            		name: 'order',
+            		inputValue: 'ASC',
+            	},
+            ],
+		},
 	],
 	loadData: function() {
 		this.down('combo').loadData();
@@ -365,6 +387,8 @@ Ext.define('Mirror.view.layout.filter',{
     			Ext.getCmp("content-panel-id").getActiveTab().down('trend-column-widget').loadStore(params);
     			params.top_n = this.down('x_dimension_fs').down('combo').next().getValue();
     			params.top_date = params['to_date'];
+    			var descRadio = this.down('x_dimension_fs').down('combo').next().next().down('radiofield');
+    			params.order = descRadio.checked ? 'DESC' : 'ASC';
     			Ext.getCmp("content-panel-id").getActiveTab().down('top-dimension-widget').loadStore(params);
     		} else {
     			Ext.MessageBox.alert('Error', 'No report selected!');
