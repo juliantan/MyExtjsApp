@@ -10,9 +10,19 @@ Ext.define('Mirror.view.chart.TopDimension.TopNStore', {
     },
     fields: [
     	{
-            name: 'name',
+            name: 'full_name',
             mapping: function(raw) {
-                return raw.dm;
+				return raw.dm;
+	        }
+        },
+    	{
+            name: 'short_name',
+            mapping: function(raw) {
+            	if (raw.dm != null && raw.dm.length >= 20) {
+                	return raw.dm.slice(0,20) + '...';
+                } else {
+                	return raw.dm;
+                }
 	        }
         },
         {
@@ -52,7 +62,7 @@ Ext.define('Mirror.view.chart.TopDimension', {
     }, {
         type: 'Category',
         position: 'left',
-        fields: ['name'],
+        fields: ['short_name'],
         title: ''
     }],
     series: [{
@@ -60,12 +70,14 @@ Ext.define('Mirror.view.chart.TopDimension', {
         axis: 'bottom',
         highlight: true,
         tips: {
-          trackMouse: true,
-          width: 140,
-          height: 28,
-          renderer: function(storeItem, item) {
-            this.setTitle(storeItem.get('name') + ': ' + storeItem.get('data1'));
-          }
+			trackMouse: true,
+			width: 140,
+			height: 28,
+			renderer: function(storeItem, item) {
+				var tipTitle = storeItem.get('full_name') + ': ' + storeItem.get('data1');
+		        this.width = tipTitle.length * 8;
+		        this.setTitle(tipTitle);
+			}
         },
         label: {
           display: 'insideEnd',
@@ -75,7 +87,7 @@ Ext.define('Mirror.view.chart.TopDimension', {
             color: '#333',
           'text-anchor': 'middle'
         },
-        xField: 'name',
+        xField: 'full_name',
         yField: ['data1']
     }],
 	loadStore: function(params) {
