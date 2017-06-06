@@ -69,7 +69,10 @@ Ext.define('Mirror.view.chart.TrendColumn', {
 	series: [{
 	    type: 'column',
 	    axis: 'left',
-	    highlight: true,
+	    //highlight: true,
+        highlightCfg: {
+            fill: '#a2b5ca'
+        },
 	    tips: {
 	      trackMouse: true,
 	      width: 140,
@@ -89,8 +92,41 @@ Ext.define('Mirror.view.chart.TrendColumn', {
 	        color: '#333'
 	    },
 	    xField: 'date',
-	    yField: 'data1'
+	    yField: 'data1',
+	    myHighlightItem: null,
+		listeners: {
+		    itemclick: function (param) {
+		    	var myseries = this;
+		        console.log(param.storeItem.get(myseries.xField) + ':' + param.storeItem.get(param.yField));
+                myseries.highlight = true;
+                var top_date = null;
+	            for (var i = 0, items = myseries.items, l = items.length; i < l; i++) {
+	                if (items[i].storeItem.get(myseries.xField) == param.storeItem.get(myseries.xField)) {
+			            myseries.unHighlightItem();
+            			myseries.cleanHighlights();
+	                	if (myseries.myHighlightItem != items[i]) {
+		                    myseries.highlightItem(items[i]);
+		                    myseries.myHighlightItem = items[i];
+		                    top_date = items[i].storeItem.get(myseries.xField);
+	                    } else {
+	            			myseries.myHighlightItem = null;
+	                    }
+	                    break;
+	                }
+	            }
+	            myseries.highlight = false;
+	            Ext.getCmp("content-panel-id").up().down('x_filter').commitForm({top_date: top_date});
+		    }
+		}
 	}],
+	cleanMyHighlights: function() {
+		var myseries = this.series.get(0);
+    	myseries.highlight = true;
+        myseries.unHighlightItem();
+		myseries.cleanHighlights();
+		myseries.highlight = false;
+		myseries.myHighlightItem = null;
+	},
 	loadStore: function(params) {
 		//tanjl: as mentioned above, we need to create another store here
 		var me = this;

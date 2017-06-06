@@ -32,25 +32,6 @@ Ext.onReady(function(){
                 }
             }
             series.highlight = false;
-        },
-        // Loads fresh records into the radar store based upon the passed company record
-        updateRadarChart = function(rec) {
-            radarStore.loadData([{
-                'Name': 'Price',
-                'Data': rec.get('price')
-            }, {
-                'Name': 'Revenue %',
-                'Data': rec.get('revenue %')
-            }, {
-                'Name': 'Growth %',
-                'Data': rec.get('growth %')
-            }, {
-                'Name': 'Product %',
-                'Data': rec.get('product %')
-            }, {
-                'Name': 'Market %',
-                'Data': rec.get('market %')
-            }]);
         };
         
     // sample static data for the store
@@ -150,39 +131,6 @@ Ext.onReady(function(){
         }]
     });
     
-    //Radar chart will render information for a selected company in the
-    //list. Selection can also be done via clicking on the bars in the series.
-    var radarChart = Ext.create('Ext.chart.Chart', {
-        margin: '0 0 0 0',
-        insetPadding: 20,
-        flex: 1.2,
-        animate: true,
-        store: radarStore,
-        theme: 'Blue',
-        axes: [{
-            steps: 5,
-            type: 'Radial',
-            position: 'radial',
-            maximum: 100
-        }],
-        series: [{
-            type: 'radar',
-            xField: 'Name',
-            yField: 'Data',
-            showInLegend: false,
-            showMarkers: true,
-            markerConfig: {
-                radius: 4,
-                size: 4,
-                fill: 'rgb(69,109,159)'
-            },
-            style: {
-                fill: 'rgb(194,214,240)',
-                opacity: 0.5,
-                'stroke-width': 0.5
-            }
-        }]
-    });
     
     //create a grid that will list the dataset items.
     var gridPanel = Ext.create('Ext.grid.Panel', {
@@ -243,6 +191,10 @@ Ext.onReady(function(){
 
         listeners: {
             selectionchange: function(model, records) {
+            	console.log('change......' + new Date());
+            	selectedRec = records[0];
+            	highlightCompanyPriceBar(selectedRec);
+            	/*
                 var fields;
                 if (records[0]) {
                     selectedRec = records[0];
@@ -263,7 +215,7 @@ Ext.onReady(function(){
                     form.loadRecord(selectedRec);
                     form.resumeEvents();
                     highlightCompanyPriceBar(selectedRec);
-                }
+                }*/
             }
         }
     });
@@ -319,6 +271,25 @@ Ext.onReady(function(){
                      gridPanel.getSelectionModel().select(Ext.Array.indexOf(series.items, item));
                 }
             },
+			/*listeners: {
+			    itemmouseup: function (param) {
+			    	var myseries = this;
+	                myseries.highlight = true;
+		            myseries.unHighlightItem();
+		            myseries.cleanHighlights();
+		            for (var i = 0, items = myseries.items, l = items.length; i < l; i++) {
+		                if (items[i].storeItem.get(myseries.yField) == param.storeItem.get(myseries.yField)) {
+		                	myseries.unHighlightItem(items[i]);
+		                    myseries.highlightItem(items[i]);
+		                    break;
+		                }
+		            }
+		            myseries.highlight = false;
+		            
+		            var storeItem = param.storeItem;
+		            highlightCompanyPriceBar(storeItem);
+			    }
+			},*/
             xField: 'name',
             yField: ['price']
         }]
@@ -350,68 +321,6 @@ Ext.onReady(function(){
             flex: 3,
             items: [gridPanel, {
                 xtype: 'form',
-                flex: 3,
-                layout: {
-                    type: 'vbox',
-                    align:'stretch'
-                },
-                margin: '0 0 0 5',
-                title: 'Company Details',
-                items: [{
-                    margin: '5',
-                    xtype: 'fieldset',
-                    flex: 1,
-                    title:'Company details',
-                    defaults: {
-                        width: 240,
-                        labelWidth: 90,
-                        disabled: true,
-                        // min/max will be ignored by the text field
-                        maxValue: 100,
-                        minValue: 0,
-                        enforceMaxLength: true,
-                        maxLength: 5,
-                        bubbleEvents: ['change']
-                    },
-                    defaultType: 'numberfield',
-                    items: [{
-                        fieldLabel: 'Name',
-                        name: 'company',
-                        xtype: 'textfield',
-                        enforceMaxLength: false
-                    }, {
-                        fieldLabel: 'Price',
-                        name: 'price'
-                    }, {
-                        fieldLabel: 'Revenue %',
-                        name: 'revenue %'
-                    }, {
-                        fieldLabel: 'Growth %',
-                        name: 'growth %'
-                    }, {
-                        fieldLabel: 'Product %',
-                        name: 'product %'
-                    }, {
-                        fieldLabel: 'Market %',
-                        name: 'market %'
-                    }]
-                }, radarChart],
-                listeners: {
-                    // buffer so we don't refire while the user is still typing
-                    buffer: 200,
-                    change: function(field, newValue, oldValue, listener) {
-                        if (selectedRec && form) {
-                            if (newValue > field.maxValue) {
-                                field.setValue(field.maxValue);
-                            } else {
-                                if (form.isValid()) {
-                                    form.updateRecord(selectedRec);
-                                    updateRadarChart(selectedRec);
-                                }
-                            }
-                        }
-                    }
-                }
             }]
         }],
         renderTo: Ext.getBody()

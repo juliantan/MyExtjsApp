@@ -342,7 +342,9 @@ Ext.define('Mirror.view.layout.filter',{
 		        id: 'fp_applyId',
 		        disabled : false,
 		        handler: function() {
-		        	this.up().up().commitForm();
+		        	var filter_panel = this.up().up();
+		        	filter_panel.resetChart();
+		        	filter_panel.commitForm();
 		        }
 		    },
 		    {
@@ -352,6 +354,14 @@ Ext.define('Mirror.view.layout.filter',{
 		        handler: function() {
 		        	var me = this.up().up();
 		        	me.reloadFilters();
+		        }
+		    },
+		    {
+		        text: 'Test',
+		        disabled : false,
+		        handler: function() {
+		        	Ext.getCmp("content-panel-id").getActiveTab().down('trend-column-widget').cleanMyHighlights();
+		        	Ext.getCmp("content-panel-id").up().down('x_filter').commitForm();
 		        }
 		    },
     	],
@@ -364,7 +374,10 @@ Ext.define('Mirror.view.layout.filter',{
     		//this.loadData('');
     		//TODO ... reset all the fields
     	},
-    	commitForm: function() {
+    	resetChart: function() {
+    		Ext.getCmp("content-panel-id").getActiveTab().down('trend-column-widget').cleanMyHighlights();
+    	},
+    	commitForm: function(optParams) {
     		if (Ext.getCmp("content-panel-id").getActiveTab().down('trend-column-widget') != null) {
     			var params = {
     				tbl_name: getActiveTblName(),
@@ -386,10 +399,12 @@ Ext.define('Mirror.view.layout.filter',{
     			params.dimension_name = this.down('x_dimension_fs').down('combo').getValue();
     			Ext.getCmp("content-panel-id").getActiveTab().down('trend-column-widget').loadStore(params);
     			params.top_n = this.down('x_dimension_fs').down('combo').next().getValue();
-    			params.top_date = params['to_date'];
-    			var descRadio = this.down('x_dimension_fs').down('combo').next().next().down('radiofield');
-    			params.order = descRadio.checked ? 'DESC' : 'ASC';
-    			Ext.getCmp("content-panel-id").getActiveTab().down('top-dimension-widget').loadStore(params);
+    			if (optParams != null && optParams['top_date'] != null) {
+    				params.top_date = optParams['top_date'];
+	    			var descRadio = this.down('x_dimension_fs').down('combo').next().next().down('radiofield');
+	    			params.order = descRadio.checked ? 'DESC' : 'ASC';
+	    			Ext.getCmp("content-panel-id").getActiveTab().down('top-dimension-widget').loadStore(params);
+    			}
     		} else {
     			Ext.MessageBox.alert('Error', 'No report selected!');
     		}
