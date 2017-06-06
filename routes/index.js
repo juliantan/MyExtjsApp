@@ -171,8 +171,10 @@ router.get('/getTrendData.do', function(req, res) {
 
 router.get('/getTopNData.do', function(req, res) {
 	var measuresql = req.query.kpi_formula + ' AS m1, date';
-    var wheresql = " WHERE Date >= '" + req.query['from_date'] + "' AND Date <= '" + req.query['to_date'] + "'";
+    var wheresql = " WHERE Date = '" + req.query['top_date'] + "'";
     var dmsql = ' GROUP BY date';
+    var ordersql = ' ORDER BY m1 DESC';
+    var limitsql = null;
     //a). fixed filters
     if (req.query['hcdn_version'] != null) {
     	wheresql += " AND HcdnVersion IN ('" + req.query['hcdn_version'] + "')";
@@ -192,21 +194,24 @@ router.get('/getTopNData.do', function(req, res) {
     	}
     }
     //c). dimension
-    /*var dimension = req.query['dimension_name'];
+    var dimension = req.query['dimension_name'];
     if (dimension != null && dimension != '') {
-    	measuresql += ', ' + dimension;
+    	measuresql += ', ' + dimension + ' AS dm';
     	dmsql += ' , ' + dimension;
-    }*/
+    }
+    if (req.query['top_n'] != null && req.query['top_n'] != 0) {
+		limitsql = ' LIMIT ' + req.query['top_n'];
+	}
 
-    getTrendData_from_date = req.query.from_date;
-    getTrendData_to_date = req.query.to_date;
-    var sql = 'SELECT ' + measuresql + ' FROM ' + req.query.tbl_name + (wheresql != null ? wheresql : '') + (dmsql != null ? dmsql : '');
+    getTopNData_from_date = req.query.top_date;
+    getTopNData_to_date = req.query.top_date;
+    var sql = 'SELECT ' + measuresql + ' FROM ' + req.query.tbl_name + (wheresql != null ? wheresql : '') + (dmsql != null ? dmsql : '') + (ordersql != null ? ordersql : '') + (limitsql != null ? limitsql : '');
     Report.getData(sql, function(err, reports){
       if(err){
         reports = [];
       }
-      reports = patchTrendData(reports, getTrendData_from_date, getTrendData_to_date);
       res.contentType('json');
+      reports.reverse();
       res.json({success: true, data: reports});
     });
 });
