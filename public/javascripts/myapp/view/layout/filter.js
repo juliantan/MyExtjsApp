@@ -242,6 +242,11 @@ Ext.define('Mirror.view.layout.filter.DimensionFieldSet', {
 				this.store.load();
 			}
 		},
+		{
+			xtype: 'textfield',
+			fieldLabel: 'Top:',
+			value: '5',
+		},
 	],
 	loadData: function() {
 		this.down('combo').loadData();
@@ -356,8 +361,11 @@ Ext.define('Mirror.view.layout.filter',{
     				params['dynamic_filter_name' + i] = dynamic_filters[i].down('combo').getValue();
     				params['dynamic_filter_value' + i] = dynamic_filters[i].down('combo').next().getValue();
     			}
-    			params.dimension_name = this.down('x_dimension_fs').down('combo').getDisplayValue();
+    			params.dimension_name = this.down('x_dimension_fs').down('combo').getValue();
     			Ext.getCmp("content-panel-id").getActiveTab().down('trend-column-widget').loadStore(params);
+    			params.top_n = this.down('x_dimension_fs').down('combo').next().getValue();
+    			params.top_date = params['to_date'];
+    			Ext.getCmp("content-panel-id").getActiveTab().down('top-dimension-widget').loadStore(params);
     		} else {
     			Ext.MessageBox.alert('Error', 'No report selected!');
     		}

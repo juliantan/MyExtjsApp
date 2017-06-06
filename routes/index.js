@@ -119,7 +119,7 @@ function patchTrendData(reports, from_date, to_date) {
 		if (idx >= 0) {
 			merge_reports.push(reports[idx]);
 		} else {
-			merge_reports.push({date: new Date(d), m1: null});
+			merge_reports.push({date: new Date(d), m1: ''});
 		}
 		d = d + 3600 * 24 * 1000;
 		idx++;
@@ -128,6 +128,48 @@ function patchTrendData(reports, from_date, to_date) {
 }
 
 router.get('/getTrendData.do', function(req, res) {
+	var measuresql = req.query.kpi_formula + ' AS m1, date';
+    var wheresql = " WHERE Date >= '" + req.query['from_date'] + "' AND Date <= '" + req.query['to_date'] + "'";
+    var dmsql = ' GROUP BY date';
+    //a). fixed filters
+    if (req.query['hcdn_version'] != null) {
+    	wheresql += " AND HcdnVersion IN ('" + req.query['hcdn_version'] + "')";
+    }
+    if (req.query['ua'] != null) {
+    	wheresql += " AND UA IN ('" + req.query['ua'] + "')";
+    }
+    //b). dynamic filters
+    if (req.query['dynamic_filter_cnt'] != 0) {
+    	for (var i = 0; i < req.query['dynamic_filter_cnt']; i++) {
+    		var dynamic_filter_name = req.query['dynamic_filter_name' + i];
+    		if (dynamic_filter_name != null && dynamic_filter_name != '' && dynamic_filter_name != 'None') {
+    			var dynamic_filter_value = req.query['dynamic_filter_value' + i];
+    			dynamic_filter_value = dynamic_filter_value != null ? dynamic_filter_value : '';
+    			wheresql += " AND " + dynamic_filter_name + " IN ('" + dynamic_filter_value + "')";
+    		}
+    	}
+    }
+    //c). dimension
+    /*var dimension = req.query['dimension_name'];
+    if (dimension != null && dimension != '') {
+    	measuresql += ', ' + dimension;
+    	dmsql += ' , ' + dimension;
+    }*/
+
+    getTrendData_from_date = req.query.from_date;
+    getTrendData_to_date = req.query.to_date;
+    var sql = 'SELECT ' + measuresql + ' FROM ' + req.query.tbl_name + (wheresql != null ? wheresql : '') + (dmsql != null ? dmsql : '');
+    Report.getData(sql, function(err, reports){
+      if(err){
+        reports = [];
+      }
+      reports = patchTrendData(reports, getTrendData_from_date, getTrendData_to_date);
+      res.contentType('json');
+      res.json({success: true, data: reports});
+    });
+});
+
+router.get('/getTopNData.do', function(req, res) {
 	var measuresql = req.query.kpi_formula + ' AS m1, date';
     var wheresql = " WHERE Date >= '" + req.query['from_date'] + "' AND Date <= '" + req.query['to_date'] + "'";
     var dmsql = ' GROUP BY date';

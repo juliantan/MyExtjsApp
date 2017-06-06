@@ -1,3 +1,39 @@
+Ext.define('Mirror.view.chart.TopDimension.TopNStore', {
+	extend: 'Ext.data.Store',
+    proxy: {
+        type: 'ajax',
+        url: 'getTopNData.do',
+        reader: {
+            type: 'json',
+            root: 'data'
+        },
+    },
+    fields: [
+    	{
+            name: 'date',
+            mapping: function(raw) {
+                var result = new Date(raw.date + '');
+                return result.toLocaleDateString();
+	        }
+        },
+        {
+            name: 'data1',
+            mapping: function(raw) {
+                var ids = raw.m1;
+                return ids;
+            }
+		},
+    ],
+    autoLoad: false,
+    ownerCmp: null,
+    listeners: {
+    	load: function(){
+    		this.ownerCmp.redraw();
+    	}
+    },
+});
+
+
     window.generateData2 = function(n, floor){
         var data = [],
             p = (Math.random() *  11) + 1,
@@ -35,22 +71,22 @@ Ext.define('Mirror.view.chart.TopDimension', {
 	
     animate: true,
     shadow: true,
-    store: store_top,
+    store: Ext.create('Mirror.view.chart.TopDimension.TopNStore'),
     axes: [{
         type: 'Numeric',
         position: 'bottom',
         fields: ['data1'],
         label: {
-            renderer: Ext.util.Format.numberRenderer('0,0')
+            renderer: Ext.util.Format.numberRenderer('0,000.0')
         },
-        title: 'Number of Hits',
+        title: '',
         grid: true,
         minimum: 0
     }, {
         type: 'Category',
         position: 'left',
         fields: ['name'],
-        title: 'Month of the Year'
+        title: ''
     }],
     series: [{
         type: 'bar',
@@ -61,7 +97,7 @@ Ext.define('Mirror.view.chart.TopDimension', {
           width: 140,
           height: 28,
           renderer: function(storeItem, item) {
-            this.setTitle(storeItem.get('name') + ': ' + storeItem.get('data1') + ' views');
+            this.setTitle(storeItem.get('name') + ': ' + storeItem.get('data1'));
           }
         },
         label: {
@@ -74,5 +110,31 @@ Ext.define('Mirror.view.chart.TopDimension', {
         },
         xField: 'name',
         yField: ['data1']
-    }]
+    }],
+	loadStore: function(params) {
+		var me = this;
+		me.store = Ext.create('Mirror.view.chart.TopDimension.TopNStore');
+		me.store.ownerCmp = me;
+		me.store.getProxy().extraParams = {};
+		Object.keys(params).forEach(function(key) {
+		     me.store.getProxy().extraParams[key] = params[ key ];
+		});
+		if (params['hcdn_version'] == 'All') {
+			delete me.store.getProxy().extraParams['hcdn_version'];
+		}
+		if (params['ua'] == 'All') {
+			delete me.store.getProxy().extraParams['ua'];
+		}
+		delete me.store.getProxy().extraParams['dimension_name'];
+		if (params['dimension_name'] != 'None') {
+			me.store.getProxy().setExtraParam('dimension_name', params['dimension_name']);
+		}
+		me.axes.items[0].title = params['top_date'] + ': ' + params['kpi_name'] + ((params['kpi_unit'] != null && params['kpi_unit'] != '') ? '(' + params['kpi_unit'] + ')' : '');
+		me.axes.items[1].title = params['dimension_name'] + '(Top-' + params['top_n'] + ')';
+		me.store.load();
+	},
+	listeners: {
+		afterrender: function() {
+		},
+	},
 });
