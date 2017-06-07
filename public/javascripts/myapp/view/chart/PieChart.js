@@ -79,7 +79,7 @@ Ext.define('Mirror.view.chart.PieChart', {
                 // calculate and display percentage on hover
                 var isWithTotal = false;
                 var total = 0;
-                Ext.getCmp('desk').down('pie-chart-widget').store.each(function(rec) {
+                Ext.getCmp("content-panel-id").getActiveTab().down('pie-chart-widget').store.each(function(rec) {
                     total += rec.get('data1');
                     if (rec.get('total') != null) {
                     	isWithTotal = true;
