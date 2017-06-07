@@ -169,7 +169,7 @@ router.get('/getTrendData.do', function(req, res) {
     });
 });
 
-router.get('/getTopNData.do', function(req, res) {
+function makeDimensionSql(req, is_for_total) {
 	var measuresql = req.query.kpi_formula + ' AS m1, date';
     var wheresql = " WHERE Date = '" + req.query['top_date'] + "'";
     var dmsql = ' GROUP BY date';
@@ -180,7 +180,7 @@ router.get('/getTopNData.do', function(req, res) {
 
     // dimension
     var dimension = req.query['dimension_name'];
-    if (dimension != null && dimension != '') {
+    if (!is_for_total && dimension != null && dimension != '') {
     	measuresql += ', ' + dimension + ' AS dm';
     	dmsql += ' , ' + dimension;
     }
@@ -194,14 +194,59 @@ router.get('/getTopNData.do', function(req, res) {
     getTopNData_from_date = req.query.top_date;
     getTopNData_to_date = req.query.top_date;
     var sql = 'SELECT ' + measuresql + ' FROM ' + req.query.tbl_name + (wheresql != null ? wheresql : '') + (dmsql != null ? dmsql : '') + (ordersql != null ? ordersql : '') + (limitsql != null ? limitsql : '');
-    Report.getData(sql, function(err, reports){
-      if(err){
-        reports = [];
-      }
-      res.contentType('json');
-      reports.reverse();
-      res.json({success: true, data: reports});
+    
+    return sql;
+}
+
+router.get('/getTopNData.do', function(req, res) {
+    var dsql = makeDimensionSql(req);
+    Report.getData(dsql, function(err, reports){
+		if(err) {
+			reports = [];
+		}
+		res.contentType('json');
+		reports.reverse();
+		res.json({success: true, data: reports});
     });
+});
+
+router.get('/getPieData.do', function(req, res) {
+	getPieData_tsql = makeDimensionSql(req, true);
+    Report.getData(getPieData_tsql, function(err, treports){
+		if(err) {
+			treports = [];
+			res.contentType('json');
+			reports.reverse();
+			res.json({success: true, data: treports});
+		} else {
+			getPieData_total = treports[0].m1;
+			var dsql = makeDimensionSql(req, false);
+		    Report.getData(dsql, function(err, reports){
+				if(err) {
+				  reports = [];
+				}
+				res.contentType('json');
+				reports.reverse();
+				
+				// Add others and total information
+				if (getPieData_tsql.search('SUM\\(') >= 0) {
+					var topTotal = 0;
+					for (var i = 0; i < reports.length; i++) {
+						reports[i].total = getPieData_total;
+						topTotal += reports[i].m1;
+					}
+					var otherTotal = getPieData_total - topTotal;
+					if (reports.length > 0 && reports[0].dm != null) {
+						var d = reports[0].date;
+						reports.push({date: d, dm: 'Others', m1: otherTotal, total: getPieData_total});
+					}
+				}
+				
+				res.json({success: true, data: reports});
+		    });
+		}
+    });
+
 });
 
 router.get('/getDimValues.do', function(req, res) {

@@ -2,7 +2,7 @@ Ext.define('Mirror.view.chart.PieChart.PieStore', {
 	extend: 'Ext.data.Store',
     proxy: {
         type: 'ajax',
-        url: 'getTopNData.do',
+        url: 'getPieData.do',
         reader: {
             type: 'json',
             root: 'data'
@@ -12,17 +12,32 @@ Ext.define('Mirror.view.chart.PieChart.PieStore', {
     	{
             name: 'full_name',
             mapping: function(raw) {
-				return raw.dm;
+				var fname = raw.dm;
+            	if (raw.total != null) {
+	            	var d = (raw.m1 / raw.total) * 100;
+	            	var pct = d.toFixed(1) + '%';
+	                return pct + ': ' + fname;
+				} else {
+					return fname;
+				}
 	        }
         },
     	{
             name: 'short_name',
             mapping: function(raw) {
+            	var sname = '';
             	if (raw.dm != null && raw.dm.length >= 20) {
-                	return raw.dm.slice(0,20) + '...';
+                	sname = raw.dm.slice(0, 15) + '...';
                 } else {
-                	return raw.dm;
+                	sname = raw.dm;
                 }
+            	if (raw.total != null) {
+	            	var d = (raw.m1 / raw.total) * 100;
+	            	var pct = d.toFixed(1) + '%';
+	                return pct + ': ' + sname;
+				} else {
+					return sname;
+				}
 	        }
         },
         {
@@ -62,11 +77,20 @@ Ext.define('Mirror.view.chart.PieChart', {
             height: 28,
             renderer: function(storeItem, item) {
                 // calculate and display percentage on hover
+                var isWithTotal = false;
                 var total = 0;
                 Ext.getCmp('desk').down('pie-chart-widget').store.each(function(rec) {
                     total += rec.get('data1');
+                    if (rec.get('total') != null) {
+                    	isWithTotal = true;
+                    }
                 });
-				var tipTitle = storeItem.get('full_name') + ': ' + Math.round(storeItem.get('data1') / total * 100) + '%';
+				var tipTitle = '';
+				if (!isWithTotal) {
+					tipTitle = storeItem.get('full_name') + ': ' + Math.round(storeItem.get('data1') / total * 100) + '%';
+				} else {
+					tipTitle = storeItem.get('full_name');
+				}
 		        this.width = tipTitle.length * 8;
 		        this.setTitle(tipTitle);
             }
@@ -80,8 +104,8 @@ Ext.define('Mirror.view.chart.PieChart', {
             field: 'short_name',
             display: 'rotate',
             contrast: true,
-            font: '18px Arial'
-        }
+            font: '12px Arial'
+        },
     }],
 	loadStore: function(params) {
 		var me = this;
