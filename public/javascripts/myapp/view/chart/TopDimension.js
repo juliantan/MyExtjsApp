@@ -96,7 +96,7 @@ Ext.define('Mirror.view.chart.TopDimension', {
 		me.store.ownerCmp = me;
 		me.store.getProxy().extraParams = {};
 		Object.keys(params).forEach(function(key) {
-		     me.store.getProxy().extraParams[key] = params[ key ];
+		     me.store.getProxy().extraParams[key] = params[key];
 		});
 		if (params['hcdn_version'] == 'All') {
 			delete me.store.getProxy().extraParams['hcdn_version'];

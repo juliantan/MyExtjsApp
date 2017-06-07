@@ -415,6 +415,7 @@ Ext.define('Mirror.view.layout.filter',{
 	    			var descRadio = this.down('x_dimension_fs').down('combo').next().next().down('radiofield');
 	    			params.order = descRadio.checked ? 'DESC' : 'ASC';
 	    			Ext.getCmp("content-panel-id").getActiveTab().down('top-dimension-widget').loadStore(params);
+	    			Ext.getCmp("content-panel-id").getActiveTab().down('pie-chart-widget').loadStore(params);
     			} else {
     				this.resetTopNChart();
     			}
