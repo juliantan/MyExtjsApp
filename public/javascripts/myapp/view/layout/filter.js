@@ -356,14 +356,6 @@ Ext.define('Mirror.view.layout.filter',{
 		        	me.reloadFilters();
 		        }
 		    },
-		    {
-		        text: 'Test',
-		        disabled : false,
-		        handler: function() {
-		        	Ext.getCmp("content-panel-id").getActiveTab().down('trend-column-widget').cleanMyHighlights();
-		        	Ext.getCmp("content-panel-id").up().down('x_filter').commitForm();
-		        }
-		    },
     	],
     	loadData: function() {
     		this.resetAll();
@@ -374,8 +366,27 @@ Ext.define('Mirror.view.layout.filter',{
     		//this.loadData('');
     		//TODO ... reset all the fields
     	},
+    	resetTrendChart: function() {
+    		var myobj = Ext.getCmp("content-panel-id").getActiveTab().down('trend-column-widget');
+    		if (myobj != null) {
+    			myobj.clearChart();
+    		}
+    	},
+    	resetTopNChart: function() {
+    		var myPanel = Ext.getCmp("content-panel-id").getActiveTab().down('panel');
+    		if (myPanel != null) {
+	    		var topNPanel = Ext.getCmp("content-panel-id").getActiveTab().down('panel').next();
+	    		if (topNPanel != null) {
+		    		topNPanel.removeAll();
+		    		topNPanel.items.add(Ext.create('Mirror.view.chart.TopDimension', {anchor: '50% 100%',}));
+		    		topNPanel.items.add(Ext.create('Mirror.view.chart.PieChart', {anchor: '50% 100%',}));
+		    		topNPanel.doLayout();
+		    	}
+		    }
+    	},
     	resetChart: function() {
-    		Ext.getCmp("content-panel-id").getActiveTab().down('trend-column-widget').cleanMyHighlights();
+    		this.resetTrendChart();
+    		this.resetTopNChart();
     	},
     	commitForm: function(optParams) {
     		if (Ext.getCmp("content-panel-id").getActiveTab().down('trend-column-widget') != null) {
@@ -404,6 +415,8 @@ Ext.define('Mirror.view.layout.filter',{
 	    			var descRadio = this.down('x_dimension_fs').down('combo').next().next().down('radiofield');
 	    			params.order = descRadio.checked ? 'DESC' : 'ASC';
 	    			Ext.getCmp("content-panel-id").getActiveTab().down('top-dimension-widget').loadStore(params);
+    			} else {
+    				this.resetTopNChart();
     			}
     		} else {
     			Ext.MessageBox.alert('Error', 'No report selected!');

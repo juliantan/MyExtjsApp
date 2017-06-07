@@ -104,7 +104,7 @@ Ext.define('Mirror.view.chart.TrendColumn', {
 	                if (items[i].storeItem.get(myseries.xField) == param.storeItem.get(myseries.xField)) {
 			            myseries.unHighlightItem();
             			myseries.cleanHighlights();
-	                	if (myseries.myHighlightItem != items[i]) {
+	                	if (myseries.myHighlightItem == null || myseries.myHighlightItem.storeItem.get(myseries.xField) != items[i].storeItem.get(myseries.xField)) {
 		                    myseries.highlightItem(items[i]);
 		                    myseries.myHighlightItem = items[i];
 		                    top_date = items[i].storeItem.get(myseries.xField);
@@ -126,6 +126,11 @@ Ext.define('Mirror.view.chart.TrendColumn', {
 		myseries.cleanHighlights();
 		myseries.highlight = false;
 		myseries.myHighlightItem = null;
+	},
+	clearChart: function() {
+		this.cleanMyHighlights();
+		this.store.clearData();
+		this.redraw();
 	},
 	loadStore: function(params) {
 		//tanjl: as mentioned above, we need to create another store here
