@@ -51,7 +51,9 @@ Ext.define('Mirror.view.chart.PieChart.PieStore', {
     ownerCmp: null,
     listeners: {
     	load: function(){
-    		this.ownerCmp.redraw();
+    		if (this.ownerCmp) {
+    			this.ownerCmp.redraw();
+    		}
     	}
     },
 });

@@ -36,7 +36,9 @@ Ext.define('Mirror.view.chart.TopDimension.TopNStore', {
     ownerCmp: null,
     listeners: {
     	load: function(){
-    		this.ownerCmp.redraw();
+    		if (this.ownerCmp) {
+    			this.ownerCmp.redraw();
+    		}
     	}
     },
 });

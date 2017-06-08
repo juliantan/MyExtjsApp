@@ -34,7 +34,9 @@ Ext.define('Mirror.view.chart.TrendColumn.TrendStore', {
     	load: function(){
     		//tanjl: need to do redraw after this.store = Ext.create('Mirror.view.chart.TrendColumn.TrendStore') dynamically created
     		// otherwise the chart won't be displayed unless resize the browser
-    		this.ownerCmp.redraw();
+    		if (this.ownerCmp) {
+    			this.ownerCmp.redraw();
+    		}
     	}
     },
 });

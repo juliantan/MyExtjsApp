@@ -277,11 +277,10 @@ Ext.define('Mirror.view.layout.filter.DimensionFieldSet', {
 
 Ext.define('Mirror.view.layout.filter',{
   extend: 'Ext.form.Panel',
-  alias: 'widget.filter',
+  alias: 'widget.filter-widget',
   xtype: 'x_filter',
   initComponent : function(){
     Ext.apply(this,{
-	    //id: 'filter-panel-id',
 	    title: '图表参数',
 	    region:'east',
 	    collapsible : true,
