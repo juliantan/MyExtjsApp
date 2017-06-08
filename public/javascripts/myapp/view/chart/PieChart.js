@@ -58,7 +58,6 @@ Ext.define('Mirror.view.chart.PieChart.PieStore', {
 
 Ext.define('Mirror.view.chart.PieChart', {
 	extend: 'Ext.chart.Chart',
-	//id: 'pieChartId',
 	alias : 'widget.pie-chart-widget',
 	border: true,
 

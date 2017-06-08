@@ -43,7 +43,6 @@ Ext.define('Mirror.view.chart.TopDimension.TopNStore', {
 
 Ext.define('Mirror.view.chart.TopDimension', {
 	extend: 'Ext.chart.Chart',
-	id: 'topDimensionId',
 	alias : 'widget.top-dimension-widget',
 	border: true,
     animate: true,

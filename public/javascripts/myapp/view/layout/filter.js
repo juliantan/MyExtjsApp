@@ -367,19 +367,25 @@ Ext.define('Mirror.view.layout.filter',{
     		//TODO ... reset all the fields
     	},
     	resetTrendChart: function() {
-    		var myobj = Ext.getCmp("content-panel-id").getActiveTab().down('trend-column-widget');
+    		/*var myobj = Ext.getCmp("content-panel-id").getActiveTab().down('trend-column-widget');
     		if (myobj != null) {
     			myobj.clearChart();
-    		}
+    		}*/
+    		var myPanel = Ext.getCmp("content-panel-id").getActiveTab().down('panel');
+    		if (myPanel != null) {
+	    		myPanel.removeAll();
+	    		myPanel.add(Ext.create('Mirror.view.chart.TrendColumn', {anchor: '100% 100%',}));
+	    		myPanel.doLayout();
+		    }
     	},
     	resetTopNChart: function() {
     		var myPanel = Ext.getCmp("content-panel-id").getActiveTab().down('panel');
     		if (myPanel != null) {
-	    		var topNPanel = Ext.getCmp("content-panel-id").getActiveTab().down('panel').next();
+	    		var topNPanel = myPanel.next();
 	    		if (topNPanel != null) {
 		    		topNPanel.removeAll();
-		    		topNPanel.items.add(Ext.create('Mirror.view.chart.TopDimension', {anchor: '50% 100%',}));
-		    		topNPanel.items.add(Ext.create('Mirror.view.chart.PieChart', {anchor: '50% 100%',}));
+		    		topNPanel.add(Ext.create('Mirror.view.chart.TopDimension', {anchor: '50% 100%',}));
+		    		topNPanel.add(Ext.create('Mirror.view.chart.PieChart', {anchor: '50% 100%',}));
 		    		topNPanel.doLayout();
 		    	}
 		    }

@@ -41,7 +41,6 @@ Ext.define('Mirror.view.chart.TrendColumn.TrendStore', {
 
 Ext.define('Mirror.view.chart.TrendColumn', {
 	extend: 'Ext.chart.Chart',
-	//id: 'trendColumnId',
 	alias : 'widget.trend-column-widget',
 
 	style: 'background:#fff',
