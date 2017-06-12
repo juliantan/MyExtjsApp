@@ -134,7 +134,15 @@ function makeFilterForWhere(req, wheresql) {
     			}
     			subwheresql += " " + revert + " " + dynamic_filter_name + " " + dynamic_filter_op;
     			if (dynamic_filter_op == 'IN') {
-    				subwheresql +=" ('" + dynamic_filter_value + "')";
+    				var in_items = dynamic_filter_value.replace(', ', ',').split(',');
+    				var ins = '';
+    				for (var j = 0; j < in_items.length; j++) {
+    					if (ins != '') {
+    						ins += ',';
+    					}
+    					ins += "'" + in_items[j] + "'";
+    				}
+    				subwheresql +=" (" + ins + ")";
     			} else {
     				subwheresql +=" '" + dynamic_filter_value + "'";
     			}
