@@ -13,12 +13,7 @@ Ext.define('Mirror.view.layout.tabPanel',{
 			border: false,
 			//plain: true,
 			items: [
-				{
-					id: 'HomePage',
-					title: '使用帮助',
-					//iconCls:'home',
-					layout: 'fit'
-				}
+				Ext.create('Mirror.view.config.ConfigPanel', {title: '帮助与配置'}),
 			],
 			listeners: {
 				'tabchange': function() {

@@ -18,7 +18,7 @@ Ext.define("Mirror.controller.MainCtrl",{
     })
   },
   
-  views: ['chart.TrendColumn', 'chart.TopDimension', 'chart.PieChart'],
+  views: ['chart.TrendColumn', 'chart.TopDimension', 'chart.PieChart', 'config.ConfigPanel'],
 
   loadMenu: function(selModel, record){
     if (record.get('leaf')) {
