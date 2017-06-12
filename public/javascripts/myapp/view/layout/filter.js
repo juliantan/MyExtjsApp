@@ -167,6 +167,29 @@ Ext.define('Mirror.view.layout.filter.AdvancedFilterFieldSet', {
 				this.store.load();
 			}
 		},
+		{
+			xtype: 'panel',
+			cls: 'cls_dynamic_filter_cond_relation',
+			layout: 'hbox',
+			border: false,
+			items: [
+		    	{
+		    		flex: 1,
+		    		xtype: 'radiofield',
+		    		boxLabel: 'AND',
+		    		name: 'dynamic_filter_cond_relation',
+		    		inputValue: 'AND',
+		    		checked: true,
+		    	},
+		    	{
+		    		flex: 1,
+		    		xtype: 'radiofield',
+		    		boxLabel: 'OR',
+		    		name: 'dynamic_filter_cond_relation',
+		    		inputValue: 'OR',
+		    	},
+		    ],
+		},
 	],
 	loadData: function() {
 		Ext.ComponentQuery.query('combo[cls=afp_kpi_combo]')[0].loadData();
@@ -320,13 +343,36 @@ Ext.define('Mirror.view.layout.filter',{
 									//value: 'None',
 									flex: 1,
 								},
+								{
+									xtype: 'combo',
+									id: 'afp_opComboId' + dynamicFilterCnt,
+									store: {
+										fields: ['op_name'],
+										data: [
+											{'op_name': '='},
+											{'op_name': 'IN'},
+											{'op_name': '>'},
+											{'op_name': '>='},
+											{'op_name': '<'},
+											{'op_name': '<='},
+											{'op_name': 'LIKE'},
+										],
+									},
+									queryMode: 'local',
+									displayField: 'op_name',
+									valueField: 'op_name',
+									value: '=',
+									flex: 1,
+								},
 								{xtype: 'textfield', flex: 1},
+								{xtype: 'checkbox', flex: 1, name: 'df_revert', boxLabel: '!', checked: false},
 								{
 									xtype: 'button',
 									icon: 'images/del.ico',
 									flex: 0,
 									handler: function() {
 										this.up('panel').up().remove(this.up('panel'));
+										Ext.getCmp('desk').down('x_filter').layoutDynamicFilterRelation();
 									},
 								},
 							],
@@ -334,6 +380,7 @@ Ext.define('Mirror.view.layout.filter',{
 	    			);
 	    			Ext.ComponentMgr.get('afp_dimComboId' + dynamicFilterCnt).store.getProxy().setExtraParam('tbl_name', getActiveTblName());
 	    			Ext.ComponentMgr.get('afp_dimComboId' + dynamicFilterCnt).store.load();
+	    			this.up().up().layoutDynamicFilterRelation();
 	    		},
 	    	},
 		    {
@@ -356,6 +403,20 @@ Ext.define('Mirror.view.layout.filter',{
 		        }
 		    },
     	],
+    	layoutDynamicFilterRelation: function() {
+			var dynamic_filters = Ext.ComponentQuery.query('panel[cls=dynamic_filter]');
+			if (dynamic_filters.length > 0) {
+				Ext.ComponentQuery.query('panel[cls=cls_dynamic_filter_cond_relation]')[0].setVisible(true);
+			} else {
+				Ext.ComponentQuery.query('panel[cls=cls_dynamic_filter_cond_relation]')[0].setVisible(false);
+			}
+    	},
+		listeners: {
+			resize: function() {
+				this.layoutDynamicFilterRelation();
+				this.doLayout();
+			},
+		},
     	loadData: function() {
     		this.resetAll();
     		this.down('x_advanced_filter_fs').loadData();
@@ -407,10 +468,18 @@ Ext.define('Mirror.view.layout.filter',{
     			};
     			var dynamic_filters = Ext.ComponentQuery.query('panel[cls=dynamic_filter]');
     			params.dynamic_filter_cnt = dynamic_filters.length;
+    			var dfcrPanel = Ext.ComponentQuery.query('panel[cls=cls_dynamic_filter_cond_relation]')[0];
+    			if (dfcrPanel.down().getValue() == true) {
+    				params.dynamic_filter_relation = 'AND';
+    			} else {
+    				params.dynamic_filter_relation = 'OR';
+    			}
     			var i = 0;
     			for (i = 0; i < dynamic_filters.length; i++) {
     				params['dynamic_filter_name' + i] = dynamic_filters[i].down('combo').getValue();
-    				params['dynamic_filter_value' + i] = dynamic_filters[i].down('combo').next().getValue();
+    				params['dynamic_filter_op' + i] = dynamic_filters[i].down('combo').next().getValue();
+    				params['dynamic_filter_value' + i] = dynamic_filters[i].down('combo').next().next().getValue();
+    				params['dynamic_filter_revert' + i] = dynamic_filters[i].down('combo').next().next().next().getValue();
     			}
     			params.dimension_name = this.down('x_dimension_fs').down('combo').getValue();
     			Ext.getCmp("content-panel-id").getActiveTab().down('trend-column-widget').loadStore(params);
@@ -435,7 +504,8 @@ Ext.define('Mirror.view.layout.filter',{
         	me.items.add(Ext.create('Mirror.view.layout.filter.AdvancedFilterFieldSet', {}));
         	me.items.add(Ext.create('Mirror.view.layout.filter.DimensionFieldSet', {}));
         	me.doLayout();
-        	this.loadData();
+        	me.loadData();
+        	me.layoutDynamicFilterRelation();
     	},
     });
     this.callParent(arguments);

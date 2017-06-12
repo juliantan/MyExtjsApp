@@ -119,13 +119,29 @@ function makeFilterForWhere(req, wheresql) {
     }
     //b). dynamic filters
     if (req.query['dynamic_filter_cnt'] != 0) {
+    	var subwheresql = '';
     	for (var i = 0; i < req.query['dynamic_filter_cnt']; i++) {
     		var dynamic_filter_name = req.query['dynamic_filter_name' + i];
+    		var sub_relation = req.query['dynamic_filter_relation'];
     		if (dynamic_filter_name != null && dynamic_filter_name != '' && dynamic_filter_name != 'None') {
+    			var dynamic_filter_op = req.query['dynamic_filter_op' + i];
     			var dynamic_filter_value = req.query['dynamic_filter_value' + i];
+    			var dynamic_filter_revert = req.query['dynamic_filter_revert' + i];
     			dynamic_filter_value = dynamic_filter_value != null ? dynamic_filter_value : '';
-    			wheresql += " AND " + dynamic_filter_name + " IN ('" + dynamic_filter_value + "')";
+    			var revert = (dynamic_filter_revert == 'true') ? "NOT" : "";
+    			if (subwheresql != '') {
+    				subwheresql += " " + sub_relation
+    			}
+    			subwheresql += " " + revert + " " + dynamic_filter_name + " " + dynamic_filter_op;
+    			if (dynamic_filter_op == 'IN') {
+    				subwheresql +=" ('" + dynamic_filter_value + "')";
+    			} else {
+    				subwheresql +=" '" + dynamic_filter_value + "'";
+    			}
     		}
+    	}
+    	if (subwheresql != '') {
+    		wheresql += " AND (" + subwheresql + ")";
     	}
     }
     return wheresql;
