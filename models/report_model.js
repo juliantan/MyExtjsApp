@@ -81,6 +81,23 @@ Report.getMeasures = function getMeasures(tbl_name, callback){
   });
 };
 
+Report.getDimensionAndMeasures = function getDimensionAndMeasures(tbl_name, callback) {
+	var sql = 'SELECT col FROM (\
+		(SELECT ColName AS col FROM tbl_conf_col WHERE RefTable = \'' + tbl_name + '\' AND ColType = \'0\' ORDER BY col ASC)\
+		UNION\
+		(SELECT ColName AS col FROM tbl_conf_col WHERE RefTable = \'' + tbl_name + '\' AND ColType = \'1\' ORDER BY col ASC)\
+		) xxx';
+	console.log("getDimensionAndMeasures SQL:" + sql);
+	mysql.query(sql, function(err, rows, fields) {
+		if(err){
+			console.error("getDimensionAndMeasures error:" + err + ', SQL:' + sql);
+			callback(err);
+		} else {
+			callback(err, rows);
+		}
+	});
+};
+
 Report.getKpis = function getKpis(tbl_name, callback){
   var sql = 'SELECT * FROM tbl_conf_kpi WHERE RefTable = \'' + tbl_name + '\' ORDER BY KpiName ASC';
   console.log("getKpis SQL:" + sql);

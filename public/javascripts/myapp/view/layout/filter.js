@@ -241,14 +241,54 @@ Ext.define('Mirror.view.layout.filter.DimStore', {
     },
 });
 
+Ext.define('Mirror.view.layout.filter.DimAndMeasStore', {
+	extend: 'Ext.data.Store',
+	xtype: 'x_dim_meas_store',
+    /* fields: ['name', 'value'],
+    data : [
+        {name: "HCDN版本号", value: 'HcdnVersion'},
+        {name: "User Agent", value: 'UA'},
+    ], */
+    proxy: {
+        type: 'ajax',
+        url: 'getDimensionAndMeasures.do',
+        reader: {
+            type: 'json',
+            root: 'data',
+            successProperty: 'success'
+        },
+    },
+    fields: [
+        {
+            name: 'name',
+            mapping: function(raw) {
+                var ids = raw.col;
+                return ids;
+            }
+		},
+        {
+            name: 'value',
+            mapping: function(raw) {
+                var ids = raw.col;
+                return ids;
+            }
+		},
+    ],
+    autoLoad: false,
+    listeners: {
+    	load: function(){
+    	}
+    },
+});
+
 Ext.define('Mirror.view.layout.filter.DimensionFieldSet', {
 	extend: 'Ext.form.FieldSet',
 	xtype: 'x_dimension_fs',
     title: '维度',
     collapsible: true,
     collapsed: false,
+    checkboxToggle: false,
     autoHeight:true,
-    checkboxToggle: true,
     defaults: {width: '100%'},
     defaultType: 'textfield',
     items: [
@@ -272,7 +312,7 @@ Ext.define('Mirror.view.layout.filter.DimensionFieldSet', {
 		},
 		{
 			xtype: 'fieldcontainer',
-			fieldLabel: 'Order:',
+			fieldLabel: 'Order',
 			defaultType: 'radiofield',
 			defaults: {
                 flex: 1
@@ -291,6 +331,61 @@ Ext.define('Mirror.view.layout.filter.DimensionFieldSet', {
             		inputValue: 'ASC',
             	},
             ],
+		},
+	],
+	loadData: function() {
+		this.down('combo').loadData();
+	}
+});
+
+Ext.define('Mirror.view.layout.filter.KpiLevelFilterFieldSet', {
+	extend: 'Ext.form.FieldSet',
+	xtype: 'x_kpi_level_filter_fs',
+    title: 'KPI级过滤',
+    collapsible: true,
+    collapsed: false,
+    checkboxToggle: true,
+    autoHeight:true,
+    defaults: {width: '100%'},
+    layout: 'hbox',
+    defaultType: 'textfield',
+    items: [
+		{
+			xtype: 'combo',
+			flex: 1,
+			store: Ext.create('Mirror.view.layout.filter.KpiStore', {}),
+			queryMode: 'local',
+			displayField: 'name',
+			valueField: 'value',
+			value: 'None',
+			loadData: function() {
+				this.store.getProxy().setExtraParam('tbl_name', getActiveTblName());
+				this.store.load();
+			}
+		},
+		{
+			xtype: 'combo',
+			flex: 1,
+			store: {
+				fields: ['op_name'],
+				data: [
+					{'op_name': '='},
+					{'op_name': '>'},
+					{'op_name': '>='},
+					{'op_name': '<'},
+					{'op_name': '<='},
+				],
+			},
+			queryMode: 'local',
+			displayField: 'op_name',
+			valueField: 'op_name',
+			value: '=',
+		},
+		{
+			xtype: 'textfield',
+			flex: 1,
+			fieldLabel: '',
+			value: '',
 		},
 	],
 	loadData: function() {
@@ -336,7 +431,7 @@ Ext.define('Mirror.view.layout.filter',{
 								{
 									xtype: 'combo',
 									id: 'afp_dimComboId' + dynamicFilterCnt,
-									store: Ext.create('Mirror.view.layout.filter.DimStore', {}),
+									store: Ext.create('Mirror.view.layout.filter.DimAndMeasStore', {}),
 									queryMode: 'local',
 									displayField: 'name',
 									valueField: 'value',
@@ -365,7 +460,7 @@ Ext.define('Mirror.view.layout.filter',{
 									flex: 1,
 								},
 								{xtype: 'textfield', flex: 1},
-								{xtype: 'checkbox', flex: 1, name: 'df_revert', boxLabel: '!', checked: false},
+								{xtype: 'checkbox', flex: 0.5, name: 'df_revert', boxLabel: '!', checked: false},
 								{
 									xtype: 'button',
 									icon: 'images/del.ico',
@@ -421,6 +516,7 @@ Ext.define('Mirror.view.layout.filter',{
     		this.resetAll();
     		this.down('x_advanced_filter_fs').loadData();
     		this.down('x_dimension_fs').loadData();
+    		this.down('x_kpi_level_filter_fs').loadData();
     	},
     	resetAll: function() {
     		//this.loadData('');
@@ -503,6 +599,7 @@ Ext.define('Mirror.view.layout.filter',{
         	me.items.add(Ext.create('Mirror.view.layout.filter.TimeFieldSet', {}));
         	me.items.add(Ext.create('Mirror.view.layout.filter.AdvancedFilterFieldSet', {}));
         	me.items.add(Ext.create('Mirror.view.layout.filter.DimensionFieldSet', {}));
+        	me.items.add(Ext.create('Mirror.view.layout.filter.KpiLevelFilterFieldSet', {}));
         	me.doLayout();
         	me.loadData();
         	me.layoutDynamicFilterRelation();

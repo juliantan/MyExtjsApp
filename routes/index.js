@@ -295,6 +295,16 @@ router.get('/getMeasures.do', function(req, res) {
     });
 });
 
+router.get('/getDimensionAndMeasures.do', function(req, res) {
+    Report.getDimensionAndMeasures(req.query.tbl_name, function(err, datas){
+      if(err){
+        datas = [];
+      }
+      res.contentType('json');
+      res.json({success: true, data: datas});
+    });
+});
+
 router.get('/getKpis.do', function(req, res) {
     Report.getKpis(req.query.tbl_name, function(err, datas){
       if(err){
