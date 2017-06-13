@@ -1,7 +1,7 @@
 Ext.define('Mirror.view.config.ConfigPanel', {
 	extend: 'Ext.panel.Panel',
 	xtype: 'x_config_panel',
-	alias: 'widget.als_config_panel',
+	alias: 'widget.config-panel-widget',
     layout: {
         type: 'accordion',
         animate: true,
@@ -14,12 +14,12 @@ Ext.define('Mirror.view.config.ConfigPanel', {
 			html: '<b>No help context for the moment.</b>',
 		},
 		{
-			xtype: 'panel',
+			xtype: 'table-conf-panel-widget',
 			title: '物理表配置',
 		},
-		{
-			xtype: 'panel',
+		/*{
+			xtype: 'article-list-widget',
 			title: '报表配置',
-		},
+		},*/
 	],
 });
