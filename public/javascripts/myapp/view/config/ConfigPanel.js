@@ -17,9 +17,9 @@ Ext.define('Mirror.view.config.ConfigPanel', {
 			xtype: 'table-conf-panel-widget',
 			title: '物理表配置',
 		},
-		/*{
-			xtype: 'article-list-widget',
+		{
+			xtype: 'report-conf-panel-widget',
 			title: '报表配置',
-		},*/
+		},
 	],
 });
