@@ -8,21 +8,9 @@ Ext.define('Mirror.store.TableConfStore', {
   //autoLoad: true,
   autoSync: false,
 
-  //listeners: {
-    //load: function() {
-      //console.log(arguments);
-    //},
-    //update: function() {
-      //console.log(arguments);
-    //},
-    //beforesync: function() {
-      //console.log(arguments);
-    //}
-  //},
-
   proxy: {
     type: 'rest',
-    url: '/articles',
+    url: '/conf/tableconfigs',
     model: 'Mirror.model.TableConfModel',
     noCache: false,
     reader: {

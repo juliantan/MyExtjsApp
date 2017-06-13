@@ -8,29 +8,23 @@ Ext.define('Mirror.view.config.TableConfPanel', {
 
   initComponent: function () {
     this.columns = [{
-      header: 'id',
-      dataIndex: 'id',
+      header: 'ID',
+      dataIndex: 'ID',
       flex: 1
     }, {
-      header: '作者',
-      dataIndex: 'user',
+      header: '表',
+      dataIndex: 'RefTable',
       flex: 1
     }, {
-      header: '标题',
-      dataIndex: 'title',
+      header: '列名',
+      dataIndex: 'ColName',
       flex: 1
     }, {
-      header: '内容',
-      dataIndex: 'content',
+      header: '类型',
+      dataIndex: 'ColType',
       flex: 1
-    }, {
-      header: '发生时间',
-      dataIndex: 'happened_at',
-      xtype : 'datecolumn',
-      format : 'Y-m-d',
-      flex: 1
-    }];
-    //新建按钮
+    },];
+
     this.addItemButton = new Ext.Button({
       icon: 'images/add.ico',
       text: 'Add Item',

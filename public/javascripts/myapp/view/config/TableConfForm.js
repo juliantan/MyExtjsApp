@@ -18,26 +18,18 @@ Ext.define('Mirror.view.config.TableConfForm', {
       defaultType: 'textfield',
       items: [{
         xtype: 'hidden',
-        name : 'id',
-        fieldLabel: 'id'
+        name : 'ID',
+        fieldLabel: 'ID'
       }, {
-        name : 'user',
-        fieldLabel: '作者'
+        name : 'RefTable',
+        fieldLabel: '表'
       }, {
-        name : 'title',
-        fieldLabel: '标题'
+        name : 'ColName',
+        fieldLabel: '列名'
       }, {
-        xtype: 'datefield',
-        name : 'happened_at',
-        fieldLabel: '发生时间',
-        format: 'Y-m-d'
-      }, {
-        name : 'content',
-        fieldLabel: '内容',
-        xtype: 'htmleditor',
-        height: 200,
-        anchor: '100%'
-      }]
+        name : 'ColType',
+        fieldLabel: '类型',
+      },]
     }];
 
     this.buttons = [{
