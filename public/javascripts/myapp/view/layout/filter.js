@@ -528,7 +528,7 @@ Ext.define('Mirror.view.layout.filter',{
     			myobj.clearChart();
     		}*/
     		var myPanel = Ext.getCmp("content-panel-id").getActiveTab().down('panel');
-    		if (myPanel != null) {
+    		if (myPanel != null && myPanel.down('trend-column-widget') != null) {
 	    		myPanel.removeAll();
 	    		myPanel.add(Ext.create('Mirror.view.chart.TrendColumn', {anchor: '100% 100%',}));
 	    		myPanel.doLayout();
@@ -538,7 +538,7 @@ Ext.define('Mirror.view.layout.filter',{
     		var myPanel = Ext.getCmp("content-panel-id").getActiveTab().down('panel');
     		if (myPanel != null) {
 	    		var topNPanel = myPanel.next();
-	    		if (topNPanel != null) {
+	    		if (topNPanel != null && topNPanel.down('top-dimension-widget') != null) {
 		    		topNPanel.removeAll();
 		    		topNPanel.add(Ext.create('Mirror.view.chart.TopDimension', {anchor: '50% 100%',}));
 		    		topNPanel.add(Ext.create('Mirror.view.chart.PieChart', {anchor: '50% 100%',}));
