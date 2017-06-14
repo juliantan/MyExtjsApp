@@ -27,15 +27,6 @@ Ext.define("Mirror.controller.MainCtrl",{
       tbl_name = record.get('tbl_name');
       if (!panel) {
         switch (record.get('id')) {
-          case "10":
-            Ext.require('Mirror.controller.ArticleCtrl', function() {
-              var article = new Mirror.controller.ArticleCtrl();
-              article.init(Mirror);
-              panel = { xtype: 'article-list-widget' };
-              my.openTab(panel, 'article-list-leaf-id', '');
-              Ext.getCmp("content-panel-id").getActiveTab().active_tree_node_id = record.get('id');
-            });
-            break;
           default:
               panel = {
 				title: record.get('text'),
