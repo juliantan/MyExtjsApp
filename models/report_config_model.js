@@ -17,7 +17,7 @@ ReportConfigModel.prototype.save = function save(callback) {
 		ParentId: this.ParentId,
 	};
 	var sql = 'INSERT INTO `tbl_conf_report` SET ?';
-	console.log("ReportConfigModel.get SQL:" + sql + ", params:" + report_config);
+	console.log("ReportConfigModel.save SQL:" + sql + ", params:" + report_config);
 	var query = mysql.query(sql, report_config, function(err, result) {
 		if(err){
 			callback(err);
@@ -65,8 +65,8 @@ ReportConfigModel.prototype.update = function (callback) {
 	console.log("ReportConfigModel.prototype.update SQL:" + sql + ", params:" + params);
 	mysql.query(sql, params, function (err, result) {
 		if (err) {
-		console.log("ERROR:" + err);
-		callback(err);
+			console.log("ERROR:" + err);
+			callback(err);
 		} else {
 			callback(err, result);
 		}

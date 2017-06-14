@@ -61,8 +61,8 @@ TableConfigModel.prototype.update = function (callback) {
 	console.log("TableConfigModel.prototype.update SQL:" + sql + ", params:" + params);
 	mysql.query(sql, params, function (err, result) {
 		if (err) {
-		console.log("ERROR:" + err);
-		callback(err);
+			console.log("ERROR:" + err);
+			callback(err);
 		} else {
 			callback(err, result);
 		}
