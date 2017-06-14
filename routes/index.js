@@ -7,7 +7,7 @@ module.exports = router;
 
 router.get('/', function(req, res){
 	res.render('index', {
-		title: '主页',
+		title: '魔镜报表分析系统',
 	});
 });
 

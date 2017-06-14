@@ -15,11 +15,15 @@ Ext.define('Mirror.view.config.ConfigPanel', {
 		},
 		{
 			xtype: 'table-conf-panel-widget',
-			title: '物理表配置',
+			title: '表配置',
 		},
 		{
 			xtype: 'report-conf-panel-widget',
 			title: '报表配置',
+		},
+		{
+			xtype: 'kpi-conf-panel-widget',
+			title: 'KPI配置',
 		},
 	],
 });

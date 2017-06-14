@@ -5,7 +5,7 @@ Ext.application({
   name: "Mirror",
   appFolder: "/javascripts/myapp",
   autoCreateViewport: true, //自动加载Viewport.js文件
-  controllers: ['MainCtrl', 'TableConfCtrl', 'ReportConfCtrl'],
+  controllers: ['MainCtrl', 'TableConfCtrl', 'ReportConfCtrl', 'KpiConfCtrl'],
   //launch: function() {
     //Ext.tip.QuickTipManager.init();
   //}
