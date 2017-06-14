@@ -59,6 +59,7 @@ Ext.define("Mirror.controller.ReportConfCtrl", {
 		var errors = item.validate();
 
 		if (errors.isValid()) {
+			var me = this;
 			var formRecord = form.getRecord();
 
 			if (formRecord) {
@@ -72,6 +73,7 @@ Ext.define("Mirror.controller.ReportConfCtrl", {
 			store.sync({
 				success: function() {
 					win.close();
+					me.reloadMenu();
 				},
 				failure: function(batch, options) {
 					// extract server side validation errors
@@ -98,6 +100,7 @@ Ext.define("Mirror.controller.ReportConfCtrl", {
 			var store = Ext.widget('report-conf-panel-widget').store;
 			store.remove(record);
 			store.sync();
+			this.reloadMenu();
 		}
 	},
 
@@ -109,5 +112,9 @@ Ext.define("Mirror.controller.ReportConfCtrl", {
 		} else {
 			grid.disableRecordButtons();
 		}
-	}
+	},
+	
+	reloadMenu: function() {
+		Ext.getCmp('desk').down('menu').loadData();
+	},
 });

@@ -92,7 +92,9 @@ Ext.define('Mirror.view.layout.menu',{
     });
     this.callParent(arguments);
   },
-  
+  loadData: function() {
+  	this.store.load();
+  },
    onExpandAllClick: function(){
         var me = this,
         toolbar = me.down('toolbar');

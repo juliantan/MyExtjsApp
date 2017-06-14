@@ -86,7 +86,7 @@ router.get('/getReportList.do', function(req, res) {
     if (req.query.node != null && req.query.node != '') {
     	query = "WHERE ParentId = '" + req.query.node + "'";
     } else {
-    	query = "WHERE ParentId IS NULL";
+    	query = "WHERE ParentId IS NULL OR ParentId = '0'";
     }
     Report.getQuantity(function(err, total){
       totalCount = total;
