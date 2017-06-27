@@ -83,7 +83,7 @@ Ext.define('Mirror.view.chart.TopDimension', {
         label: {
             display: 'insideEnd',
             field: 'data1',
-            renderer: Ext.util.Format.numberRenderer('0'),
+            renderer: Ext.util.Format.numberRenderer('0,0.00'),
             orientation: 'horizontal',
             color: '#333',
             'text-anchor': 'middle'
@@ -111,6 +111,10 @@ Ext.define('Mirror.view.chart.TopDimension', {
 		}
 		me.axes.items[0].title = params['top_date'] + ': ' + params['kpi_name'] + ((params['kpi_unit'] != null && params['kpi_unit'] != '') ? '(' + params['kpi_unit'] + ')' : '');
 		me.axes.items[1].title = params['dimension_name'] + '(Top-' + params['top_n'] + ')';
+		if (params['kpi_data_format'] != null) {
+			me.axes.get(0).label.renderer = Ext.util.Format.numberRenderer(params['kpi_data_format']);
+			me.series.get(0).label.renderer = Ext.util.Format.numberRenderer(params['kpi_data_format']);
+		}
 		me.store.load();
 	},
 	listeners: {

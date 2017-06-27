@@ -22,7 +22,7 @@ router.get('/kpiconfigs', function(req, res) {
 });
 
 router.post('/kpiconfigs', function(req, res) {
-	kpi_config = new KpiConfigModel(req.body.RefTable, req.body.KpiName, req.body.Formula, req.body.KpiUnit);
+	kpi_config = new KpiConfigModel(req.body.RefTable, req.body.KpiName, req.body.Formula, req.body.KpiUnit, req.body.KpiDataFormat);
 	kpi_config.save(function(err, result){
 		if(err){
 			console.log('发布失败!' + err);
@@ -37,7 +37,7 @@ router.post('/kpiconfigs', function(req, res) {
 });
 
 router.put('/kpiconfigs/:id', function(req, res) {
-	kpi_config = new KpiConfigModel(req.body.RefTable, req.body.KpiName, req.body.Formula, req.body.KpiUnit, req.body.ID);
+	kpi_config = new KpiConfigModel(req.body.RefTable, req.body.KpiName, req.body.Formula, req.body.KpiUnit, req.body.KpiDataFormat, req.body.ID);
 	kpi_config.update(function(err, result){
 		if(err){
 			console.log('修改失败!' + err);

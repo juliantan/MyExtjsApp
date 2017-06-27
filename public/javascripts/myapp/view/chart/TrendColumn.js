@@ -56,7 +56,7 @@ Ext.define('Mirror.view.chart.TrendColumn', {
 	    position: 'left',
 	    fields: ['data1'],
 	    label: {
-	        renderer: Ext.util.Format.numberRenderer('0.0')
+	        renderer: Ext.util.Format.numberRenderer('0,0.00')
 	    },
 	    title: '',
 	    grid: true,
@@ -88,7 +88,7 @@ Ext.define('Mirror.view.chart.TrendColumn', {
 	      display: 'insideEnd',
 	      'text-anchor': 'middle',
 	        field: 'data1',
-	        renderer: Ext.util.Format.numberRenderer('0'),
+	        renderer: Ext.util.Format.numberRenderer('0,0.00'),
 	        orientation: 'vertical',
 	        color: '#333'
 	    },
@@ -153,6 +153,10 @@ Ext.define('Mirror.view.chart.TrendColumn', {
 			me.store.getProxy().setExtraParam('dimension_name', params['dimension_name']);
 		}*/
 		me.axes.items[0].title = params['kpi_name'] + ((params['kpi_unit'] != null && params['kpi_unit'] != '') ? '(' + params['kpi_unit'] + ')' : '');
+		if (params['kpi_data_format'] != null) {
+			me.axes.get(0).label.renderer = Ext.util.Format.numberRenderer(params['kpi_data_format']);
+			me.series.get(0).label.renderer = Ext.util.Format.numberRenderer(params['kpi_data_format']);
+		}
 		me.store.load();
 	}
 });

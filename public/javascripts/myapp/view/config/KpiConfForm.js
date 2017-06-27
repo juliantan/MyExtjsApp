@@ -32,6 +32,9 @@ Ext.define('Mirror.view.config.KpiConfForm', {
       }, {
         name : 'KpiUnit',
         fieldLabel: 'KPI单位',
+      }, {
+        name : 'KpiDataFormat',
+        fieldLabel: 'KPI数据显示格式',
       },]
     }];
 

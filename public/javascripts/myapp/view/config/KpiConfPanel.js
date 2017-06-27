@@ -27,6 +27,10 @@ Ext.define('Mirror.view.config.KpiConfPanel', {
       header: 'KPI单位',
       dataIndex: 'KpiUnit',
       flex: 1
+    }, {
+      header: 'KPI数据显示格式',
+      dataIndex: 'KpiDataFormat',
+      flex: 1
     },];
 
     this.addItemButton = new Ext.Button({

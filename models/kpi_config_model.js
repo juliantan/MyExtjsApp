@@ -1,10 +1,11 @@
 var mysql = require('./mirrordb');
 
-function KpiConfigModel(RefTable, KpiName, Formula, KpiUnit, ID) {
+function KpiConfigModel(RefTable, KpiName, Formula, KpiUnit, KpiDataFormat, ID) {
 	this.RefTable = RefTable;
 	this.KpiName = KpiName;
 	this.Formula = Formula;
 	this.KpiUnit = KpiUnit;
+	this.KpiDataFormat = KpiDataFormat;
 	this.ID = ID;
 }
 
@@ -15,6 +16,7 @@ KpiConfigModel.prototype.save = function save(callback) {
 		KpiName: this.KpiName,
 		Formula: this.Formula,
 		KpiUnit: this.KpiUnit,
+		KpiDataFormat: this.KpiDataFormat,
 	};
 	var sql = 'INSERT INTO `tbl_conf_kpi` SET ?';
 	console.log("KpiConfigModel.get SQL:" + sql + ", params:" + kpi_config);
@@ -56,11 +58,13 @@ KpiConfigModel.prototype.update = function (callback) {
 	var sql = 'update `tbl_conf_kpi` set RefTable = ?, ' +
 					'KpiName = ?, ' +
 					'Formula = ?, ' +
-					'KpiUnit = ? where ID = ?';
+					'KpiUnit = ?, ' +
+					'KpiDataFormat = ? where ID = ?';
 	var params = [this.RefTable,
 					this.KpiName,
 					this.Formula,
 					this.KpiUnit,
+					this.KpiDataFormat,
 					this.ID];
 	console.log("KpiConfigModel.prototype.update SQL:" + sql + ", params:" + params);
 	mysql.query(sql, params, function (err, result) {

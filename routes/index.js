@@ -191,7 +191,7 @@ router.get('/getPieData.do', function(req, res) {
 						topTotal += reports[i].m1;
 					}
 					var otherTotal = getPieData_total - topTotal;
-					if (reports.length > 0 && reports[0].dm != null) {
+					if (reports.length > 0 && reports[0].dm != null && otherTotal > 0) {
 						var d = reports[0].date;
 						reports.push({date: d, dm: 'Others', m1: otherTotal, total: getPieData_total});
 					}

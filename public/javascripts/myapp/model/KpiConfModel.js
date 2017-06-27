@@ -7,6 +7,7 @@ Ext.define('Mirror.model.KpiConfModel', {
     { name: 'KpiName', type: 'string' },
     { name: 'Formula', type: 'string' },
     { name: 'KpiUnit', type: 'string' },
+    { name: 'KpiDataFormat', type: 'string' },
   ],
   validations: [
     { type: 'presence', field: 'RefTable' },
