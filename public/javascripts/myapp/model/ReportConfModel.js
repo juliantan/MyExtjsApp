@@ -3,7 +3,6 @@ Ext.define('Mirror.model.ReportConfModel', {
   idProperty: 'ID',
   fields: [
     { name: 'ID', type: 'string' },
-    { name: 'MirrorId', type: 'string' },
     { name: 'Title', type: 'string' },
     { name: 'TableName', type: 'string' },
     { name: 'ParentId', type: 'string' },

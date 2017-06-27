@@ -12,10 +12,6 @@ Ext.define('Mirror.view.config.ReportConfPanel', {
       dataIndex: 'ID',
       flex: 1
     }, {
-      header: '魔镜计算ID',
-      dataIndex: 'MirrorId',
-      flex: 1
-    }, {
       header: '报表名',
       dataIndex: 'Title',
       flex: 1

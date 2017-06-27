@@ -12,8 +12,7 @@ treeListStore = Ext.create('Ext.data.TreeStore', {
     	{
             name: 'text',
             mapping: function(raw) {
-                var result = (raw.MirrorId != null ? (raw.MirrorId + '_') : '') + raw.Title;
-                return result;
+                return raw.Title;
 	        }
         },
         {

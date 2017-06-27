@@ -22,7 +22,7 @@ router.get('/reportconfigs', function(req, res) {
 });
 
 router.post('/reportconfigs', function(req, res) {
-	report_config = new ReportConfigModel(req.body.MirrorId, req.body.Title, req.body.TableName, req.body.ParentId == '' ? '0' : req.body.ParentId);
+	report_config = new ReportConfigModel(req.body.Title, req.body.TableName, req.body.ParentId == '' ? '0' : req.body.ParentId);
 	report_config.save(function(err, result){
 		if(err){
 			console.log('发布失败!' + err);
@@ -37,7 +37,7 @@ router.post('/reportconfigs', function(req, res) {
 });
 
 router.put('/reportconfigs/:id', function(req, res) {
-	report_config = new ReportConfigModel(req.body.MirrorId, req.body.Title, req.body.TableName, req.body.ParentId == '' ? '0' : req.body.ParentId, req.body.ID);
+	report_config = new ReportConfigModel(req.body.Title, req.body.TableName, req.body.ParentId == '' ? '0' : req.body.ParentId, req.body.ID);
 	report_config.update(function(err, result){
 		if(err){
 			console.log('修改失败!' + err);

@@ -1,7 +1,6 @@
 var mysql = require('./mirrordb');
 
-function ReportConfigModel(MirrorId, Title, TableName, ParentId, ID) {
-	this.MirrorId = MirrorId;
+function ReportConfigModel(Title, TableName, ParentId, ID) {
 	this.Title = Title;
 	this.TableName = TableName;
 	this.ParentId = ParentId;
@@ -11,7 +10,6 @@ function ReportConfigModel(MirrorId, Title, TableName, ParentId, ID) {
 //新建
 ReportConfigModel.prototype.save = function save(callback) {
 	var report_config = {
-		MirrorId: this.MirrorId,
 		Title: this.Title,
 		TableName: this.TableName,
 		ParentId: this.ParentId,
@@ -53,12 +51,10 @@ ReportConfigModel.getQuantity = function get(callback){
 
 //改
 ReportConfigModel.prototype.update = function (callback) {
-	var sql = 'update `tbl_conf_report` set MirrorId = ?, ' +
-					'Title = ?, ' +
+	var sql = 'update `tbl_conf_report` set Title = ?, ' +
 					'TableName = ?, ' +
 					'ParentId = ? where ID = ?';
-	var params = [this.MirrorId,
-					this.Title,
+	var params = [this.Title,
 					this.TableName,
 					this.ParentId,
 					this.ID];

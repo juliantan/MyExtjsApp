@@ -21,9 +21,6 @@ Ext.define('Mirror.view.config.ReportConfForm', {
         name : 'ID',
         fieldLabel: 'ID'
       }, {
-        name : 'MirrorId',
-        fieldLabel: '魔镜计算ID'
-      }, {
         name : 'Title',
         fieldLabel: '报表名'
       }, {

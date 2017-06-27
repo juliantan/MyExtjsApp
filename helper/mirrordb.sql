@@ -56,7 +56,6 @@ DROP TABLE IF EXISTS `tbl_conf_report`;
 
 CREATE TABLE `tbl_conf_report` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
-  `MirrorId` bigint(20) DEFAULT NULL,
   `Title` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
   `TableName` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `ParentId` bigint(20) DEFAULT NULL,
@@ -65,7 +64,65 @@ CREATE TABLE `tbl_conf_report` (
 
 /*Data for the table `tbl_conf_report` */
 
-insert  into `tbl_conf_report`(`ID`,`MirrorId`,`Title`,`TableName`,`ParentId`) values (1,10247,'HCDN切换率','tbl_hcdn_switch',NULL),(3,9646,'用户量','tbl_hcdn_user_count',0),(4,NULL,'QTP',NULL,NULL),(5,12214,'QTP测速成功率','tbl_qtp_speedtest',4),(7,NULL,'五分钟统计',NULL,4),(8,NULL,'错误统计',NULL,4),(9,9717,'QTPS_成功失败概览','tbl_qtp_sucfail_overview',7),(11,15510,'QTPSA_成功失败','tbl_hcdn_qtp_summary',0),(30,100,'QTP测速','tbl_hcdn_qtp_speedtest',0);
+insert  into `tbl_conf_report`(`ID`,`Title`,`TableName`,`ParentId`) values (1,'HCDN切换率','tbl_hcdn_switch',NULL),(3,'用户量','tbl_hcdn_user_count',0),(4,'QTP',NULL,NULL),(5,'QTP测速成功率','tbl_qtp_speedtest',4),(7,'五分钟统计',NULL,4),(8,'错误统计',NULL,4),(9,'QTPS_成功失败概览','tbl_qtp_sucfail_overview',7),(11,'QTPSA_成功失败','tbl_hcdn_qtp_summary',0),(30,'QTP测速','tbl_hcdn_qtp_speedtest',0);
+
+/*Table structure for table `tbl_hcdn_qtp_summary` */
+
+DROP TABLE IF EXISTS `tbl_hcdn_qtp_summary`;
+
+CREATE TABLE `tbl_hcdn_qtp_summary` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `SucCnt` bigint(20) DEFAULT NULL,
+  `FailCnt` bigint(20) DEFAULT NULL,
+  `TotalCnt` bigint(20) DEFAULT NULL,
+  `UA` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `HcdnVersion` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `Platform` varchar(8) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `ProvinceId` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `Province` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `ReqIp` varchar(24) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `CurlVersion` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `ReqMod` bigint(20) DEFAULT NULL,
+  `HttpCode` bigint(20) DEFAULT NULL,
+  `ReqDomain` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `ISPId` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `ISP` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `Date` date DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*Data for the table `tbl_hcdn_qtp_summary` */
+
+/*Table structure for table `tbl_hcdn_switch` */
+
+DROP TABLE IF EXISTS `tbl_hcdn_switch`;
+
+CREATE TABLE `tbl_hcdn_switch` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `Date` date DEFAULT NULL,
+  `TotalTaskCnt` bigint(20) DEFAULT NULL,
+  `SwitchRatio` double DEFAULT NULL,
+  `HcdnVersion` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `UA` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `SwitchedTaskCnt` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*Data for the table `tbl_hcdn_switch` */
+
+/*Table structure for table `tbl_hcdn_user_count` */
+
+DROP TABLE IF EXISTS `tbl_hcdn_user_count`;
+
+CREATE TABLE `tbl_hcdn_user_count` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `UserCount` bigint(20) DEFAULT NULL,
+  `HcdnVersion` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `Date` date DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*Data for the table `tbl_hcdn_user_count` */
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
