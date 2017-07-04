@@ -25,7 +25,7 @@ treeListStore = Ext.create('Ext.data.TreeStore', {
         {
             name: 'leaf',
             mapping: function(raw) {
-            	return raw.TableName != null;
+            	return raw.TableName != null && raw.TableName != '';
             }
 		},
 		{
