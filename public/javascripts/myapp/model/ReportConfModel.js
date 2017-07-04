@@ -9,6 +9,5 @@ Ext.define('Mirror.model.ReportConfModel', {
   ],
   validations: [
     { type: 'presence', field: 'Title' },
-    { type: 'presence', field: 'TableName' },
   ]
 });
