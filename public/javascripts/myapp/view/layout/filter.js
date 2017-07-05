@@ -18,7 +18,7 @@ Ext.define('Mirror.view.layout.filter.TimeFieldSet', {
     	{
     		name: 'fromDate',
 			//id: 'tfp_fromDateId',
-			fieldLabel: 'From Date:',
+			fieldLabel: '开始日期:',
 			value: new Date(new Date() - 3600 * 24 * 1000 * 7),
 			maxValue: new Date(),
 			format: 'Y-m-d',
@@ -26,7 +26,7 @@ Ext.define('Mirror.view.layout.filter.TimeFieldSet', {
     	{
     		name: 'toDate',
 			//id: 'tfp_toDateId',
-			fieldLabel: 'To Date:',
+			fieldLabel: '结束日期:',
 			value: new Date(new Date() - 3600 * 24 * 1000),
 			maxValue: new Date(),
 			format: 'Y-m-d',
@@ -139,7 +139,7 @@ Ext.define('Mirror.view.layout.filter.AdvancedFilterFieldSet', {
 			xtype: 'combo',
 			cls: 'afp_hcdnv_combo',
 			//id: 'afp_hcdnVersionId',
-			fieldLabel: 'HCDN Version:',
+			fieldLabel: 'HCDN版本号:',
 			store: Ext.create('Mirror.view.layout.filter.FixedDimStore', {}),
 			queryMode: 'local',
 			displayField: 'data1',
@@ -294,7 +294,7 @@ Ext.define('Mirror.view.layout.filter.DimensionFieldSet', {
     items: [
 		{
 			xtype: 'combo',
-			fieldLabel: 'Dimension:',
+			fieldLabel: '维度:',
 			store: Ext.create('Mirror.view.layout.filter.DimStore', {}),
 			queryMode: 'local',
 			displayField: 'name',
@@ -307,12 +307,12 @@ Ext.define('Mirror.view.layout.filter.DimensionFieldSet', {
 		},
 		{
 			xtype: 'textfield',
-			fieldLabel: 'Top:',
+			fieldLabel: '排行:',
 			value: '5',
 		},
 		{
 			xtype: 'fieldcontainer',
-			fieldLabel: 'Order',
+			fieldLabel: '排序',
 			defaultType: 'radiofield',
 			defaults: {
                 flex: 1
@@ -320,13 +320,13 @@ Ext.define('Mirror.view.layout.filter.DimensionFieldSet', {
             layout: 'hbox',
             items: [
             	{
-            		boxLabel: 'DESC',
+            		boxLabel: '降序',
             		name: 'order',
             		inputValue: 'DESC',
             		checked: true,
             	},
             	{
-            		boxLabel: 'ASC',
+            		boxLabel: '升序',
             		name: 'order',
             		inputValue: 'ASC',
             	},
@@ -341,10 +341,10 @@ Ext.define('Mirror.view.layout.filter.DimensionFieldSet', {
 Ext.define('Mirror.view.layout.filter.KpiLevelFilterFieldSet', {
 	extend: 'Ext.form.FieldSet',
 	xtype: 'x_kpi_level_filter_fs',
-    title: 'KPI级过滤',
+    title: 'KPI级过滤(暂未实现)',
     collapsible: true,
-    collapsed: false,
-    checkboxToggle: true,
+    collapsed: true,
+    checkboxToggle: false,
     autoHeight:true,
     defaults: {width: '100%'},
     layout: 'hbox',

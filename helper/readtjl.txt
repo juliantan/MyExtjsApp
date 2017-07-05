@@ -175,15 +175,3 @@ controller里加载models, stores, views, 将搜索默认目录model/, store/, v
 ### Ext.data.TreeStore里proxy的reader可以指定取HTTP响应的哪个元素作为输入
 注意是proxy的reader:
 见examples/form/combos.js
-
-
-### KPI level filter
-SELECT m1, m2, DATE, dm FROM (
-SELECT SUM(FailCnt)/SUM(TotalCnt)*100 AS m1, SUM(TotalCnt) AS m2, DATE, Province AS dm 
-FROM tbl_hcdn_qtp_summary WHERE DATE = '2017-6-8'
-GROUP BY DATE , Province 
-) kpi_records
-WHERE m2 > 10000
-ORDER BY m1 DESC LIMIT 5
-
-
