@@ -344,7 +344,7 @@ Ext.define('Mirror.view.layout.filter.KpiLevelFilterFieldSet', {
     title: 'KPI级过滤(暂未实现)',
     collapsible: true,
     collapsed: true,
-    checkboxToggle: false,
+    checkboxToggle: true,
     autoHeight:true,
     defaults: {width: '100%'},
     layout: 'hbox',

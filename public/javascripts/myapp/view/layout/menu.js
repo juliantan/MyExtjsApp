@@ -80,11 +80,11 @@ Ext.define('Mirror.view.layout.menu',{
       rootVisible: true,
       
 		tbar: [{
-		    text: 'Expand All',
+		    text: '展开所有',
 		    scope: this,
 		    handler: this.onExpandAllClick
 		}, {
-		    text: 'Collapse All',
+		    text: '折叠所有',
 		    scope: this,
 		    handler: this.onCollapseAllClick
 		}],
