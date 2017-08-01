@@ -1,6 +1,12 @@
 ######### 启动
 npm install
 npm start
+# startup
+    - default listening on 3000
+    node bin/www
+    PORT=8000 node bin/www
+    - debug on port 3001
+    node --inspect=192.168.157.129:3001 bin/www
 
 ######### 目录介绍
 RF: <Nodejs开发框架Express3.0开发手记–从零开始> http://blog.fens.me/nodejs-express3/
